@@ -1,13 +1,14 @@
 
-
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Courier_Prime } from "next/font/google";
 import "../styles/globals.scss";
+import Header from "../components/Header";
 
-// using variable font so we get all weights without extra downloads
-const inter = Inter({
+// courier prime for that typewriter look
+const courierPrime = Courier_Prime({
+    weight: ["400", "700"],
     subsets: ["latin"],
-    variable: "--font-inter",
+    variable: "--font-courier",
 });
 
 // site metadata for SEO and social sharing
@@ -36,11 +37,8 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" className="dark">
-            <body className={`${inter.variable} font-sans antialiased`}>
-                {/* 
-                    Main content goes here
-                    wrap everything in a min-h-screen so footer always stays at bottom
-                */}
+            <body className={courierPrime.variable}>
+                <Header />
                 <main className="min-h-screen">
                     {children}
                 </main>
