@@ -1,0 +1,98 @@
+/*
+ * globals.scss
+ */
+
+// css reset stuff - makes things consistent for all browsers
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+// light mode colors
+:root {
+    --bg-color: #f5f5f4;
+    --text-color: #1c1917;
+    --grid-color: rgba(0, 0, 0, 0.04);
+    --grid-size: 24px;
+
+    --accent-blue: #3b82f6;
+    --accent-hover: #2563eb;
+}
+
+// dark mode colors
+.dark {
+    --bg-color: #0a0a0a;
+    --text-color: #fafafa;
+    --grid-color: rgba(255, 255, 255, 0.03);
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: var(--font-inter), system-ui, -apple-system, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    line-height: 1.6;
+    min-height: 100vh;
+
+    background-image:
+        // vertical lines
+        repeating-linear-gradient(90deg,
+            var(--grid-color) 0px,
+            var(--grid-color) 1px,
+            transparent 1px,
+            transparent var(--grid-size)),
+        // horizontal lines  
+        repeating-linear-gradient(0deg,
+            var(--grid-color) 0px,
+            var(--grid-color) 1px,
+            transparent 1px,
+            transparent var(--grid-size));
+
+    // makes the pattern repeat properly
+    background-size: var(--grid-size) var(--grid-size);
+
+    // keeps the grid fixed when scrolling - looks cleaner imo
+    background-attachment: fixed;
+}
+
+// smooth transitions 
+body,
+body * {
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+// reset links
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+button,
+input,
+textarea {
+    font-family: inherit;
+    font-size: inherit;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
