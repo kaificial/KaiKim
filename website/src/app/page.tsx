@@ -6,6 +6,14 @@ import { useState, useEffect } from 'react';
 
 export default function HomePage() {
     const [isDark, setIsDark] = useState(false);
+    const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
+
+    const toggleExpand = (id: string) => {
+        setExpandedItems(prev => ({
+            ...prev,
+            [id]: !prev[id]
+        }));
+    };
 
     useEffect(() => {
         // Check initial theme
@@ -24,7 +32,7 @@ export default function HomePage() {
         return () => observer.disconnect();
     }, []);
 
-  
+
     const iconColors = {
         bg: isDark ? '#1f2937' : '#e5e7eb',
         bgHover: isDark ? '#374151' : '#d1d5db',
@@ -196,11 +204,11 @@ export default function HomePage() {
             </section>
 
             {/* Experience Section */}
-            <section style={{ marginTop: '80px' }}>
+            <section style={{ marginTop: '48px' }}>
                 <h2 style={{
                     fontSize: '2rem',
                     fontWeight: 'bold',
-                    marginBottom: '32px',
+                    marginBottom: '16px',
                     color: isDark ? 'white' : '#1c1917'
                 }}>
                     Experience
@@ -209,32 +217,34 @@ export default function HomePage() {
                 {/* Experience Items */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '32px' }}>
                     {/* QMIND */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                            <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px' }}>
+                            <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-start' }}>
                                 {/* QMIND Logo */}
-                                <Image
-                                    src="/assets/QMIND_logo.png"
-                                    alt="QMIND Logo"
-                                    width={48}
-                                    height={48}
-                                    style={{
-                                        borderRadius: '8px',
-                                        objectFit: 'cover'
-                                    }}
-                                />
+                                <div style={{ width: '64px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
+                                    <Image
+                                        src="/assets/QMIND_logo.png"
+                                        alt="QMIND Logo"
+                                        width={48}
+                                        height={48}
+                                        style={{
+                                            borderRadius: '8px',
+                                            objectFit: 'cover'
+                                        }}
+                                    />
+                                </div>
 
                                 <div>
                                     <h3 style={{
-                                        fontSize: '1.125rem',
+                                        fontSize: '1rem',
                                         fontWeight: '600',
-                                        marginBottom: '4px',
+                                        marginBottom: '0px',
                                         color: isDark ? 'white' : '#1c1917'
                                     }}>
                                         QMIND
                                     </h3>
                                     <p style={{
-                                        fontSize: '0.9375rem',
+                                        fontSize: '0.875rem',
                                         color: isDark ? '#9ca3af' : '#6b7280'
                                     }}>
                                         AI/ML Team Member
@@ -251,52 +261,102 @@ export default function HomePage() {
                             </span>
                         </div>
 
-                        <button style={{
-                            border: 'none',
-                            background: 'none',
-                            color: isDark ? '#9ca3af' : '#6b7280',
-                            fontSize: '0.875rem',
-                            cursor: 'pointer',
-                            padding: '4px 0',
-                            textAlign: 'left',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '4px'
-                        }}>
-                            Read more
-                            <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
-                                <path d="M6 9L2 5h8L6 9z" />
+                        <button
+                            onClick={() => toggleExpand('qmind')}
+                            style={{
+                                border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
+                                background: isDark ? 'rgba(31, 41, 55, 0.4)' : 'rgba(243, 244, 246, 0.6)',
+                                color: isDark ? '#d1d5db' : '#4b5563',
+                                fontSize: '0.75rem',
+                                cursor: 'pointer',
+                                padding: '5px 12px',
+                                borderRadius: '9999px',
+                                textAlign: 'left',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                alignSelf: 'flex-start',
+                                fontWeight: '500',
+                                transition: 'all 0.2s ease',
+                                marginLeft: '68px' // Align with text
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = isDark ? '#374151' : '#e5e7eb';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = isDark ? 'rgba(31, 41, 55, 0.4)' : 'rgba(243, 244, 246, 0.6)';
+                            }}>
+                            {expandedItems['qmind'] ? 'Show less' : 'Read more'}
+                            <svg
+                                width="12"
+                                height="12"
+                                viewBox="0 0 12 12"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                style={{
+                                    transform: expandedItems['qmind'] ? 'rotate(180deg)' : 'rotate(0deg)',
+                                    transition: 'transform 0.2s ease'
+                                }}
+                            >
+                                <path d="M2 4l4 4 4-4" />
                             </svg>
                         </button>
+
+                        {expandedItems['qmind'] && (
+                            <div style={{ marginLeft: '68px', marginTop: '4px' }}>
+                                <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
+                                    Working on machine learning and artificial intelligence projects
+                                </p>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                    {['Python', 'Machine Learning', 'Neural Networks', 'TensorFlow'].map((skill, index) => (
+                                        <span key={index} style={{
+                                            padding: '4px 12px',
+                                            backgroundColor: '#1d4ed8', // Blue-700
+                                            color: 'white',
+                                            borderRadius: '9999px',
+                                            fontSize: '0.75rem',
+                                            fontWeight: '500'
+                                        }}>
+                                            {skill}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* QAC */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                            <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px' }}>
+                            <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-start' }}>
                                 {/* QAC Logo */}
-                                <Image
-                                    src="/assets/QAC_LOGO_CROP.png"
-                                    alt="QAC Logo"
-                                    width={48}
-                                    height={48}
-                                    style={{
-                                        borderRadius: '8px',
-                                        objectFit: 'cover'
-                                    }}
-                                />
+                                <div style={{ width: '64px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
+                                    <Image
+                                        src="/assets/QAC_LOGO_CROP.png"
+                                        alt="QAC Logo"
+                                        width={60}
+                                        height={60}
+                                        style={{
+                                            borderRadius: '8px',
+                                            objectFit: 'cover'
+                                        }}
+                                    />
+                                </div>
 
                                 <div>
                                     <h3 style={{
-                                        fontSize: '1.125rem',
+                                        fontSize: '1rem',
                                         fontWeight: '600',
-                                        marginBottom: '4px',
+                                        marginBottom: '0px',
                                         color: isDark ? 'white' : '#1c1917'
                                     }}>
                                         QAC (Queen's Actuarial-Science Club)
                                     </h3>
                                     <p style={{
-                                        fontSize: '0.9375rem',
+                                        fontSize: '0.875rem',
                                         color: isDark ? '#9ca3af' : '#6b7280'
                                     }}>
                                         Web Developer
@@ -313,52 +373,103 @@ export default function HomePage() {
                             </span>
                         </div>
 
-                        <button style={{
-                            border: 'none',
-                            background: 'none',
-                            color: isDark ? '#9ca3af' : '#6b7280',
-                            fontSize: '0.875rem',
-                            cursor: 'pointer',
-                            padding: '4px 0',
-                            textAlign: 'left',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '4px'
-                        }}>
-                            Read more
-                            <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
-                                <path d="M6 9L2 5h8L6 9z" />
+                        <button
+                            onClick={() => toggleExpand('qac')}
+                            style={{
+                                border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
+                                background: isDark ? 'rgba(31, 41, 55, 0.4)' : 'rgba(243, 244, 246, 0.6)',
+                                color: isDark ? '#d1d5db' : '#4b5563',
+                                fontSize: '0.75rem',
+                                cursor: 'pointer',
+                                padding: '5px 12px',
+                                borderRadius: '9999px',
+                                textAlign: 'left',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                alignSelf: 'flex-start',
+                                fontWeight: '500',
+                                transition: 'all 0.2s ease',
+                                marginLeft: '68px' // Align with text
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = isDark ? '#374151' : '#e5e7eb';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = isDark ? 'rgba(31, 41, 55, 0.4)' : 'rgba(243, 244, 246, 0.6)';
+                            }}>
+                            {expandedItems['qac'] ? 'Show less' : 'Read more'}
+                            <svg
+                                width="12"
+                                height="12"
+                                viewBox="0 0 12 12"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                style={{
+                                    transform: expandedItems['qac'] ? 'rotate(180deg)' : 'rotate(0deg)',
+                                    transition: 'transform 0.2s ease'
+                                }}
+                            >
+                                <path d="M2 4l4 4 4-4" />
                             </svg>
                         </button>
+
+                        {expandedItems['qac'] && (
+                            <div style={{ marginLeft: '68px', marginTop: '4px' }}>
+                                <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
+                                    Developing and maintaining the club's website and digital presence
+                                </p>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                    {['React', 'Next.js', 'TypeScript', 'Web Design'].map((skill, index) => (
+                                        <span key={index} style={{
+                                            padding: '4px 12px',
+                                            backgroundColor: '#1d4ed8', // Blue-700
+                                            color: 'white',
+                                            borderRadius: '9999px',
+                                            fontSize: '0.75rem',
+                                            fontWeight: '500'
+                                        }}>
+                                            {skill}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
 
                     {/* QBiT */}
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-                            <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-start' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px' }}>
+                            <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-start' }}>
                                 {/* QBiT Logo */}
-                                <Image
-                                    src="/assets/QBiT_Logo-1.png"
-                                    alt="QBiT Logo"
-                                    width={48}
-                                    height={48}
-                                    style={{
-                                        borderRadius: '8px',
-                                        objectFit: 'cover'
-                                    }}
-                                />
+                                <div style={{ width: '64px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
+                                    <Image
+                                        src="/assets/QBiT_Logo-1.png"
+                                        alt="QBiT Logo"
+                                        width={52}
+                                        height={52}
+                                        style={{
+                                            borderRadius: '8px',
+                                            objectFit: 'cover',
+                                            filter: isDark ? 'invert(1)' : 'none'
+                                        }}
+                                    />
+                                </div>
 
                                 <div>
                                     <h3 style={{
-                                        fontSize: '1.125rem',
+                                        fontSize: '1rem',
                                         fontWeight: '600',
-                                        marginBottom: '4px',
+                                        marginBottom: '0px',
                                         color: isDark ? 'white' : '#1c1917'
                                     }}>
                                         QBiT (Queen's Biomedical Innovation Team)
                                     </h3>
                                     <p style={{
-                                        fontSize: '0.9375rem',
+                                        fontSize: '0.875rem',
                                         color: isDark ? '#9ca3af' : '#6b7280'
                                     }}>
                                         Software Engineer
@@ -375,26 +486,133 @@ export default function HomePage() {
                             </span>
                         </div>
 
-                        <button style={{
-                            border: 'none',
-                            background: 'none',
-                            color: isDark ? '#9ca3af' : '#6b7280',
-                            fontSize: '0.875rem',
-                            cursor: 'pointer',
-                            padding: '4px 0',
-                            textAlign: 'left',
-                            display: 'flex',
-                            alignItems: 'center',
-                            gap: '4px'
-                        }}>
-                            Read more
-                            <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor">
-                                <path d="M6 9L2 5h8L6 9z" />
+                        <button
+                            onClick={() => toggleExpand('qbit')}
+                            style={{
+                                border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
+                                background: isDark ? 'rgba(31, 41, 55, 0.4)' : 'rgba(243, 244, 246, 0.6)',
+                                color: isDark ? '#d1d5db' : '#4b5563',
+                                fontSize: '0.75rem',
+                                cursor: 'pointer',
+                                padding: '5px 12px',
+                                borderRadius: '9999px',
+                                textAlign: 'left',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                alignSelf: 'flex-start',
+                                fontWeight: '500',
+                                transition: 'all 0.2s ease',
+                                marginLeft: '68px' // Align with text
+                            }}
+                            onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = isDark ? '#374151' : '#e5e7eb';
+                            }}
+                            onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = isDark ? 'rgba(31, 41, 55, 0.4)' : 'rgba(243, 244, 246, 0.6)';
+                            }}>
+                            {expandedItems['qbit'] ? 'Show less' : 'Read more'}
+                            <svg
+                                width="12"
+                                height="12"
+                                viewBox="0 0 12 12"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                style={{
+                                    transform: expandedItems['qbit'] ? 'rotate(180deg)' : 'rotate(0deg)',
+                                    transition: 'transform 0.2s ease'
+                                }}
+                            >
+                                <path d="M2 4l4 4 4-4" />
                             </svg>
                         </button>
+
+                        {expandedItems['qbit'] && (
+                            <div style={{ marginLeft: '68px', marginTop: '4px' }}>
+                                <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
+                                    Building software solutions for biomedical innovation projects
+                                </p>
+                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                    {['C++', 'Python', 'Medical Imaging', 'Git'].map((skill, index) => (
+                                        <span key={index} style={{
+                                            padding: '4px 12px',
+                                            backgroundColor: '#1d4ed8', // Blue-700
+                                            color: 'white',
+                                            borderRadius: '9999px',
+                                            fontSize: '0.75rem',
+                                            fontWeight: '500'
+                                        }}>
+                                            {skill}
+                                        </span>
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </div>
                 </div>
-            </section >
+            </section>
+
+            {/* Education Section */}
+            <section style={{ marginTop: '48px' }}>
+                <h2 style={{
+                    fontSize: '2rem',
+                    fontWeight: 'bold',
+                    marginBottom: '16px',
+                    color: isDark ? 'white' : '#1c1917'
+                }}>
+                    Education
+                </h2>
+
+                <div style={{
+                    border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
+                    backgroundColor: isDark ? '#0a0a0a' : '#ffffff',
+                    borderRadius: '12px',
+                    padding: '16px',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'space-between'
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                        <Image
+                            src="/assets/queens.png"
+                            alt="Queen's University Logo"
+                            width={48}
+                            height={48}
+                            style={{
+                                objectFit: 'contain',
+                                filter: isDark ? 'invert(1)' : 'none'
+                            }}
+                        />
+                        <div>
+                            <h3 style={{
+                                fontSize: '1rem',
+                                fontWeight: '600',
+                                color: isDark ? 'white' : '#1c1917',
+                                marginBottom: '0px'
+                            }}>
+                                Queen's University
+                            </h3>
+                            <p style={{
+                                fontSize: '0.875rem',
+                                color: isDark ? '#9ca3af' : '#6b7280'
+                            }}>
+                                Bachelor of Computing
+                            </p>
+                        </div>
+                    </div>
+
+                    <span style={{
+                        fontSize: '0.875rem',
+                        color: isDark ? '#9ca3af' : '#6b7280',
+                        fontWeight: '500'
+                    }}>
+                        2029
+                    </span>
+                </div>
+            </section>
         </div >
     );
 }

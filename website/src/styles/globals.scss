@@ -226,6 +226,10 @@ pre {
     &:hover {
         border-color: rgba(255, 255, 255, 0.3);
     }
+
+    .moon-icon {
+        color: white;
+    }
 }
 
 .hero-title {
@@ -297,7 +301,7 @@ pre {
 .hero-layout {
     display: grid;
     grid-template-columns: 1fr 0.8fr;
-    gap: 1rem;
+    gap: 3rem;
     align-items: center;
 
     @media (min-width: 640px) {
