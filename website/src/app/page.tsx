@@ -120,7 +120,7 @@ export default function HomePage() {
                                         >
                                             <div style={{ position: 'relative', width: '100%', height: '100%' }}>
                                                 <Image
-                                                    src="/assets/toronto.png"
+                                                    src="/assets/toto.png"
                                                     alt="Toronto Skyline"
                                                     fill
                                                     style={{ objectFit: 'cover' }}
