@@ -30,7 +30,12 @@ export default function Header() {
 
     return (
         <header className="header">
-            <div className="header-container">
+            <motion.div
+                className="header-container"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 0.9, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+            >
                 <nav className="header-nav">
                     {navLinks.map((link) => (
                         <Link
@@ -162,7 +167,7 @@ export default function Header() {
                         )}
                     </button>
                 </div>
-            </div>
+            </motion.div>
         </header>
     );
 }

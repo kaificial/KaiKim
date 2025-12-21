@@ -80,10 +80,21 @@ export default function HomePage() {
                     {/* Left Column - Hero Text */}
                     <div className="hero-content" style={{ position: 'relative', zIndex: 10 }}>
                         {/* name and title */}
-                        <h1 className="hero-title font-bold text-gray-900 dark:text-white tracking-tight leading-none text-left">
+                        <motion.h1
+                            className="hero-title font-bold text-gray-900 dark:text-white tracking-tight leading-none text-left"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.1, duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+                        >
                             Kai Kim
-                        </h1>
-                        <div className="hero-subtitle-row">
+                        </motion.h1>
+
+                        <motion.div
+                            className="hero-subtitle-row"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 1.0, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+                        >
                             <span className="hero-subtitle text-gray-900 dark:text-gray-100 font-medium m-0">
                                 CS @ Queen's
                             </span>
@@ -135,14 +146,25 @@ export default function HomePage() {
                                 </svg>
                                 Toronto, ON
                             </motion.div>
-                        </div>
+                        </motion.div>
 
-                        <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-xl text-left" style={{ marginBottom: '20px' }}>
+                        <motion.p
+                            className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-xl text-left"
+                            style={{ marginBottom: '20px' }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 1.1, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+                        >
                             I enjoy designing and building reliable software. From algorithms to full stack solutions, I love exploring new technologies that push my skills forward!
-                        </p>
+                        </motion.p>
 
                         {/* social icon links */}
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginBottom: '24px' }}>
+                        <motion.div
+                            style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginBottom: '24px' }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 1.2, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+                        >
                             {/* GitHub */}
                             <motion.a
                                 href="https://github.com/kaificial"
@@ -266,11 +288,16 @@ export default function HomePage() {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                                 </svg>
                             </motion.a>
-                        </div>
+                        </motion.div>
                     </div>
 
                     {/* Right Column - Image */}
-                    <div className="hero-image-container">
+                    <motion.div
+                        className="hero-image-container"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 1.3, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+                    >
                         <div
                             className="image-placeholder"
                             style={{ position: 'relative' }}
@@ -325,12 +352,17 @@ export default function HomePage() {
                                 priority
                             />
                         </div>
-                    </div>
+                    </motion.div>
                 </div>
             </section>
 
             {/* Experience Section */}
-            <section style={{ marginTop: '24px' }}>
+            <motion.section
+                style={{ marginTop: '24px' }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.4, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+            >
                 <h2 style={{
                     fontSize: '2rem',
                     fontWeight: 'bold',
@@ -745,12 +777,16 @@ export default function HomePage() {
                             )}
                         </AnimatePresence>
                     </div >
-                </div >
-            </section >
+                </div>
+            </motion.section>
 
             {/* Education Section */}
-            < section style={{ marginTop: '48px' }
-            }>
+            <motion.section
+                style={{ marginTop: '48px' }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.5, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+            >
                 <h2 style={{
                     fontSize: '2rem',
                     fontWeight: 'bold',
@@ -784,8 +820,8 @@ export default function HomePage() {
                             <h3 style={{
                                 fontSize: '1rem',
                                 fontWeight: '600',
-                                color: isDark ? 'white' : '#1c1917',
-                                marginBottom: '0px'
+                                marginBottom: '0px',
+                                color: isDark ? 'white' : '#1c1917'
                             }}>
                                 Queen's University
                             </h3>
@@ -806,10 +842,15 @@ export default function HomePage() {
                         2029
                     </span>
                 </div>
-            </section >
+            </motion.section>
 
             {/* Skills Section */}
-            < section style={{ marginTop: '48px' }}>
+            <motion.section
+                style={{ marginTop: '48px' }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.6, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+            >
                 <h2 style={{
                     fontSize: '2rem',
                     fontWeight: 'bold',
@@ -932,10 +973,15 @@ export default function HomePage() {
                         </div>
                     </div>
                 </div>
-            </section >
+            </motion.section>
 
             {/* Featured Projects Section */}
-            < section style={{ marginTop: '48px' }}>
+            <motion.section
+                style={{ marginTop: '48px' }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.7, duration: 1.0, ease: [0.22, 1, 0.36, 1] }}
+            >
                 <h2 style={{
                     fontSize: '2rem',
                     fontWeight: 'bold',
@@ -1192,14 +1238,14 @@ export default function HomePage() {
                         </svg>
                     </Link>
                 </div>
-            </section >
+            </motion.section>
 
             {/* Blank Footer Space */}
             < div style={{ height: '96px' }}></div >
             <motion.div
-                initial={{ y: 100, opacity: 0, x: '-50%' }}
-                animate={{ y: 0, opacity: 1, x: '-50%' }}
-                transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                initial={{ opacity: 0, x: '-50%' }}
+                animate={{ opacity: 1, x: '-50%' }}
+                transition={{ duration: 1.0, delay: 1.8, ease: [0.22, 1, 0.36, 1] }}
                 style={{
                     position: 'fixed',
                     bottom: '24px',
@@ -1400,7 +1446,7 @@ export default function HomePage() {
                     )}
                 </motion.button>
             </motion.div>
-        </div >
+        </div>
     );
 }
 
