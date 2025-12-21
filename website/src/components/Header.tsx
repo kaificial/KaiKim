@@ -24,9 +24,6 @@ export default function Header() {
 
     // Initial count state from localStorage
     useEffect(() => {
-        const hasLiked = localStorage.getItem("love-liked") === "true";
-        if (hasLiked) setIsLiked(true);
-
         const savedCount = localStorage.getItem("love-count");
         if (savedCount) {
             const finalCount = parseInt(savedCount);
@@ -131,7 +128,6 @@ export default function Header() {
                                 setDisplayCount(newCount);
                                 setIsLiked(true);
                                 localStorage.setItem("love-count", newCount.toString());
-                                localStorage.setItem("love-liked", "true");
                             }}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
