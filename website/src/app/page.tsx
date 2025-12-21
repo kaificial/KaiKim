@@ -613,6 +613,100 @@ export default function HomePage() {
                     </span>
                 </div>
             </section>
+
+            {/* Skills Section */}
+            <section style={{ marginTop: '48px' }}>
+                <h2 style={{
+                    fontSize: '2rem',
+                    fontWeight: 'bold',
+                    marginBottom: '16px',
+                    color: isDark ? 'white' : '#1c1917'
+                }}>
+                    Skills
+                </h2>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
+                    {/* Languages */}
+                    <div>
+                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Languages</h3>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                            {['JavaScript', 'TypeScript', 'HTML/CSS', 'Python', 'Java', 'Arduino'].map((skill, index) => (
+                                <span key={index} style={{
+                                    padding: '6px 16px',
+                                    backgroundColor: isDark ? 'rgba(59, 130, 246, 0.15)' : '#e0f2fe',
+                                    color: isDark ? '#93c5fd' : '#0369a1',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.875rem',
+                                    fontWeight: '500',
+                                    border: `1px solid ${isDark ? 'rgba(59, 130, 246, 0.3)' : 'rgba(3, 105, 161, 0.1)'}`
+                                }}>
+                                    {skill}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Frontend */}
+                    <div>
+                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Frontend</h3>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                            {['React', 'Next.js', 'Tailwind CSS'].map((skill, index) => (
+                                <span key={index} style={{
+                                    padding: '6px 16px',
+                                    backgroundColor: isDark ? 'rgba(59, 130, 246, 0.15)' : '#e0f2fe',
+                                    color: isDark ? '#93c5fd' : '#0369a1',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.875rem',
+                                    fontWeight: '500',
+                                    border: `1px solid ${isDark ? 'rgba(59, 130, 246, 0.3)' : 'rgba(3, 105, 161, 0.1)'}`
+                                }}>
+                                    {skill}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Backend */}
+                    <div>
+                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Backend</h3>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                            {['Node.js', 'Express.js', 'MongoDB'].map((skill, index) => (
+                                <span key={index} style={{
+                                    padding: '6px 16px',
+                                    backgroundColor: isDark ? 'rgba(59, 130, 246, 0.15)' : '#e0f2fe',
+                                    color: isDark ? '#93c5fd' : '#0369a1',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.875rem',
+                                    fontWeight: '500',
+                                    border: `1px solid ${isDark ? 'rgba(59, 130, 246, 0.3)' : 'rgba(3, 105, 161, 0.1)'}`
+                                }}>
+                                    {skill}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+
+                    {/* Tools & Others */}
+                    <div>
+                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Tools & Others</h3>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                            {['Git', 'REST APIs', 'VS Code', 'Canva'].map((skill, index) => (
+                                <span key={index} style={{
+                                    padding: '6px 16px',
+                                    backgroundColor: isDark ? 'rgba(59, 130, 246, 0.15)' : '#e0f2fe',
+                                    color: isDark ? '#93c5fd' : '#0369a1',
+                                    borderRadius: '9999px',
+                                    fontSize: '0.875rem',
+                                    fontWeight: '500',
+                                    border: `1px solid ${isDark ? 'rgba(59, 130, 246, 0.3)' : 'rgba(3, 105, 161, 0.1)'}`
+                                }}>
+                                    {skill}
+                                </span>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+            </section>
         </div >
     );
 }
