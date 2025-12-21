@@ -51,6 +51,8 @@ export default function HomePage() {
         </motion.div>
     );
     const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
+    const [isTorontoHovered, setIsTorontoHovered] = useState(false);
+    const [isHeroImageHovered, setIsHeroImageHovered] = useState(false);
 
     const toggleExpand = (id: string) => {
         setExpandedItems(prev => ({
@@ -76,7 +78,7 @@ export default function HomePage() {
             <section className="hero-section">
                 <div className="hero-layout">
                     {/* Left Column - Hero Text */}
-                    <div className="hero-content">
+                    <div className="hero-content" style={{ position: 'relative', zIndex: 10 }}>
                         {/* name and title */}
                         <h1 className="hero-title font-bold text-gray-900 dark:text-white tracking-tight leading-none text-left">
                             Kai Kim
@@ -85,13 +87,54 @@ export default function HomePage() {
                             <span className="hero-subtitle text-gray-900 dark:text-gray-100 font-medium m-0">
                                 CS @ Queen's
                             </span>
-                            <div className="location-pill">
+                            <motion.div
+                                className="location-pill"
+                                whileHover={{ scale: 1.05 }}
+                                whileTap={{ scale: 0.95 }}
+                                style={{ position: 'relative', cursor: 'pointer' }}
+                                onMouseEnter={() => setIsTorontoHovered(true)}
+                                onMouseLeave={() => setIsTorontoHovered(false)}
+                            >
+                                <AnimatePresence>
+                                    {isTorontoHovered && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: 10, scale: 0.9 }}
+                                            transition={{ duration: 0.2 }}
+                                            style={{
+                                                position: 'absolute',
+                                                bottom: '120%',
+                                                left: '50%',
+                                                transform: 'translateX(-50%)',
+                                                width: '180px',
+                                                height: '110px',
+                                                borderRadius: '12px',
+                                                overflow: 'hidden',
+                                                boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                                                border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+                                                zIndex: 50,
+                                                pointerEvents: 'none',
+                                                background: isDark ? '#1f2937' : 'white'
+                                            }}
+                                        >
+                                            <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                                                <Image
+                                                    src="/assets/toronto.png"
+                                                    alt="Toronto Skyline"
+                                                    fill
+                                                    style={{ objectFit: 'cover' }}
+                                                />
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
                                 <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                 </svg>
                                 Toronto, ON
-                            </div>
+                            </motion.div>
                         </div>
 
                         <p className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-xl text-left" style={{ marginBottom: '20px' }}>
@@ -118,7 +161,8 @@ export default function HomePage() {
                                     border: iconColors.border,
                                     boxShadow: iconColors.shadow
                                 }}
-                                whileHover={{ backgroundColor: iconColors.bgHover }}
+                                whileHover={{ backgroundColor: iconColors.bgHover, scale: 1.1 }}
+                                whileTap={{ scale: 0.95 }}
                                 aria-label="GitHub"
                                 onMouseEnter={() => setHoveredIcon('hero-github')}
                                 onMouseLeave={() => setHoveredIcon(null)}
@@ -149,7 +193,8 @@ export default function HomePage() {
                                     border: iconColors.border,
                                     boxShadow: iconColors.shadow
                                 }}
-                                whileHover={{ backgroundColor: iconColors.bgHover }}
+                                whileHover={{ backgroundColor: iconColors.bgHover, scale: 1.1 }}
+                                whileTap={{ scale: 0.95 }}
                                 aria-label="LinkedIn"
                                 onMouseEnter={() => setHoveredIcon('hero-linkedin')}
                                 onMouseLeave={() => setHoveredIcon(null)}
@@ -178,7 +223,8 @@ export default function HomePage() {
                                     border: iconColors.border,
                                     boxShadow: iconColors.shadow
                                 }}
-                                whileHover={{ backgroundColor: iconColors.bgHover }}
+                                whileHover={{ backgroundColor: iconColors.bgHover, scale: 1.1 }}
+                                whileTap={{ scale: 0.95 }}
                                 aria-label="Email"
                                 onMouseEnter={() => setHoveredIcon('hero-email')}
                                 onMouseLeave={() => setHoveredIcon(null)}
@@ -207,7 +253,8 @@ export default function HomePage() {
                                     border: iconColors.border,
                                     boxShadow: iconColors.shadow
                                 }}
-                                whileHover={{ backgroundColor: iconColors.bgHover }}
+                                whileHover={{ backgroundColor: iconColors.bgHover, scale: 1.1 }}
+                                whileTap={{ scale: 0.95 }}
                                 aria-label="Resume"
                                 onMouseEnter={() => setHoveredIcon('hero-resume')}
                                 onMouseLeave={() => setHoveredIcon(null)}
@@ -224,7 +271,51 @@ export default function HomePage() {
 
                     {/* Right Column - Image */}
                     <div className="hero-image-container">
-                        <div className="image-placeholder">
+                        <div
+                            className="image-placeholder"
+                            style={{ position: 'relative' }}
+                            onMouseEnter={() => setIsHeroImageHovered(true)}
+                            onMouseLeave={() => setIsHeroImageHovered(false)}
+                        >
+                            <AnimatePresence>
+                                {isHeroImageHovered && (
+                                    <motion.div
+                                        initial={{ opacity: 0, scale: 0.8, rotate: -25 }}
+                                        animate={{ opacity: 1, scale: 1, rotate: -15 }}
+                                        exit={{ opacity: 0, scale: 0.8, rotate: -25 }}
+                                        transition={{ duration: 0.2, ease: "backOut" }}
+                                        style={{
+                                            position: 'absolute',
+                                            top: '-15px',
+                                            left: '-15px',
+                                            backgroundColor: isDark ? '#1f2937' : 'white',
+                                            color: isDark ? 'white' : '#1f2937',
+                                            padding: '6px 14px',
+                                            borderRadius: '8px',
+                                            fontSize: '0.875rem',
+                                            fontWeight: '600',
+                                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                                            zIndex: 20,
+                                            pointerEvents: 'none',
+                                            whiteSpace: 'nowrap',
+                                            border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`
+                                        }}
+                                    >
+                                        Hello!
+                                        <div style={{
+                                            position: 'absolute',
+                                            bottom: '-6px',
+                                            right: '12px',
+                                            width: '12px',
+                                            height: '12px',
+                                            backgroundColor: isDark ? '#1f2937' : 'white',
+                                            transform: 'rotate(45deg)',
+                                            borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`,
+                                            borderRight: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`,
+                                        }} />
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
                             <Image
                                 src="/assets/latte2.jpg"
                                 alt="Kai Kim"
@@ -296,12 +387,24 @@ export default function HomePage() {
                             </span>
                         </div>
 
-                        <button
+                        <motion.button
                             onClick={() => toggleExpand('qmind')}
+                            animate={{
+                                backgroundColor: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
+                                color: isDark ? '#d1d5db' : '#374151',
+                                borderColor: isDark ? '#374151' : '#e5e7eb',
+                            }}
+                            whileHover={{
+                                scale: 1.05,
+                                backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
+                                color: isDark ? '#BFDBFE' : '#1E40AF',
+                                borderColor: isDark ? '#1D4ED8' : '#BFDBFE'
+                            }}
+                            whileTap={{ scale: 0.95 }}
                             style={{
                                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                                background: isDark ? 'rgba(31, 41, 55, 0.4)' : 'rgba(243, 244, 246, 0.6)',
-                                color: isDark ? '#d1d5db' : '#4b5563',
+                                background: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
+                                color: isDark ? '#d1d5db' : '#374151',
                                 fontSize: '0.75rem',
                                 cursor: 'pointer',
                                 padding: '5px 12px',
@@ -312,17 +415,11 @@ export default function HomePage() {
                                 gap: '4px',
                                 alignSelf: 'flex-start',
                                 fontWeight: '500',
-                                transition: 'all 0.2s ease',
                                 marginLeft: '68px' // Align with text
                             }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor = isDark ? '#374151' : '#e5e7eb';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor = isDark ? 'rgba(31, 41, 55, 0.4)' : 'rgba(243, 244, 246, 0.6)';
-                            }}>
+                        >
                             {expandedItems['qmind'] ? 'Show less' : 'Read more'}
-                            <svg
+                            <motion.svg
                                 width="12"
                                 height="12"
                                 viewBox="0 0 12 12"
@@ -331,37 +428,52 @@ export default function HomePage() {
                                 strokeWidth="1.5"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                style={{
-                                    transform: expandedItems['qmind'] ? 'rotate(180deg)' : 'rotate(0deg)',
-                                    transition: 'transform 0.2s ease'
-                                }}
+                                animate={{ rotate: expandedItems['qmind'] ? 180 : 0 }}
                             >
                                 <path d="M2 4l4 4 4-4" />
-                            </svg>
-                        </button>
+                            </motion.svg>
+                        </motion.button>
 
-                        {expandedItems['qmind'] && (
-                            <div style={{ marginLeft: '68px', marginTop: '4px' }}>
-                                <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
-                                    Working on machine learning and artificial intelligence projects
-                                </p>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                    {['Python', 'Machine Learning', 'Neural Networks', 'TensorFlow'].map((skill, index) => (
-                                        <span key={index} style={{
-                                            padding: '4px 12px',
-                                            backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                            color: isDark ? '#BFDBFE' : '#1E40AF',
-                                            border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`,
-                                            borderRadius: '9999px',
-                                            fontSize: '0.75rem',
-                                            fontWeight: '500'
-                                        }}>
-                                            {skill}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
+                        <AnimatePresence>
+                            {expandedItems['qmind'] && (
+                                <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: 'auto', opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    style={{ overflow: 'hidden' }}
+                                >
+                                    <div style={{ marginLeft: '68px', marginTop: '4px', paddingBottom: '12px' }}>
+                                        <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
+                                            Working on machine learning and artificial intelligence projects
+                                        </p>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '4px', margin: '-4px' }}>
+                                            {['Python', 'Machine Learning', 'Neural Networks', 'TensorFlow'].map((skill, index) => (
+                                                <motion.span
+                                                    key={index}
+                                                    whileHover={{ scale: 1.1, y: -2 }}
+                                                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                                    whileTap={{ scale: 0.95 }}
+                                                    style={{
+                                                        display: 'inline-block',
+                                                        cursor: 'default',
+                                                        padding: '4px 12px',
+                                                        backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
+                                                        color: isDark ? '#BFDBFE' : '#1E40AF',
+                                                        border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`,
+                                                        borderRadius: '9999px',
+                                                        fontSize: '0.75rem',
+                                                        fontWeight: '500'
+                                                    }}
+                                                >
+                                                    {skill}
+                                                </motion.span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
 
                     {/* QAC */}
@@ -409,12 +521,24 @@ export default function HomePage() {
                             </span>
                         </div>
 
-                        <button
+                        <motion.button
                             onClick={() => toggleExpand('qac')}
+                            animate={{
+                                backgroundColor: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
+                                color: isDark ? '#d1d5db' : '#374151',
+                                borderColor: isDark ? '#374151' : '#e5e7eb',
+                            }}
+                            whileHover={{
+                                scale: 1.05,
+                                backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
+                                color: isDark ? '#BFDBFE' : '#1E40AF',
+                                borderColor: isDark ? '#1D4ED8' : '#BFDBFE'
+                            }}
+                            whileTap={{ scale: 0.95 }}
                             style={{
                                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                                background: isDark ? 'rgba(31, 41, 55, 0.4)' : 'rgba(243, 244, 246, 0.6)',
-                                color: isDark ? '#d1d5db' : '#4b5563',
+                                background: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
+                                color: isDark ? '#d1d5db' : '#374151',
                                 fontSize: '0.75rem',
                                 cursor: 'pointer',
                                 padding: '5px 12px',
@@ -425,17 +549,11 @@ export default function HomePage() {
                                 gap: '4px',
                                 alignSelf: 'flex-start',
                                 fontWeight: '500',
-                                transition: 'all 0.2s ease',
                                 marginLeft: '68px' // Align with text
                             }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor = isDark ? '#374151' : '#e5e7eb';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor = isDark ? 'rgba(31, 41, 55, 0.4)' : 'rgba(243, 244, 246, 0.6)';
-                            }}>
+                        >
                             {expandedItems['qac'] ? 'Show less' : 'Read more'}
-                            <svg
+                            <motion.svg
                                 width="12"
                                 height="12"
                                 viewBox="0 0 12 12"
@@ -444,37 +562,52 @@ export default function HomePage() {
                                 strokeWidth="1.5"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                style={{
-                                    transform: expandedItems['qac'] ? 'rotate(180deg)' : 'rotate(0deg)',
-                                    transition: 'transform 0.2s ease'
-                                }}
+                                animate={{ rotate: expandedItems['qac'] ? 180 : 0 }}
                             >
                                 <path d="M2 4l4 4 4-4" />
-                            </svg>
-                        </button>
+                            </motion.svg>
+                        </motion.button>
 
-                        {expandedItems['qac'] && (
-                            <div style={{ marginLeft: '68px', marginTop: '4px' }}>
-                                <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
-                                    Developing and maintaining the club's website and digital presence
-                                </p>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                    {['React', 'Next.js', 'TypeScript', 'Web Design'].map((skill, index) => (
-                                        <span key={index} style={{
-                                            padding: '4px 12px',
-                                            backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                            color: isDark ? '#BFDBFE' : '#1E40AF',
-                                            border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`,
-                                            borderRadius: '9999px',
-                                            fontSize: '0.75rem',
-                                            fontWeight: '500'
-                                        }}>
-                                            {skill}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
+                        <AnimatePresence>
+                            {expandedItems['qac'] && (
+                                <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: 'auto', opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    style={{ overflow: 'hidden' }}
+                                >
+                                    <div style={{ marginLeft: '68px', marginTop: '4px', paddingBottom: '12px' }}>
+                                        <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
+                                            Developing and maintaining the club's website and digital presence
+                                        </p>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '4px', margin: '-4px' }}>
+                                            {['React', 'Next.js', 'TypeScript', 'Web Design'].map((skill, index) => (
+                                                <motion.span
+                                                    key={index}
+                                                    whileHover={{ scale: 1.1, y: -2 }}
+                                                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                                    whileTap={{ scale: 0.95 }}
+                                                    style={{
+                                                        display: 'inline-block',
+                                                        cursor: 'default',
+                                                        padding: '4px 12px',
+                                                        backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
+                                                        color: isDark ? '#BFDBFE' : '#1E40AF',
+                                                        border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`,
+                                                        borderRadius: '9999px',
+                                                        fontSize: '0.75rem',
+                                                        fontWeight: '500'
+                                                    }}
+                                                >
+                                                    {skill}
+                                                </motion.span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </div>
 
                     {/* QBiT */}
@@ -523,12 +656,24 @@ export default function HomePage() {
                             </span>
                         </div>
 
-                        <button
+                        <motion.button
                             onClick={() => toggleExpand('qbit')}
+                            animate={{
+                                backgroundColor: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
+                                color: isDark ? '#d1d5db' : '#374151',
+                                borderColor: isDark ? '#374151' : '#e5e7eb',
+                            }}
+                            whileHover={{
+                                scale: 1.05,
+                                backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
+                                color: isDark ? '#BFDBFE' : '#1E40AF',
+                                borderColor: isDark ? '#1D4ED8' : '#BFDBFE'
+                            }}
+                            whileTap={{ scale: 0.95 }}
                             style={{
                                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                                background: isDark ? 'rgba(31, 41, 55, 0.4)' : 'rgba(243, 244, 246, 0.6)',
-                                color: isDark ? '#d1d5db' : '#4b5563',
+                                background: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
+                                color: isDark ? '#d1d5db' : '#374151',
                                 fontSize: '0.75rem',
                                 cursor: 'pointer',
                                 padding: '5px 12px',
@@ -539,18 +684,12 @@ export default function HomePage() {
                                 gap: '4px',
                                 alignSelf: 'flex-start',
                                 fontWeight: '500',
-                                transition: 'all 0.2s ease',
                                 marginLeft: '68px', // Align with text
                                 marginTop: '-16px'
                             }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor = isDark ? '#374151' : '#e5e7eb';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor = isDark ? 'rgba(31, 41, 55, 0.4)' : 'rgba(243, 244, 246, 0.6)';
-                            }}>
+                        >
                             {expandedItems['qbit'] ? 'Show less' : 'Read more'}
-                            <svg
+                            <motion.svg
                                 width="12"
                                 height="12"
                                 viewBox="0 0 12 12"
@@ -559,43 +698,59 @@ export default function HomePage() {
                                 strokeWidth="1.5"
                                 strokeLinecap="round"
                                 strokeLinejoin="round"
-                                style={{
-                                    transform: expandedItems['qbit'] ? 'rotate(180deg)' : 'rotate(0deg)',
-                                    transition: 'transform 0.2s ease'
-                                }}
+                                animate={{ rotate: expandedItems['qbit'] ? 180 : 0 }}
                             >
                                 <path d="M2 4l4 4 4-4" />
-                            </svg>
-                        </button>
+                            </motion.svg>
+                        </motion.button>
 
-                        {expandedItems['qbit'] && (
-                            <div style={{ marginLeft: '68px', marginTop: '4px' }}>
-                                <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
-                                    Building software solutions for biomedical innovation projects
-                                </p>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                    {['C++', 'Python', 'Medical Imaging', 'Git'].map((skill, index) => (
-                                        <span key={index} style={{
-                                            padding: '4px 12px',
-                                            backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                            color: isDark ? '#BFDBFE' : '#1E40AF',
-                                            border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`,
-                                            borderRadius: '9999px',
-                                            fontSize: '0.75rem',
-                                            fontWeight: '500'
-                                        }}>
-                                            {skill}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
-            </section>
+                        <AnimatePresence>
+                            {expandedItems['qbit'] && (
+                                <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: 'auto', opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    style={{ overflow: 'hidden' }}
+                                >
+                                    <div style={{ marginLeft: '68px', marginTop: '4px' }}>
+                                        <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
+                                            Building software solutions for biomedical innovation projects
+                                        </p>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+                                            {['C++', 'Python', 'Medical Imaging', 'Git'].map((skill, index) => (
+                                                <motion.span
+                                                    key={index}
+                                                    whileHover={{ scale: 1.1, y: -2 }}
+                                                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                                    whileTap={{ scale: 0.95 }}
+                                                    style={{
+                                                        display: 'inline-block',
+                                                        cursor: 'default',
+                                                        padding: '4px 12px',
+                                                        backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
+                                                        color: isDark ? '#BFDBFE' : '#1E40AF',
+                                                        border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`,
+                                                        borderRadius: '9999px',
+                                                        fontSize: '0.75rem',
+                                                        fontWeight: '500'
+                                                    }}
+                                                >
+                                                    {skill}
+                                                </motion.span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div >
+                </div >
+            </section >
 
             {/* Education Section */}
-            <section style={{ marginTop: '48px' }}>
+            < section style={{ marginTop: '48px' }
+            }>
                 <h2 style={{
                     fontSize: '2rem',
                     fontWeight: 'bold',
@@ -651,10 +806,10 @@ export default function HomePage() {
                         2029
                     </span>
                 </div>
-            </section>
+            </section >
 
             {/* Skills Section */}
-            <section style={{ marginTop: '48px' }}>
+            < section style={{ marginTop: '48px' }}>
                 <h2 style={{
                     fontSize: '2rem',
                     fontWeight: 'bold',
@@ -670,17 +825,25 @@ export default function HomePage() {
                         <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Languages</h3>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                             {['JavaScript', 'TypeScript', 'HTML/CSS', 'Python', 'Java', 'Arduino'].map((skill, index) => (
-                                <span key={index} style={{
-                                    padding: '6px 16px',
-                                    backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                    color: isDark ? '#BFDBFE' : '#1E40AF',
-                                    borderRadius: '9999px',
-                                    fontSize: '0.875rem',
-                                    fontWeight: '500',
-                                    border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`
-                                }}>
+                                <motion.span
+                                    key={index}
+                                    whileHover={{ scale: 1.1, y: -2 }}
+                                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    style={{
+                                        display: 'inline-block',
+                                        cursor: 'default',
+                                        padding: '6px 16px',
+                                        backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
+                                        color: isDark ? '#BFDBFE' : '#1E40AF',
+                                        borderRadius: '9999px',
+                                        fontSize: '0.875rem',
+                                        fontWeight: '500',
+                                        border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`
+                                    }}
+                                >
                                     {skill}
-                                </span>
+                                </motion.span>
                             ))}
                         </div>
                     </div>
@@ -690,17 +853,25 @@ export default function HomePage() {
                         <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Frontend</h3>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                             {['React', 'Next.js', 'Tailwind CSS'].map((skill, index) => (
-                                <span key={index} style={{
-                                    padding: '6px 16px',
-                                    backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                    color: isDark ? '#BFDBFE' : '#1E40AF',
-                                    borderRadius: '9999px',
-                                    fontSize: '0.875rem',
-                                    fontWeight: '500',
-                                    border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`
-                                }}>
+                                <motion.span
+                                    key={index}
+                                    whileHover={{ scale: 1.1, y: -2 }}
+                                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    style={{
+                                        display: 'inline-block',
+                                        cursor: 'default',
+                                        padding: '6px 16px',
+                                        backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
+                                        color: isDark ? '#BFDBFE' : '#1E40AF',
+                                        borderRadius: '9999px',
+                                        fontSize: '0.875rem',
+                                        fontWeight: '500',
+                                        border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`
+                                    }}
+                                >
                                     {skill}
-                                </span>
+                                </motion.span>
                             ))}
                         </div>
                     </div>
@@ -710,17 +881,25 @@ export default function HomePage() {
                         <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Backend</h3>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                             {['Node.js', 'Express.js', 'MongoDB'].map((skill, index) => (
-                                <span key={index} style={{
-                                    padding: '6px 16px',
-                                    backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                    color: isDark ? '#BFDBFE' : '#1E40AF',
-                                    borderRadius: '9999px',
-                                    fontSize: '0.875rem',
-                                    fontWeight: '500',
-                                    border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`
-                                }}>
+                                <motion.span
+                                    key={index}
+                                    whileHover={{ scale: 1.1, y: -2 }}
+                                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    style={{
+                                        display: 'inline-block',
+                                        cursor: 'default',
+                                        padding: '6px 16px',
+                                        backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
+                                        color: isDark ? '#BFDBFE' : '#1E40AF',
+                                        borderRadius: '9999px',
+                                        fontSize: '0.875rem',
+                                        fontWeight: '500',
+                                        border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`
+                                    }}
+                                >
                                     {skill}
-                                </span>
+                                </motion.span>
                             ))}
                         </div>
                     </div>
@@ -730,25 +909,32 @@ export default function HomePage() {
                         <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Tools & Others</h3>
                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
                             {['Git', 'REST APIs', 'VS Code', 'Canva'].map((skill, index) => (
-                                <span key={index} style={{
-                                    padding: '6px 16px',
-                                    backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                    color: isDark ? '#BFDBFE' : '#1E40AF',
-                                    borderRadius: '9999px',
-                                    fontSize: '0.875rem',
-                                    fontWeight: '500',
-                                    border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`
-                                }}>
+                                <motion.span
+                                    key={index}
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    style={{
+                                        display: 'inline-block',
+                                        cursor: 'default',
+                                        padding: '6px 16px',
+                                        backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
+                                        color: isDark ? '#BFDBFE' : '#1E40AF',
+                                        borderRadius: '9999px',
+                                        fontSize: '0.875rem',
+                                        fontWeight: '500',
+                                        border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`
+                                    }}
+                                >
                                     {skill}
-                                </span>
+                                </motion.span>
                             ))}
                         </div>
                     </div>
                 </div>
-            </section>
+            </section >
 
             {/* Featured Projects Section */}
-            <section style={{ marginTop: '48px' }}>
+            < section style={{ marginTop: '48px' }}>
                 <h2 style={{
                     fontSize: '2rem',
                     fontWeight: 'bold',
@@ -980,10 +1166,10 @@ export default function HomePage() {
                         </svg>
                     </Link>
                 </div>
-            </section>
+            </section >
 
             {/* Blank Footer Space */}
-            <div style={{ height: '96px' }}></div>
+            < div style={{ height: '96px' }}></div >
             <motion.div
                 initial={{ y: 100, opacity: 0, x: '-50%' }}
                 animate={{ y: 0, opacity: 1, x: '-50%' }}
@@ -1033,10 +1219,10 @@ export default function HomePage() {
                 </motion.div>
 
 
-                <motion.div 
+                <motion.div
                     onMouseEnter={() => setHoveredIcon('projects')}
                     onMouseLeave={() => setHoveredIcon(null)}
-                    whileHover={{ scale: 1.1, y: -2 }} 
+                    whileHover={{ scale: 1.1, y: -2 }}
                     whileTap={{ scale: 0.95 }}
                     style={{ position: 'relative' }}
                 >
@@ -1068,14 +1254,14 @@ export default function HomePage() {
 
                 <div style={{ display: 'flex', gap: '4px' }}>
 
-                    <motion.a 
+                    <motion.a
                         onMouseEnter={() => setHoveredIcon('github')}
                         onMouseLeave={() => setHoveredIcon(null)}
-                        whileHover={{ scale: 1.1, y: -2 }} 
-                        whileTap={{ scale: 0.95 }} 
-                        href="https://github.com/kaificial" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                        href="https://github.com/kaificial"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         style={{ position: 'relative', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: isDark ? '#9ca3af' : '#6b7280' }}
                     >
                         <AnimatePresence>
@@ -1084,14 +1270,14 @@ export default function HomePage() {
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
                     </motion.a>
 
-                    <motion.a 
+                    <motion.a
                         onMouseEnter={() => setHoveredIcon('linkedin')}
                         onMouseLeave={() => setHoveredIcon(null)}
-                        whileHover={{ scale: 1.1, y: -2 }} 
-                        whileTap={{ scale: 0.95 }} 
-                        href="https://linkedin.com" 
-                        target="_blank" 
-                        rel="noopener noreferrer" 
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                        href="https://linkedin.com"
+                        target="_blank"
+                        rel="noopener noreferrer"
                         style={{ position: 'relative', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: isDark ? '#9ca3af' : '#6b7280' }}
                     >
                         <AnimatePresence>
@@ -1100,12 +1286,12 @@ export default function HomePage() {
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
                     </motion.a>
 
-                    <motion.a 
+                    <motion.a
                         onMouseEnter={() => setHoveredIcon('resume')}
                         onMouseLeave={() => setHoveredIcon(null)}
-                        whileHover={{ scale: 1.1, y: -2 }} 
-                        whileTap={{ scale: 0.95 }} 
-                        href="/resume" 
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                        href="/resume"
                         style={{ position: 'relative', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: isDark ? '#9ca3af' : '#6b7280' }}
                     >
                         <AnimatePresence>
@@ -1114,12 +1300,12 @@ export default function HomePage() {
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                     </motion.a>
 
-                    <motion.a 
+                    <motion.a
                         onMouseEnter={() => setHoveredIcon('contact')}
                         onMouseLeave={() => setHoveredIcon(null)}
-                        whileHover={{ scale: 1.1, y: -2 }} 
-                        whileTap={{ scale: 0.95 }} 
-                        href="mailto:kaifieldkim@gmail.com" 
+                        whileHover={{ scale: 1.1, y: -2 }}
+                        whileTap={{ scale: 0.95 }}
+                        href="mailto:kaifieldkim@gmail.com"
                         style={{ position: 'relative', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: isDark ? '#9ca3af' : '#6b7280' }}
                     >
                         <AnimatePresence>
@@ -1133,11 +1319,11 @@ export default function HomePage() {
                 <div style={{ width: '1px', height: '20px', backgroundColor: isDark ? '#4b5563' : '#d1d5db', margin: '0 4px' }}></div>
 
 
-                <motion.div 
+                <motion.div
                     onMouseEnter={() => setHoveredIcon('spotify')}
                     onMouseLeave={() => setHoveredIcon(null)}
-                    whileHover={{ scale: 1.1, y: -2 }} 
-                    whileTap={{ scale: 0.95 }} 
+                    whileHover={{ scale: 1.1, y: -2 }}
+                    whileTap={{ scale: 0.95 }}
                     style={{ position: 'relative', width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center', color: isDark ? '#9ca3af' : '#6b7280' }}
                 >
                     <AnimatePresence>

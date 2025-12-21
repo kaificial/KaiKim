@@ -342,7 +342,7 @@ pre {
     height: auto;
     aspect-ratio: 1 / 1;
     border-radius: 1rem;
-    overflow: hidden;
+    // overflow: hidden; // Removed to allow tooltip to pop out
     display: flex;
     align-items: center;
     justify-content: center;
