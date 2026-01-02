@@ -33,12 +33,13 @@ export const projects: Project[] = [
         video: '/assets/Rooke.mp4'
     },
     {
-        id: 'scribe',
-        title: 'Scribe',
+        id: 'texify',
+        title: 'TeXify',
         description: 'Convert handwritten math into polished LaTeX in seconds, without writing a single backslash.',
         tags: ['React', 'AI', 'LaTeX'],
         status: 'Building',
-        url: 'scribe.ai',
+        url: '',
+        github: 'https://github.com/kaificial/texify',
         video: '/assets/ScribeAI.mp4'
     }
 ];
