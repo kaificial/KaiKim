@@ -48,10 +48,10 @@ export default function RootLayout({
             <head>
                 <script
                     dangerouslySetInnerHTML={{
-                        __html: 
+                        __html: `
                             (function() {
                                 // Check localStorage for saved theme preference
-                                const savedTheme = localStorage.getItem('theme');
+                                var savedTheme = localStorage.getItem('theme');
                                 
                                 if (savedTheme) {
                                     // Use saved preference
@@ -65,7 +65,7 @@ export default function RootLayout({
                                     }
                                 }
                             })();
-                        ,
+                        `,
                     }}
                 />
             </head>
