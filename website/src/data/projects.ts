@@ -31,15 +31,5 @@ export const projects: Project[] = [
         status: 'Building',
         url: 'ratemyeats.com',
         solidColor: '#262626'
-    },
-    {
-        id: 'rooke',
-        title: 'Rooke',
-        description: 'A chess app Made for new chess players looking to improve their skills.',
-        tags: ['React Native', 'TypeScript', 'Chess'],
-        status: 'Live',
-        url: 'rooke.gg',
-        icon: '♜',
-        video: '/assets/Rooke.mp4'
     }
 ];
