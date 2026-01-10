@@ -2,6 +2,7 @@
 import type { Metadata } from "next";
 import { Inter, IBM_Plex_Mono } from "next/font/google";
 import "../styles/globals.scss";
+import "katex/dist/katex.min.css";
 import Header from "../components/Header";
 import { ThemeProvider } from "../components/ThemeContext";
 
