@@ -22,7 +22,7 @@ export const projects: Project[] = [
         url: 'rooke.vercel.app',
         github: 'https://github.com/kaificial/rooke',
         demo: 'https://rooke.vercel.app',
-        video: '/assets/rookevideo.mp4'
+        video: '/assets/rooke-video.mp4'
     },
     {
         id: 'texify',
