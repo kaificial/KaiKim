@@ -84,9 +84,9 @@ Because Web Workers don't share memory with the main thread, the board state is 
     },
     {
         id: 'texify',
-        title: 'TeXify',
+        title: 'Scribe',
         description: 'Convert handwritten math into polished LaTeX in seconds, without writing a single backslash.',
-        tags: ['React', 'AI', 'LaTeX'],
+        tags: ['React', 'Vite', 'TypeScript', 'Tailwind CSS', 'Transformers.js', 'Web Workers', 'Luminance Thresholding', 'KaTeX', 'FileReader API', 'Canvas API', 'Clipboard API'],
         status: 'Live',
         url: 'https://texifylatex.vercel.app',
         github: 'https://github.com/kaificial/texify',
