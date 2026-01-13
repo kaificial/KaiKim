@@ -6,6 +6,7 @@ export interface Project {
     status: 'Live' | 'Building' | 'Archived';
     url: string;
     video?: string;
+    image?: string;
     solidColor?: string;
     icon?: string;
     github?: string;
@@ -14,6 +15,16 @@ export interface Project {
 }
 
 export const projects: Project[] = [
+    {
+        id: 'scribl',
+        title: 'Scribl',
+        description: 'A web app to collaborate with friends to create a interactive birthday experience.',
+        tags: ['Java Spring Boot', 'Javascript'],
+        status: 'Building',
+        url: 'scribl.vercel.app',
+        image: '/assets/ScriblPic.png',
+        longDescription: '___'
+    },
     {
         id: 'rooke',
         title: 'Rooke',
@@ -91,7 +102,7 @@ Because Web Workers don't share memory with the main thread, the board state is 
         url: 'https://texifylatex.vercel.app',
         github: 'https://github.com/kaificial/texify',
         demo: 'https://texifylatex.vercel.app',
-        video: '/assets/TeXify.mp4'
+        video: '/assets/TeXify.mp4',
+        longDescription: '___'
     },
-
 ];

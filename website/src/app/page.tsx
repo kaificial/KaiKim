@@ -1237,6 +1237,13 @@ export default function HomePage() {
                                                 display: 'block'
                                             }}
                                         />
+                                    ) : project.image ? (
+                                        <Image
+                                            src={project.image}
+                                            alt={project.title}
+                                            fill
+                                            style={{ objectFit: 'cover' }}
+                                        />
                                     ) : (
                                         !(project as any).solidColor && (
                                             <>
