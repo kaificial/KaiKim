@@ -62,61 +62,33 @@ export default function ProjectsPage() {
                 padding: '0 0 48px 0'
             }}>
                 <section>
-                    <header style={{ marginBottom: '64px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '24px' }}>
-                        <div>
-                            <motion.h1
-                                className="hero-title font-bold text-gray-900 dark:text-white tracking-tight leading-none text-left"
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.2, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
-                            >
-                                Projects
-                            </motion.h1>
-                            <motion.p
-                                style={{
-                                    color: isDark ? '#9ca3af' : '#6b7280',
-                                    fontSize: '0.875rem',
-                                    fontWeight: '600',
-                                    letterSpacing: '0.15em',
-                                    maxWidth: '600px',
-                                    lineHeight: '1.6',
-                                    marginTop: '4px',
-                                    whiteSpace: 'normal',
-                                    opacity: 0.8
-                                }}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 0.8 }}
-                                transition={{ delay: 1.35, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-                            >
-                                My projects
-                            </motion.p>
-                        </div>
-
-                        {/* Hero Pic for Projects Page */}
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.8 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 1.6, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-                            style={{ position: 'relative', width: '100px', height: '100px' }}
+                    <header style={{ marginBottom: '64px' }}>
+                        <motion.h1
+                            className="hero-title font-bold text-gray-900 dark:text-white tracking-tight leading-none text-left"
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 0.2, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
                         >
-                            <div style={{
-                                position: 'relative',
-                                width: '100%',
-                                height: '100%',
-                                borderRadius: '12px',
-                                overflow: 'hidden',
-                                border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-                                boxShadow: isDark ? 'none' : '0 4px 6px -1px rgba(0, 0, 0, 0.1)'
-                            }}>
-                                <Image
-                                    src="/assets/ScriblPic.png"
-                                    alt="Projects"
-                                    fill
-                                    style={{ objectFit: 'cover' }}
-                                    priority
-                                />
-                            </div>
-                        </motion.div>
+                            Projects
+                        </motion.h1>
+                        <motion.p
+                            style={{
+                                color: isDark ? '#9ca3af' : '#6b7280',
+                                fontSize: '0.875rem',
+                                fontWeight: '600',
+                                letterSpacing: '0.15em',
+                                maxWidth: '600px',
+                                lineHeight: '1.6',
+                                marginTop: '4px',
+                                whiteSpace: 'normal',
+                                opacity: 0.8
+                            }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 0.8 }}
+                            transition={{ delay: 1.35, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                        >
+                            My projects
+                        </motion.p>
                     </header>
 
                     {/* Search Bar */}
