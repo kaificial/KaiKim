@@ -1256,16 +1256,28 @@ export default function HomePage() {
                                 </div>
                             </div>
 
-                            {/* Project Info */}
+
+                            {/* Info */}
                             <div>
-                                <h3 style={{
-                                    fontSize: '1.375rem',
-                                    fontWeight: 'bold',
-                                    color: isDark ? 'white' : '#1c1917',
-                                    marginBottom: '8px'
-                                }}>
-                                    {project.title}
-                                </h3>
+                                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '8px', gap: '16px' }}>
+                                    <h3 style={{
+                                        fontSize: '1.375rem',
+                                        fontWeight: 'bold',
+                                        color: isDark ? 'white' : '#1c1917',
+                                        margin: 0
+                                    }}>
+                                        {project.title}
+                                    </h3>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                                        <div style={{
+                                            width: '8px',
+                                            height: '8px',
+                                            borderRadius: '50%',
+                                            backgroundColor: project.status === 'Live' ? '#22c55e' : '#eab308'
+                                        }}></div>
+                                        <span style={{ color: isDark ? '#94a3b8' : '#64748b', fontSize: '0.8125rem', fontWeight: '500' }}>{project.status}</span>
+                                    </div>
+                                </div>
                                 <p style={{
                                     fontSize: '0.875rem',
                                     color: isDark ? '#9ca3af' : '#6b7280',
@@ -1299,50 +1311,41 @@ export default function HomePage() {
                                     ))}
                                 </div>
 
-                                {/* Footer: Status & Buttons */}
+                                {/* Footer: Buttons */}
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                            <div style={{
-                                                width: '8px',
-                                                height: '8px',
-                                                borderRadius: '50%',
-                                                backgroundColor: project.status === 'Live' ? '#22c55e' : '#eab308'
-                                            }}></div>
-                                            <span style={{ color: isDark ? '#d1d5db' : '#4b5563', fontSize: '0.875rem' }}>{project.status}</span>
-                                        </div>
-                                        {project.longDescription && (
-                                            <Link
-                                                href={`/projects/${project.id}`}
-                                                style={{
-                                                    display: 'inline-flex',
-                                                    alignItems: 'center',
-                                                    gap: '6px',
-                                                    color: '#2563eb',
-                                                    fontSize: '0.875rem',
-                                                    fontWeight: '500',
-                                                    textDecoration: 'underline',
-                                                    textUnderlineOffset: '3px',
-                                                    cursor: 'pointer',
-                                                    transition: 'all 0.2s ease'
-                                                }}
-                                                onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                                                    e.currentTarget.style.color = '#1d4ed8';
-                                                    e.currentTarget.style.gap = '10px';
-                                                }}
-                                                onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                                                    e.currentTarget.style.color = '#2563eb';
-                                                    e.currentTarget.style.gap = '6px';
-                                                }}
-                                            >
-                                                View Project
-                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                    <path d="M5 12h14"></path>
-                                                    <path d="M12 5l7 7-7 7"></path>
-                                                </svg>
-                                            </Link>
-                                        )}
-                                    </div>
+                                    {project.longDescription ? (
+                                        <Link
+                                            href={`/projects/${project.id}`}
+                                            style={{
+                                                display: 'inline-flex',
+                                                alignItems: 'center',
+                                                gap: '6px',
+                                                color: '#2563eb',
+                                                fontSize: '0.875rem',
+                                                fontWeight: '500',
+                                                textDecoration: 'underline',
+                                                textUnderlineOffset: '3px',
+                                                cursor: 'pointer',
+                                                transition: 'all 0.2s ease'
+                                            }}
+                                            onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                                                e.currentTarget.style.color = '#1d4ed8';
+                                                e.currentTarget.style.gap = '10px';
+                                            }}
+                                            onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                                                e.currentTarget.style.color = '#2563eb';
+                                                e.currentTarget.style.gap = '6px';
+                                            }}
+                                        >
+                                            View Project
+                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <path d="M5 12h14"></path>
+                                                <path d="M12 5l7 7-7 7"></path>
+                                            </svg>
+                                        </Link>
+                                    ) : (
+                                        <div></div>
+                                    )}
 
                                     <div style={{ display: 'flex', gap: '12px' }}>
                                         <motion.a

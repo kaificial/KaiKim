@@ -9,9 +9,14 @@ import { ProjectDescription } from '../../../components/ProjectDescription';
 import FloatingDock from '../../../components/FloatingDock';
 import { notFound } from 'next/navigation';
 
-export default function ProjectDetailPage({ params }: { params: { id: string } }) {
+export default async function ProjectDetailPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    return <ProjectDetailContent id={id} />;
+}
+
+function ProjectDetailContent({ id }: { id: string }) {
     const { isDark } = useTheme();
-    const project = projects.find(p => p.id === params.id);
+    const project = projects.find(p => p.id === id);
 
     const { scrollYProgress } = useScroll();
     const scaleX = useSpring(scrollYProgress, {
@@ -59,30 +64,23 @@ export default function ProjectDetailPage({ params }: { params: { id: string } }
                         style={{
                             display: 'inline-flex',
                             alignItems: 'center',
-                            gap: '8px',
+                            gap: '6px',
                             color: isDark ? '#9ca3af' : '#6b7280',
-                            fontSize: '0.925rem',
+                            fontSize: '0.875rem',
                             fontWeight: '500',
-                            padding: '12px 24px',
-                            borderRadius: '12px',
-                            border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)'}`,
-                            backgroundColor: isDark ? '#171717' : 'white',
-                            transition: 'all 0.2s ease',
                             textDecoration: 'none',
-                            boxShadow: isDark ? 'none' : '0 2px 4px rgba(0,0,0,0.02)'
+                            transition: 'all 0.2s ease'
                         }}
                         onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
                             e.currentTarget.style.color = isDark ? 'white' : '#1c1917';
-                            e.currentTarget.style.borderColor = isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)';
-                            e.currentTarget.style.transform = 'translateX(-4px)';
+                            e.currentTarget.style.gap = '8px';
                         }}
                         onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
                             e.currentTarget.style.color = isDark ? '#9ca3af' : '#6b7280';
-                            e.currentTarget.style.borderColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)';
-                            e.currentTarget.style.transform = 'translateX(0)';
+                            e.currentTarget.style.gap = '6px';
                         }}
                     >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <line x1="19" y1="12" x2="5" y2="12"></line>
                             <polyline points="12 19 5 12 12 5"></polyline>
                         </svg>
