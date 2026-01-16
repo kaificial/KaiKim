@@ -1274,71 +1274,6 @@ export default function HomePage() {
                                     {project.description}
                                 </p>
 
-                                {project.longDescription && (
-                                    <>
-                                        <AnimatePresence>
-                                            {expandedItems[project.id] && (
-                                                <motion.div
-                                                    initial={{ height: 0, opacity: 0 }}
-                                                    animate={{ height: 'auto', opacity: 1 }}
-                                                    exit={{ height: 0, opacity: 0 }}
-                                                    transition={{ duration: 0.2 }}
-                                                    style={{ overflow: 'hidden' }}
-                                                >
-                                                    <ProjectDescription content={project.longDescription || ''} />
-                                                </motion.div>
-                                            )}
-                                        </AnimatePresence>
-
-                                        <motion.button
-                                            onClick={() => toggleExpand(project.id)}
-                                            animate={{
-                                                backgroundColor: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
-                                                color: isDark ? '#d1d5db' : '#374151',
-                                                borderColor: isDark ? '#374151' : '#e5e7eb',
-                                            }}
-                                            whileHover={{
-                                                scale: 1.05,
-                                                backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                                color: isDark ? '#BFDBFE' : '#1E40AF',
-                                                borderColor: isDark ? '#1D4ED8' : '#BFDBFE'
-                                            }}
-                                            whileTap={{ scale: 0.95 }}
-                                            style={{
-                                                border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                                                background: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
-                                                color: isDark ? '#d1d5db' : '#374151',
-                                                fontSize: '0.75rem',
-                                                cursor: 'pointer',
-                                                padding: '5px 12px',
-                                                borderRadius: '9999px',
-                                                textAlign: 'left',
-                                                display: 'inline-flex',
-                                                alignItems: 'center',
-                                                gap: '4px',
-                                                alignSelf: 'flex-start',
-                                                fontWeight: '500',
-                                                marginBottom: '24px' // increased spacing before tech stack
-                                            }}
-                                        >
-                                            {expandedItems[project.id] ? 'Show less' : 'Read more'}
-                                            <motion.svg
-                                                width="12"
-                                                height="12"
-                                                viewBox="0 0 12 12"
-                                                fill="none"
-                                                stroke="currentColor"
-                                                strokeWidth="1.5"
-                                                strokeLinecap="round"
-                                                strokeLinejoin="round"
-                                                animate={{ rotate: expandedItems[project.id] ? 180 : 0 }}
-                                            >
-                                                <path d="M2 4l4 4 4-4" />
-                                            </motion.svg>
-                                        </motion.button>
-                                    </>
-                                )}
-
                                 {/* Tech Stack */}
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '24px' }}>
                                     {project.tags.map((tech, i) => (
@@ -1365,15 +1300,48 @@ export default function HomePage() {
                                 </div>
 
                                 {/* Footer: Status & Buttons */}
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <div style={{
-                                            width: '8px',
-                                            height: '8px',
-                                            borderRadius: '50%',
-                                            backgroundColor: project.status === 'Live' ? '#22c55e' : '#eab308' // Green if Live, Yellow if Building
-                                        }}></div>
-                                        <span style={{ color: isDark ? '#d1d5db' : '#4b5563', fontSize: '0.875rem' }}>{project.status}</span>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                                    <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                            <div style={{
+                                                width: '8px',
+                                                height: '8px',
+                                                borderRadius: '50%',
+                                                backgroundColor: project.status === 'Live' ? '#22c55e' : '#eab308'
+                                            }}></div>
+                                            <span style={{ color: isDark ? '#d1d5db' : '#4b5563', fontSize: '0.875rem' }}>{project.status}</span>
+                                        </div>
+                                        {project.longDescription && (
+                                            <Link
+                                                href={`/projects/${project.id}`}
+                                                style={{
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    gap: '6px',
+                                                    color: '#2563eb',
+                                                    fontSize: '0.875rem',
+                                                    fontWeight: '500',
+                                                    textDecoration: 'underline',
+                                                    textUnderlineOffset: '3px',
+                                                    cursor: 'pointer',
+                                                    transition: 'all 0.2s ease'
+                                                }}
+                                                onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                                                    e.currentTarget.style.color = '#1d4ed8';
+                                                    e.currentTarget.style.gap = '10px';
+                                                }}
+                                                onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                                                    e.currentTarget.style.color = '#2563eb';
+                                                    e.currentTarget.style.gap = '6px';
+                                                }}
+                                            >
+                                                View Project
+                                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                    <path d="M5 12h14"></path>
+                                                    <path d="M12 5l7 7-7 7"></path>
+                                                </svg>
+                                            </Link>
+                                        )}
                                     </div>
 
                                     <div style={{ display: 'flex', gap: '12px' }}>
