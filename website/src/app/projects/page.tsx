@@ -172,8 +172,8 @@ export default function ProjectsPage() {
                     <motion.div
                         style={{
                             display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                            gap: '20px'
+                            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 450px), 1fr))',
+                            gap: '16px'
                         }}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
