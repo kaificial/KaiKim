@@ -77,24 +77,75 @@ export default function Header() {
     }, []);
 
     const handleLikeClick = async () => {
-        // Optimistic update locally
-        const newCount = count + 1;
-        setCount(newCount);
-        setDisplayCount(newCount);
+        // prevent clicking if already liked
+        if (hasLiked) {
+            console.log("✨ You've already liked this site!");
+            return;
+        }
+
+        // optimistic update - show immediate feedback
+        const previousCount = count;
+        setCount(count + 1);
+        setDisplayCount(count + 1);
         setHasLiked(true);
         localStorage.setItem("has-liked-site", "true");
 
         try {
             const response = await fetch('/api/likes', { method: 'POST' });
             const data = await response.json();
+
+            if (!response.ok) {
+                // handle specific error types
+                if (response.status === 429) {
+                    // rate limit exceeded
+                    console.error("⏱️ Rate limit exceeded. Please try again in a minute!");
+
+                    // rollback optimistic update
+                    setCount(previousCount);
+                    setDisplayCount(previousCount);
+                    setHasLiked(false);
+                    localStorage.removeItem("has-liked-site");
+
+                } else if (response.status === 400 && data.error === "already_liked") {
+                    // server says already liked - trust server state
+                    console.log("✨ You've already liked this site from this network!");
+                    // keep the liked state since server confirmed
+
+                } else if (response.status === 403) {
+                    // forbidden (CORS or authorization issue)
+                    console.error("🚫 Unable to process like. Please try again later.");
+
+                    // rollback optimistic update
+                    setCount(previousCount);
+                    setDisplayCount(previousCount);
+                    setHasLiked(false);
+                    localStorage.removeItem("has-liked-site");
+
+                } else {
+                    // other error
+                    throw new Error(data.message || "Failed to like");
+                }
+                return;
+            }
+
+            // success - update with server count
             if (data.count) {
                 setCount(data.count);
                 setDisplayCount(data.count);
             }
+            console.log("❤️ Thank you for liking!");
+
         } catch (error) {
-            console.error("Failed to sync like to server:", error);
+            console.error("❌ Failed to sync like to server:", error);
+
+            // rollback on network or unexpected error
+            setCount(previousCount);
+            setDisplayCount(previousCount);
+            setHasLiked(false);
+            localStorage.removeItem("has-liked-site");
         }
     };
+
 
     return (
         <header className="header">
