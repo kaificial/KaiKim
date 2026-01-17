@@ -88,11 +88,64 @@ function ProjectDetailContent({ id }: { id: string }) {
                     </Link>
                 </motion.div>
 
+                {/* Hero  */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.3, duration: 0.8 }}
+                    style={{
+                        borderRadius: '12px',
+                        overflow: 'hidden',
+                        border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
+                        marginBottom: '48px',
+                        backgroundColor: project.solidColor || (isDark ? '#171717' : '#f3f4f6')
+                    }}
+                >
+                    {project.video ? (
+                        <video
+                            src={project.video}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            style={{ width: '100%', height: 'auto', display: 'block' }}
+                        />
+                    ) : project.image ? (
+                        <div style={{
+                            position: 'relative',
+                            width: '100%',
+                            paddingBottom: '56.25%'
+                        }}>
+                            <Image
+                                src={project.image}
+                                alt={project.title}
+                                fill
+                                style={{ objectFit: 'cover' }}
+                            />
+                        </div>
+                    ) : (
+                        <div style={{
+                            height: '400px',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            color: '#9ca3af'
+                        }}>
+                            <div style={{ textAlign: 'center' }}>
+                                <span style={{ fontSize: '3rem', marginBottom: '16px', display: 'block' }}>
+                                    {project.icon || '📦'}
+                                </span>
+                                <p style={{ fontWeight: '500' }}>{project.title}</p>
+                            </div>
+                        </div>
+                    )}
+                </motion.div>
+
                 {/* Project Header */}
                 <motion.header
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 0.3, duration: 0.8 }}
+                    transition={{ delay: 0.4, duration: 0.8 }}
                     style={{ marginBottom: '32px' }}
                 >
                     <div style={{
@@ -214,59 +267,6 @@ function ProjectDetailContent({ id }: { id: string }) {
                         </motion.a>
                     </div>
                 </motion.header>
-
-                {/* Hero Media */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.8 }}
-                    style={{
-                        borderRadius: '12px',
-                        overflow: 'hidden',
-                        border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                        marginBottom: '48px',
-                        backgroundColor: project.solidColor || (isDark ? '#171717' : '#f3f4f6')
-                    }}
-                >
-                    {project.video ? (
-                        <video
-                            src={project.video}
-                            autoPlay
-                            loop
-                            muted
-                            playsInline
-                            style={{ width: '100%', height: 'auto', display: 'block' }}
-                        />
-                    ) : project.image ? (
-                        <div style={{
-                            position: 'relative',
-                            width: '100%',
-                            paddingBottom: '56.25%'
-                        }}>
-                            <Image
-                                src={project.image}
-                                alt={project.title}
-                                fill
-                                style={{ objectFit: 'cover' }}
-                            />
-                        </div>
-                    ) : (
-                        <div style={{
-                            height: '400px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            color: '#9ca3af'
-                        }}>
-                            <div style={{ textAlign: 'center' }}>
-                                <span style={{ fontSize: '3rem', marginBottom: '16px', display: 'block' }}>
-                                    {project.icon || '📦'}
-                                </span>
-                                <p style={{ fontWeight: '500' }}>{project.title}</p>
-                            </div>
-                        </div>
-                    )}
-                </motion.div>
 
                 {/* Project Details */}
                 {project.longDescription && project.longDescription !== '___' && (
