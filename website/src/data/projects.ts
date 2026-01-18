@@ -27,7 +27,7 @@ export const projects: Project[] = [
         demo: 'https://scribl.vercel.app',
         longDescription: `## Timeline
 
-
+`,
     },
     {
         id: 'rooke',
@@ -97,18 +97,17 @@ Because Web Workers don't share memory with the main thread, the board state is 
         demo: 'https://rooke.vercel.app',
         video: '/assets/rooke-video.mp4'
     },
-        {
-            id: 'texify',
-            title: 'Scribe',
-            description: 'Convert handwritten math into polished LaTeX in seconds, without writing a single backslash.',
-            tags: ['React', 'Vite', 'TypeScript', 'Tailwind CSS', 'Transformers.js', 'Web Workers', 'Luminance Thresholding', 'KaTeX', 'FileReader API', 'Canvas API', 'Clipboard API'],
-            status: 'Live',
-            url: 'https://texifylatex.vercel.app',
-            github: 'https://github.com/kaificial/texify',
-            demo: 'https://texifylatex.vercel.app',
-            video: '/assets/TeXify.mp4',
-            longDescription: `## Timeline
-November 2025
-
+    {
+        id: 'texify',
+        title: 'Scribe',
+        description: 'Convert handwritten math into polished LaTeX in seconds, without writing a single backslash.',
+        tags: ['React', 'Vite', 'TypeScript', 'Tailwind CSS', 'Transformers.js', 'Web Workers', 'Luminance Thresholding', 'KaTeX', 'FileReader API', 'Canvas API', 'Clipboard API'],
+        status: 'Live',
+        url: 'https://texifylatex.vercel.app',
+        github: 'https://github.com/kaificial/texify',
+        demo: 'https://texifylatex.vercel.app',
+        video: '/assets/TeXify.mp4',
+        longDescription: `## Timeline
+November 2025`
     },
 ];

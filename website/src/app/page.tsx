@@ -341,18 +341,18 @@ export default function HomePage() {
                 </h2>
 
                 {/* Experience Items */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '28px' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                     {/* PolicyEngine */}
-                    <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         <div className="experience-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
                             <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-start' }}>
                                 {/* PolicyEngine Logo */}
-                                <div className="experience-logo-container" style={{ width: '64px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
+                                <div className="experience-logo-container" style={{ width: '48px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
                                     <Image
                                         src="/assets/PE.png"
                                         alt="PolicyEngine Logo"
-                                        width={44}
-                                        height={44}
+                                        width={36}
+                                        height={36}
                                         style={{
                                             borderRadius: '8px',
                                             objectFit: 'cover'
@@ -406,16 +406,18 @@ export default function HomePage() {
                                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
                                 background: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
                                 color: isDark ? '#d1d5db' : '#374151',
-                                fontSize: '0.75rem',
+                                fontSize: '0.7rem',
                                 cursor: 'pointer',
-                                padding: '5px 12px',
+                                padding: '3px 8px',
                                 borderRadius: '9999px',
                                 textAlign: 'left',
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '4px',
                                 alignSelf: 'flex-start',
-                                fontWeight: '500'
+                                fontWeight: '500',
+                                marginLeft: '52px',
+                                marginTop: '4px'
                             }}
                         >
                             {expandedItems['policyengine'] ? 'Show less' : 'Read more'}
@@ -443,7 +445,7 @@ export default function HomePage() {
                                     transition={{ duration: 0.2 }}
                                     style={{ overflow: 'hidden' }}
                                 >
-                                    <div style={{ marginLeft: '68px', marginTop: '4px', paddingBottom: '12px' }}>
+                                    <div style={{ marginLeft: '52px', marginTop: '0px', paddingBottom: '12px' }}>
                                         <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
                                             Building
                                         </p>
@@ -477,16 +479,16 @@ export default function HomePage() {
                     </div>
 
                     {/* QMIND */}
-                    <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         <div className="experience-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
                             <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-start' }}>
                                 {/* QMIND Logo */}
-                                <div className="experience-logo-container" style={{ width: '64px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
+                                <div className="experience-logo-container" style={{ width: '48px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
                                     <Image
                                         src="/assets/QMIND_logo.png"
                                         alt="QMIND Logo"
-                                        width={44}
-                                        height={44}
+                                        width={36}
+                                        height={36}
                                         style={{
                                             borderRadius: '8px',
                                             objectFit: 'cover'
@@ -540,16 +542,18 @@ export default function HomePage() {
                                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
                                 background: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
                                 color: isDark ? '#d1d5db' : '#374151',
-                                fontSize: '0.75rem',
+                                fontSize: '0.7rem',
                                 cursor: 'pointer',
-                                padding: '5px 12px',
+                                padding: '3px 8px',
                                 borderRadius: '9999px',
                                 textAlign: 'left',
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '4px',
                                 alignSelf: 'flex-start',
-                                fontWeight: '500'
+                                fontWeight: '500',
+                                marginLeft: '52px',
+                                marginTop: '4px'
                             }}
                         >
                             {expandedItems['qmind'] ? 'Show less' : 'Read more'}
@@ -577,7 +581,7 @@ export default function HomePage() {
                                     transition={{ duration: 0.2 }}
                                     style={{ overflow: 'hidden' }}
                                 >
-                                    <div style={{ marginLeft: '68px', marginTop: '4px', paddingBottom: '12px' }}>
+                                    <div style={{ marginLeft: '52px', marginTop: '0px', paddingBottom: '12px' }}>
                                         <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
                                             Working on machine learning and artificial intelligence projects
                                         </p>
@@ -611,16 +615,16 @@ export default function HomePage() {
                     </div>
 
                     {/* QAC */}
-                    <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         <div className="experience-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
                             <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-start' }}>
                                 {/* QAC Logo */}
-                                <div className="experience-logo-container" style={{ width: '64px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
+                                <div className="experience-logo-container" style={{ width: '48px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
                                     <Image
                                         src="/assets/QAC_LOGO_CROP.png"
                                         alt="QAC Logo"
-                                        width={44}
-                                        height={44}
+                                        width={36}
+                                        height={36}
                                         style={{
                                             borderRadius: '8px',
                                             objectFit: 'contain'
@@ -674,16 +678,18 @@ export default function HomePage() {
                                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
                                 background: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
                                 color: isDark ? '#d1d5db' : '#374151',
-                                fontSize: '0.75rem',
+                                fontSize: '0.7rem',
                                 cursor: 'pointer',
-                                padding: '5px 12px',
+                                padding: '3px 8px',
                                 borderRadius: '9999px',
                                 textAlign: 'left',
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '4px',
                                 alignSelf: 'flex-start',
-                                fontWeight: '500'
+                                fontWeight: '500',
+                                marginLeft: '52px',
+                                marginTop: '4px'
                             }}
                         >
                             {expandedItems['qac'] ? 'Show less' : 'Read more'}
@@ -711,7 +717,7 @@ export default function HomePage() {
                                     transition={{ duration: 0.2 }}
                                     style={{ overflow: 'hidden' }}
                                 >
-                                    <div style={{ marginLeft: '68px', marginTop: '4px', paddingBottom: '12px' }}>
+                                    <div style={{ marginLeft: '52px', marginTop: '0px', paddingBottom: '12px' }}>
                                         <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
                                             Developing and maintaining the club's website and digital presence
                                         </p>
@@ -745,16 +751,16 @@ export default function HomePage() {
                     </div>
 
                     {/* QBiT */}
-                    <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         <div className="experience-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
                             <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-start' }}>
                                 {/* QBiT Logo */}
-                                <div className="experience-logo-container" style={{ width: '64px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
+                                <div className="experience-logo-container" style={{ width: '48px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
                                     <Image
                                         src="/assets/QBiT_Logo-1.png"
                                         alt="QBiT Logo"
-                                        width={44}
-                                        height={44}
+                                        width={36}
+                                        height={36}
                                         style={{
                                             borderRadius: '8px',
                                             objectFit: 'cover',
@@ -809,16 +815,17 @@ export default function HomePage() {
                                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
                                 background: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
                                 color: isDark ? '#d1d5db' : '#374151',
-                                fontSize: '0.75rem',
+                                fontSize: '0.7rem',
                                 cursor: 'pointer',
-                                padding: '5px 12px',
+                                padding: '2px 8px',
                                 borderRadius: '9999px',
                                 textAlign: 'left',
                                 display: 'inline-flex',
                                 alignItems: 'center',
                                 gap: '4px',
                                 alignSelf: 'flex-start',
-                                fontWeight: '500'
+                                fontWeight: '500',
+                                marginLeft: '52px'
                             }}
                         >
                             {expandedItems['qbit'] ? 'Show less' : 'Read more'}
@@ -846,7 +853,7 @@ export default function HomePage() {
                                     transition={{ duration: 0.2 }}
                                     style={{ overflow: 'hidden' }}
                                 >
-                                    <div style={{ marginLeft: '68px', marginTop: '4px' }}>
+                                    <div style={{ marginLeft: '52px', marginTop: '4px' }}>
                                         <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
                                             Building software solutions for biomedical innovation projects
                                         </p>
