@@ -105,8 +105,7 @@ Because Web Workers don't share memory with the main thread, the board state is 
         github: 'https://github.com/kaificial/texify',
         demo: 'https://texifylatex.vercel.app',
         video: '/assets/TeXify.mp4',
-        longDescription: `
-
+        longDescription: ``,
     },
     {
         id: 'portfolio',
