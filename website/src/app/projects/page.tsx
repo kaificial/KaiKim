@@ -10,6 +10,65 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { ProjectDescription } from '../../components/ProjectDescription';
 
+const ProjectTitle = ({ project, isDark }: { project: any, isDark: boolean }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    if (project.id !== 'portfolio') {
+        return (
+            <h3 style={{
+                fontSize: '1.25rem',
+                fontWeight: '700',
+                color: isDark ? 'white' : '#1c1917',
+                marginBottom: '6px'
+            }}>
+                {project.title}
+            </h3>
+        );
+    }
+
+    return (
+        <motion.div
+            onHoverStart={() => setIsHovered(true)}
+            onHoverEnd={() => setIsHovered(false)}
+            style={{
+                fontSize: '1.25rem',
+                fontWeight: '700',
+                color: isDark ? 'white' : '#1c1917',
+                marginBottom: '6px',
+                cursor: 'default',
+                height: '1.6em', // consistent height to prevent jumps
+                display: 'flex',
+                alignItems: 'center'
+            }}
+        >
+            <AnimatePresence mode="wait">
+                {isHovered ? (
+                    <motion.span
+                        key="dejavu"
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        transition={{ duration: 0.2 }}
+                        style={{ color: '#3b82f6' }} // blue highlight for the effect
+                    >
+                        DeJa Vu?
+                    </motion.span>
+                ) : (
+                    <motion.span
+                        key="title"
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        {project.title}
+                    </motion.span>
+                )}
+            </AnimatePresence>
+        </motion.div>
+    );
+};
+
 export default function ProjectsPage() {
     const { isDark } = useTheme();
     const [searchQuery, setSearchQuery] = useState('');
@@ -57,7 +116,7 @@ export default function ProjectsPage() {
 
             <div style={{
                 width: '96%',
-                maxWidth: '1000px',
+                maxWidth: '1200px',
                 margin: '0 auto',
                 padding: '0 0 48px 0'
             }}>
@@ -79,7 +138,7 @@ export default function ProjectsPage() {
                                 letterSpacing: '0.15em',
                                 maxWidth: '600px',
                                 lineHeight: '1.6',
-                                marginTop: '4px',
+                                marginTop: '16px',
                                 whiteSpace: 'normal',
                                 opacity: 0.8
                             }}
@@ -87,7 +146,7 @@ export default function ProjectsPage() {
                             animate={{ opacity: 0.8 }}
                             transition={{ delay: 1.35, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                         >
-                            My projects
+                            Projects ranging from full stack web development, machine learning, and AI to computer vision and more.
                         </motion.p>
                     </header>
 
@@ -172,8 +231,8 @@ export default function ProjectsPage() {
                     <motion.div
                         style={{
                             display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 450px), 1fr))',
-                            gap: '16px'
+                            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 300px), 1fr))',
+                            gap: '6px'
                         }}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -237,8 +296,9 @@ export default function ProjectsPage() {
 
                                             {/* Preview Area */}
                                             <div style={{
-                                                height: project.video ? 'auto' : 'clamp(280px, 50vw, 420px)',
-                                                aspectRatio: project.video ? '16/9' : 'auto',
+                                                width: '100%',
+                                                height: 'auto',
+                                                aspectRatio: '16/9',
                                                 backgroundColor: project.solidColor || (isDark ? '#171717' : '#f3f4f6'),
                                                 display: 'flex',
                                                 flexDirection: 'column',
@@ -276,14 +336,7 @@ export default function ProjectsPage() {
 
                                         {/* Info */}
                                         <div style={{ padding: '0 4px' }}>
-                                            <h3 style={{
-                                                fontSize: '1.25rem',
-                                                fontWeight: '700',
-                                                color: isDark ? 'white' : '#1c1917',
-                                                marginBottom: '6px'
-                                            }}>
-                                                {project.title}
-                                            </h3>
+                                            <ProjectTitle project={project} isDark={isDark} />
                                             <p style={{
                                                 fontSize: '0.925rem',
                                                 color: isDark ? '#9ca3af' : '#6b7280',
@@ -297,74 +350,28 @@ export default function ProjectsPage() {
                                                 {project.description}
                                             </p>
 
-                                            {project.longDescription && (
-                                                <>
-                                                    <AnimatePresence>
-                                                        {expandedItems[project.id] && (
-                                                            <motion.div
-                                                                initial={{ height: 0, opacity: 0 }}
-                                                                animate={{ height: 'auto', opacity: 1 }}
-                                                                exit={{ height: 0, opacity: 0 }}
-                                                                transition={{ duration: 0.2 }}
-                                                                style={{ overflow: 'hidden' }}
-                                                            >
-                                                                <ProjectDescription content={project.longDescription || ''} />
-                                                            </motion.div>
-                                                        )}
-                                                    </AnimatePresence>
-
-                                                    <motion.button
-                                                        onClick={(e) => {
-                                                            e.preventDefault();
-                                                            toggleExpand(project.id);
-                                                        }}
-                                                        animate={{
-                                                            backgroundColor: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
-                                                            color: isDark ? '#d1d5db' : '#374151',
-                                                            borderColor: isDark ? '#374151' : '#e5e7eb',
-                                                        }}
-                                                        whileHover={{
-                                                            scale: 1.05,
-                                                            backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                                            color: isDark ? '#BFDBFE' : '#1E40AF',
-                                                            borderColor: isDark ? '#1D4ED8' : '#BFDBFE'
-                                                        }}
-                                                        whileTap={{ scale: 0.95 }}
-                                                        style={{
-                                                            border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                                                            background: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
-                                                            color: isDark ? '#d1d5db' : '#374151',
-                                                            fontSize: '0.75rem',
-                                                            cursor: 'pointer',
-                                                            padding: '5px 12px',
-                                                            borderRadius: '9999px',
-                                                            textAlign: 'left',
-                                                            display: 'inline-flex',
-                                                            alignItems: 'center',
-                                                            gap: '4px',
-                                                            alignSelf: 'flex-start',
-                                                            fontWeight: '500',
-                                                            marginBottom: '24px',
-                                                            outline: 'none'
-                                                        }}
-                                                    >
-                                                        {expandedItems[project.id] ? 'Show less' : 'Read more'}
-                                                        <motion.svg
-                                                            width="12"
-                                                            height="12"
-                                                            viewBox="0 0 12 12"
-                                                            fill="none"
-                                                            stroke="currentColor"
-                                                            strokeWidth="1.5"
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            animate={{ rotate: expandedItems[project.id] ? 180 : 0 }}
-                                                        >
-                                                            <path d="M2 4l4 4 4-4" />
-                                                        </motion.svg>
-                                                    </motion.button>
-                                                </>
-                                            )}
+                                            <div style={{ marginBottom: '24px' }}>
+                                                <Link
+                                                    href={`/projects/${project.id}`}
+                                                    style={{
+                                                        display: 'inline-flex',
+                                                        alignItems: 'center',
+                                                        gap: '6px',
+                                                        color: '#2563eb',
+                                                        fontSize: '0.8125rem',
+                                                        fontWeight: '500',
+                                                        textDecoration: 'underline',
+                                                        textUnderlineOffset: '4px',
+                                                        cursor: 'pointer'
+                                                    }}
+                                                >
+                                                    View Project
+                                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                        <path d="M5 12h14"></path>
+                                                        <path d="M12 5l7 7-7 7"></path>
+                                                    </svg>
+                                                </Link>
+                                            </div>
 
                                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '24px' }}>
                                                 {project.tags.map((tech, i) => (
@@ -374,13 +381,13 @@ export default function ProjectsPage() {
                                                         transition={{ type: "spring", stiffness: 400, damping: 10 }}
                                                         whileTap={{ scale: 0.95 }}
                                                         style={{
-                                                            padding: '6px 16px',
+                                                            padding: '4px 10px',
                                                             borderRadius: '9999px',
-                                                            backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                                            color: isDark ? '#BFDBFE' : '#1E40AF',
-                                                            fontSize: '0.8125rem',
+                                                            backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                                            color: isDark ? '#E5E7EB' : '#111827',
+                                                            fontSize: '0.7rem',
                                                             fontWeight: '500',
-                                                            border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`,
+                                                            border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
                                                             cursor: 'default',
                                                             display: 'inline-block'
                                                         }}
@@ -392,12 +399,23 @@ export default function ProjectsPage() {
 
                                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                                    <div style={{
-                                                        width: '8px',
-                                                        height: '8px',
-                                                        borderRadius: '50%',
-                                                        backgroundColor: project.status === 'Live' ? '#22c55e' : '#eab308'
-                                                    }}></div>
+                                                    <motion.div
+                                                        animate={{
+                                                            scale: [1, 1.3, 1],
+                                                            opacity: [1, 0.7, 1]
+                                                        }}
+                                                        transition={{
+                                                            duration: 2,
+                                                            repeat: Infinity,
+                                                            ease: "easeInOut"
+                                                        }}
+                                                        style={{
+                                                            width: '8px',
+                                                            height: '8px',
+                                                            borderRadius: '50%',
+                                                            backgroundColor: project.status === 'Live' ? '#3b82f6' : '#eab308'
+                                                        }}
+                                                    />
                                                     <span style={{ color: isDark ? '#94a3b8' : '#64748b', fontSize: '0.8125rem', fontWeight: '500' }}>{project.status}</span>
                                                 </div>
 
@@ -409,20 +427,21 @@ export default function ProjectsPage() {
                                                         whileHover={{ scale: 1.05 }}
                                                         whileTap={{ scale: 0.95 }}
                                                         style={{
-                                                            padding: '10px 18px',
-                                                            backgroundColor: '#2563eb',
-                                                            color: 'white',
-                                                            borderRadius: '8px',
-                                                            fontSize: '0.8125rem',
+                                                            padding: '6px 14px',
+                                                            backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                                            color: isDark ? '#E5E7EB' : '#111827',
+                                                            border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
+                                                            borderRadius: '6px',
+                                                            fontSize: '0.75rem',
                                                             fontWeight: '500',
                                                             display: 'flex',
                                                             alignItems: 'center',
-                                                            gap: '8px',
+                                                            gap: '6px',
                                                             textDecoration: 'none'
                                                         }}
                                                     >
                                                         Demo
-                                                        <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                                        <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2.5" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
                                                     </motion.a>
                                                     <motion.a
                                                         href={project.github || '#'}
@@ -431,21 +450,21 @@ export default function ProjectsPage() {
                                                         whileHover={{ scale: 1.05 }}
                                                         whileTap={{ scale: 0.95 }}
                                                         style={{
-                                                            padding: '10px 18px',
-                                                            backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : '#f3f4f6',
+                                                            padding: '6px 14px',
+                                                            backgroundColor: isDark ? '#374151' : '#f3f4f6',
                                                             color: isDark ? 'white' : '#1f2937',
-                                                            borderRadius: '8px',
-                                                            fontSize: '0.8125rem',
+                                                            borderRadius: '6px',
+                                                            fontSize: '0.75rem',
                                                             fontWeight: '500',
                                                             display: 'flex',
                                                             alignItems: 'center',
-                                                            gap: '8px',
+                                                            gap: '6px',
                                                             textDecoration: 'none',
-                                                            border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'transparent'}`
+                                                            border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`
                                                         }}
                                                     >
                                                         GitHub
-                                                        <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
+                                                        <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
                                                     </motion.a>
                                                 </div>
                                             </div>
@@ -486,53 +505,54 @@ export default function ProjectsPage() {
                                 </button>
                             </motion.div>
                         )}
-                        {/* Back to Home Button */}
-                        <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 1.8, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+
+                    </motion.div>
+
+                    {/* Back to Home Button - moved outside grid */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 1.8, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'flex-start',
+                            marginTop: '24px',
+                            marginBottom: '12px'
+                        }}
+                    >
+                        <Link
+                            href="/"
                             style={{
                                 display: 'flex',
-                                justifyContent: 'flex-start',
-                                marginTop: '16px',
-                                marginBottom: '12px'
+                                alignItems: 'center',
+                                gap: '6px',
+                                color: isDark ? '#9ca3af' : '#6b7280',
+                                fontSize: '0.75rem',
+                                fontWeight: '500',
+                                padding: '6px 12px',
+                                borderRadius: '8px',
+                                border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)'}`,
+                                backgroundColor: isDark ? '#171717' : 'white',
+                                transition: 'all 0.2s ease',
+                                textDecoration: 'none'
+                            }}
+                            onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                                e.currentTarget.style.color = isDark ? 'white' : '#1c1917';
+                                e.currentTarget.style.borderColor = isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.2)';
+                                e.currentTarget.style.transform = 'translateY(-1px)';
+                            }}
+                            onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
+                                e.currentTarget.style.color = isDark ? '#9ca3af' : '#6b7280';
+                                e.currentTarget.style.borderColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.1)';
+                                e.currentTarget.style.transform = 'translateY(0)';
                             }}
                         >
-                            <Link
-                                href="/"
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '8px',
-                                    color: isDark ? '#9ca3af' : '#6b7280',
-                                    fontSize: '0.925rem',
-                                    fontWeight: '500',
-                                    padding: '12px 24px',
-                                    borderRadius: '12px',
-                                    border: `1px solid ${isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)'}`,
-                                    backgroundColor: isDark ? '#171717' : 'white',
-                                    transition: 'all 0.2s ease',
-                                    textDecoration: 'none',
-                                    boxShadow: isDark ? 'none' : '0 2px 4px rgba(0,0,0,0.02)'
-                                }}
-                                onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                                    e.currentTarget.style.color = isDark ? 'white' : '#1c1917';
-                                    e.currentTarget.style.borderColor = isDark ? 'rgba(255, 255, 255, 0.2)' : 'rgba(0, 0, 0, 0.15)';
-                                    e.currentTarget.style.transform = 'translateY(-2px)';
-                                }}
-                                onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                                    e.currentTarget.style.color = isDark ? '#9ca3af' : '#6b7280';
-                                    e.currentTarget.style.borderColor = isDark ? 'rgba(255, 255, 255, 0.1)' : 'rgba(0, 0, 0, 0.08)';
-                                    e.currentTarget.style.transform = 'translateY(0)';
-                                }}
-                            >
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                    <line x1="19" y1="12" x2="5" y2="12"></line>
-                                    <polyline points="12 19 5 12 12 5"></polyline>
-                                </svg>
-                                Back to Home
-                            </Link>
-                        </motion.div>
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                            Back to Home
+                        </Link>
                     </motion.div>
                 </section>
 
