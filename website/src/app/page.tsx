@@ -11,7 +11,95 @@ import FloatingDock from '../components/FloatingDock';
 import { ProjectDescription } from '../components/ProjectDescription';
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion';
 
-export default function HomePage() {
+// Helper to get logo URL
+const getSkillLogo = (skill: string, isDark: boolean) => {
+    const slugMap: Record<string, string> = {
+        'JavaScript': 'javascript',
+        'TypeScript': 'typescript',
+        'HTML/CSS': 'html5',
+        'Python': 'python',
+        'Java': 'java',
+        'Arduino': 'arduino',
+        'React': 'react',
+        'Next.js': 'nextdotjs',
+        'Tailwind CSS': 'tailwindcss',
+        'Node.js': 'nodedotjs',
+        'Express.js': 'express',
+        'MongoDB': 'mongodb',
+        'Git': 'git',
+        'VS Code': 'visualstudiocode',
+        'Canva': 'canva',
+        'Figma': 'figma',
+        'REST APIs': 'fastapi' // Placeholder/approximate
+    };
+
+    const slug = slugMap[skill];
+    const color = isDark ? 'E5E7EB' : '111827';
+
+    if (!slug) return null;
+    return `https://cdn.simpleicons.org/${slug}/${color}`;
+};
+
+const ProjectTitle = ({ project, isDark }: { project: any, isDark: boolean }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    if (project.id !== 'portfolio') {
+        return (
+            <h3 style={{
+                fontSize: '1.375rem',
+                fontWeight: 'bold',
+                color: isDark ? 'white' : '#1c1917',
+                margin: 0
+            }}>
+                {project.title}
+            </h3>
+        );
+    }
+
+    return (
+        <motion.div
+            onHoverStart={() => setIsHovered(true)}
+            onHoverEnd={() => setIsHovered(false)}
+            style={{
+                fontSize: '1.375rem',
+                fontWeight: 'bold',
+                color: isDark ? 'white' : '#1c1917',
+                margin: 0,
+                cursor: 'default',
+                height: '1.6em', // consistent height to prevent jumps
+                display: 'flex',
+                alignItems: 'center'
+            }}
+        >
+            <AnimatePresence mode="wait">
+                {isHovered ? (
+                    <motion.span
+                        key="dejavu"
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        transition={{ duration: 0.2 }}
+                        style={{ color: '#3b82f6' }} // blue highlight for the effect
+                    >
+                        DeJa Vu?
+                    </motion.span>
+                ) : (
+                    <motion.span
+                        key="title"
+                        initial={{ opacity: 0, y: 5 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -5 }}
+                        transition={{ duration: 0.2 }}
+                    >
+                        {project.title}
+                    </motion.span>
+                )}
+            </AnimatePresence>
+        </motion.div>
+    );
+};
+
+export default function Home() {
     const { isDark, toggleTheme } = useTheme();
     const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
 
@@ -391,20 +479,20 @@ export default function HomePage() {
                             className="experience-btn"
                             onClick={() => toggleExpand('policyengine')}
                             animate={{
-                                backgroundColor: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
+                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
                                 color: isDark ? '#d1d5db' : '#374151',
                                 borderColor: isDark ? '#374151' : '#e5e7eb',
                             }}
                             whileHover={{
                                 scale: 1.05,
-                                backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                color: isDark ? '#BFDBFE' : '#1E40AF',
-                                borderColor: isDark ? '#1D4ED8' : '#BFDBFE'
+                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.9)' : '#E5E7EB',
+                                color: isDark ? '#E5E7EB' : '#111827',
+                                borderColor: isDark ? '#374151' : '#D1D5DB'
                             }}
                             whileTap={{ scale: 0.95 }}
                             style={{
                                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                                background: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
+                                background: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
                                 color: isDark ? '#d1d5db' : '#374151',
                                 fontSize: '0.7rem',
                                 cursor: 'pointer',
@@ -460,9 +548,9 @@ export default function HomePage() {
                                                         display: 'inline-block',
                                                         cursor: 'default',
                                                         padding: '4px 12px',
-                                                        backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                                        color: isDark ? '#BFDBFE' : '#1E40AF',
-                                                        border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`,
+                                                        backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                                        color: isDark ? '#E5E7EB' : '#111827',
+                                                        border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
                                                         borderRadius: '9999px',
                                                         fontSize: '0.75rem',
                                                         fontWeight: '500'
@@ -527,20 +615,20 @@ export default function HomePage() {
                             className="experience-btn"
                             onClick={() => toggleExpand('qmind')}
                             animate={{
-                                backgroundColor: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
+                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
                                 color: isDark ? '#d1d5db' : '#374151',
                                 borderColor: isDark ? '#374151' : '#e5e7eb',
                             }}
                             whileHover={{
                                 scale: 1.05,
-                                backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                color: isDark ? '#BFDBFE' : '#1E40AF',
-                                borderColor: isDark ? '#1D4ED8' : '#BFDBFE'
+                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.9)' : '#E5E7EB',
+                                color: isDark ? '#E5E7EB' : '#111827',
+                                borderColor: isDark ? '#374151' : '#D1D5DB'
                             }}
                             whileTap={{ scale: 0.95 }}
                             style={{
                                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                                background: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
+                                background: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
                                 color: isDark ? '#d1d5db' : '#374151',
                                 fontSize: '0.7rem',
                                 cursor: 'pointer',
@@ -596,9 +684,9 @@ export default function HomePage() {
                                                         display: 'inline-block',
                                                         cursor: 'default',
                                                         padding: '4px 12px',
-                                                        backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                                        color: isDark ? '#BFDBFE' : '#1E40AF',
-                                                        border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`,
+                                                        backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                                        color: isDark ? '#E5E7EB' : '#111827',
+                                                        border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
                                                         borderRadius: '9999px',
                                                         fontSize: '0.75rem',
                                                         fontWeight: '500'
@@ -663,20 +751,20 @@ export default function HomePage() {
                             className="experience-btn"
                             onClick={() => toggleExpand('qac')}
                             animate={{
-                                backgroundColor: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
+                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
                                 color: isDark ? '#d1d5db' : '#374151',
                                 borderColor: isDark ? '#374151' : '#e5e7eb',
                             }}
                             whileHover={{
                                 scale: 1.05,
-                                backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                color: isDark ? '#BFDBFE' : '#1E40AF',
-                                borderColor: isDark ? '#1D4ED8' : '#BFDBFE'
+                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.9)' : '#E5E7EB',
+                                color: isDark ? '#E5E7EB' : '#111827',
+                                borderColor: isDark ? '#374151' : '#D1D5DB'
                             }}
                             whileTap={{ scale: 0.95 }}
                             style={{
                                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                                background: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
+                                background: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
                                 color: isDark ? '#d1d5db' : '#374151',
                                 fontSize: '0.7rem',
                                 cursor: 'pointer',
@@ -732,9 +820,9 @@ export default function HomePage() {
                                                         display: 'inline-block',
                                                         cursor: 'default',
                                                         padding: '4px 12px',
-                                                        backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                                        color: isDark ? '#BFDBFE' : '#1E40AF',
-                                                        border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`,
+                                                        backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                                        color: isDark ? '#E5E7EB' : '#111827',
+                                                        border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
                                                         borderRadius: '9999px',
                                                         fontSize: '0.75rem',
                                                         fontWeight: '500'
@@ -800,20 +888,20 @@ export default function HomePage() {
                             className="experience-btn"
                             onClick={() => toggleExpand('qbit')}
                             animate={{
-                                backgroundColor: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
+                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
                                 color: isDark ? '#d1d5db' : '#374151',
                                 borderColor: isDark ? '#374151' : '#e5e7eb',
                             }}
                             whileHover={{
                                 scale: 1.05,
-                                backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                color: isDark ? '#BFDBFE' : '#1E40AF',
-                                borderColor: isDark ? '#1D4ED8' : '#BFDBFE'
+                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.9)' : '#E5E7EB',
+                                color: isDark ? '#E5E7EB' : '#111827',
+                                borderColor: isDark ? '#374151' : '#D1D5DB'
                             }}
                             whileTap={{ scale: 0.95 }}
                             style={{
                                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                                background: isDark ? 'rgba(31, 41, 55, 0.4)' : '#ffffff',
+                                background: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
                                 color: isDark ? '#d1d5db' : '#374151',
                                 fontSize: '0.7rem',
                                 cursor: 'pointer',
@@ -868,9 +956,9 @@ export default function HomePage() {
                                                         display: 'inline-block',
                                                         cursor: 'default',
                                                         padding: '4px 12px',
-                                                        backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                                        color: isDark ? '#BFDBFE' : '#1E40AF',
-                                                        border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`,
+                                                        backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                                        color: isDark ? '#E5E7EB' : '#111827',
+                                                        border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
                                                         borderRadius: '9999px',
                                                         fontSize: '0.75rem',
                                                         fontWeight: '500'
@@ -905,20 +993,24 @@ export default function HomePage() {
                 </h2>
 
                 <div style={{
-                    border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                    backgroundColor: isDark ? '#0a0a0a' : '#ffffff',
+                    border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
+                    backgroundColor: isDark ? '#0e0e0d' : '#ffffff',
                     borderRadius: '12px',
-                    padding: '16px',
+                    padding: '12px',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
+                    boxShadow: isDark
+                        ? '0 0 0 4px #0e0e0d, 0 0 0 5px #374151'
+                        : '0 0 0 4px #f5f5f4, 0 0 0 5px #D1D5DB',
+                    margin: '4px' // Add margin to prevent shadow clipping
                 }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                         <Image
                             src="/assets/queens.png"
                             alt="Queen's University Logo"
-                            width={48}
-                            height={48}
+                            width={42}
+                            height={42}
                             style={{
                                 objectFit: 'contain',
                                 filter: 'none'
@@ -926,7 +1018,7 @@ export default function HomePage() {
                         />
                         <div>
                             <h3 style={{
-                                fontSize: '1rem',
+                                fontSize: '0.875rem',
                                 fontWeight: '600',
                                 marginBottom: '0px',
                                 color: isDark ? 'white' : '#1c1917'
@@ -934,7 +1026,7 @@ export default function HomePage() {
                                 Queen's University
                             </h3>
                             <p style={{
-                                fontSize: '0.875rem',
+                                fontSize: '0.75rem',
                                 color: isDark ? '#9ca3af' : '#6b7280'
                             }}>
                                 Bachelor of Computing
@@ -943,7 +1035,7 @@ export default function HomePage() {
                     </div>
 
                     <span style={{
-                        fontSize: '0.8125rem',
+                        fontSize: '0.75rem',
                         color: isDark ? '#9ca3af' : '#6b7280',
                         fontWeight: '500'
                     }}>
@@ -997,31 +1089,44 @@ export default function HomePage() {
                                 }
                             }}
                         >
-                            {['JavaScript', 'TypeScript', 'HTML/CSS', 'Python', 'Java', 'Arduino'].map((skill, index) => (
-                                <motion.span
-                                    key={index}
-                                    variants={{
-                                        hidden: { opacity: 0, scale: 0.8 },
-                                        visible: { opacity: 1, scale: 1 }
-                                    }}
-                                    whileHover={{ scale: 1.1, y: -2 }}
-                                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    style={{
-                                        display: 'inline-block',
-                                        cursor: 'default',
-                                        padding: '6px 16px',
-                                        backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                        color: isDark ? '#BFDBFE' : '#1E40AF',
-                                        borderRadius: '9999px',
-                                        fontSize: '0.875rem',
-                                        fontWeight: '500',
-                                        border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`
-                                    }}
-                                >
-                                    {skill}
-                                </motion.span>
-                            ))}
+                            {['JavaScript', 'TypeScript', 'HTML/CSS', 'Python', 'Java', 'Arduino'].map((skill, index) => {
+                                const logoUrl = getSkillLogo(skill, isDark);
+                                return (
+                                    <motion.span
+                                        key={index}
+                                        variants={{
+                                            hidden: { opacity: 0, scale: 0.8 },
+                                            visible: { opacity: 1, scale: 1 }
+                                        }}
+                                        whileHover={{ scale: 1.1, y: -2 }}
+                                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        style={{
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            gap: '8px',
+                                            cursor: 'default',
+                                            padding: '6px 16px',
+                                            backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                            color: isDark ? '#E5E7EB' : '#111827',
+                                            borderRadius: '9999px',
+                                            fontSize: '0.875rem',
+                                            fontWeight: '500',
+                                            border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`
+                                        }}
+                                    >
+                                        {logoUrl ? (
+                                            <img src={logoUrl} alt="" style={{ width: '16px', height: '16px' }} />
+                                        ) : (
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <polyline points="16 18 22 12 16 6"></polyline>
+                                                <polyline points="8 6 2 12 8 18"></polyline>
+                                            </svg>
+                                        )}
+                                        {skill}
+                                    </motion.span>
+                                )
+                            })}
                         </motion.div>
                     </motion.div>
 
@@ -1041,31 +1146,44 @@ export default function HomePage() {
                                 }
                             }}
                         >
-                            {['React', 'Next.js', 'Tailwind CSS'].map((skill, index) => (
-                                <motion.span
-                                    key={index}
-                                    variants={{
-                                        hidden: { opacity: 0, scale: 0.8 },
-                                        visible: { opacity: 1, scale: 1 }
-                                    }}
-                                    whileHover={{ scale: 1.1, y: -2 }}
-                                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    style={{
-                                        display: 'inline-block',
-                                        cursor: 'default',
-                                        padding: '6px 16px',
-                                        backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                        color: isDark ? '#BFDBFE' : '#1E40AF',
-                                        borderRadius: '9999px',
-                                        fontSize: '0.875rem',
-                                        fontWeight: '500',
-                                        border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`
-                                    }}
-                                >
-                                    {skill}
-                                </motion.span>
-                            ))}
+                            {['React', 'Next.js', 'Tailwind CSS'].map((skill, index) => {
+                                const logoUrl = getSkillLogo(skill, isDark);
+                                return (
+                                    <motion.span
+                                        key={index}
+                                        variants={{
+                                            hidden: { opacity: 0, scale: 0.8 },
+                                            visible: { opacity: 1, scale: 1 }
+                                        }}
+                                        whileHover={{ scale: 1.1, y: -2 }}
+                                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        style={{
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            gap: '8px',
+                                            cursor: 'default',
+                                            padding: '6px 16px',
+                                            backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                            color: isDark ? '#E5E7EB' : '#111827',
+                                            borderRadius: '9999px',
+                                            fontSize: '0.875rem',
+                                            fontWeight: '500',
+                                            border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`
+                                        }}
+                                    >
+                                        {logoUrl ? (
+                                            <img src={logoUrl} alt="" style={{ width: '16px', height: '16px' }} />
+                                        ) : (
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <polyline points="16 18 22 12 16 6"></polyline>
+                                                <polyline points="8 6 2 12 8 18"></polyline>
+                                            </svg>
+                                        )}
+                                        {skill}
+                                    </motion.span>
+                                )
+                            })}
                         </motion.div>
                     </motion.div>
 
@@ -1085,31 +1203,44 @@ export default function HomePage() {
                                 }
                             }}
                         >
-                            {['Node.js', 'Express.js', 'MongoDB'].map((skill, index) => (
-                                <motion.span
-                                    key={index}
-                                    variants={{
-                                        hidden: { opacity: 0, scale: 0.8 },
-                                        visible: { opacity: 1, scale: 1 }
-                                    }}
-                                    whileHover={{ scale: 1.1, y: -2 }}
-                                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    style={{
-                                        display: 'inline-block',
-                                        cursor: 'default',
-                                        padding: '6px 16px',
-                                        backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                        color: isDark ? '#BFDBFE' : '#1E40AF',
-                                        borderRadius: '9999px',
-                                        fontSize: '0.875rem',
-                                        fontWeight: '500',
-                                        border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`
-                                    }}
-                                >
-                                    {skill}
-                                </motion.span>
-                            ))}
+                            {['Node.js', 'Express.js', 'MongoDB'].map((skill, index) => {
+                                const logoUrl = getSkillLogo(skill, isDark);
+                                return (
+                                    <motion.span
+                                        key={index}
+                                        variants={{
+                                            hidden: { opacity: 0, scale: 0.8 },
+                                            visible: { opacity: 1, scale: 1 }
+                                        }}
+                                        whileHover={{ scale: 1.1, y: -2 }}
+                                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        style={{
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            gap: '8px',
+                                            cursor: 'default',
+                                            padding: '6px 16px',
+                                            backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                            color: isDark ? '#E5E7EB' : '#111827',
+                                            borderRadius: '9999px',
+                                            fontSize: '0.875rem',
+                                            fontWeight: '500',
+                                            border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`
+                                        }}
+                                    >
+                                        {logoUrl ? (
+                                            <img src={logoUrl} alt="" style={{ width: '16px', height: '16px' }} />
+                                        ) : (
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <polyline points="16 18 22 12 16 6"></polyline>
+                                                <polyline points="8 6 2 12 8 18"></polyline>
+                                            </svg>
+                                        )}
+                                        {skill}
+                                    </motion.span>
+                                )
+                            })}
                         </motion.div>
                     </motion.div>
 
@@ -1129,31 +1260,44 @@ export default function HomePage() {
                                 }
                             }}
                         >
-                            {['Git', 'REST APIs', 'VS Code', 'Canva'].map((skill, index) => (
-                                <motion.span
-                                    key={index}
-                                    variants={{
-                                        hidden: { opacity: 0, scale: 0.8 },
-                                        visible: { opacity: 1, scale: 1 }
-                                    }}
-                                    whileHover={{ scale: 1.1, y: -2 }}
-                                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    style={{
-                                        display: 'inline-block',
-                                        cursor: 'default',
-                                        padding: '6px 16px',
-                                        backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                        color: isDark ? '#BFDBFE' : '#1E40AF',
-                                        borderRadius: '9999px',
-                                        fontSize: '0.875rem',
-                                        fontWeight: '500',
-                                        border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`
-                                    }}
-                                >
-                                    {skill}
-                                </motion.span>
-                            ))}
+                            {['Git', 'REST APIs', 'VS Code', 'Figma', 'Canva'].map((skill, index) => {
+                                const logoUrl = getSkillLogo(skill, isDark);
+                                return (
+                                    <motion.span
+                                        key={index}
+                                        variants={{
+                                            hidden: { opacity: 0, scale: 0.8 },
+                                            visible: { opacity: 1, scale: 1 }
+                                        }}
+                                        whileHover={{ scale: 1.1, y: -2 }}
+                                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                        whileTap={{ scale: 0.95 }}
+                                        style={{
+                                            display: 'inline-flex',
+                                            alignItems: 'center',
+                                            gap: '8px',
+                                            cursor: 'default',
+                                            padding: '6px 16px',
+                                            backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                            color: isDark ? '#E5E7EB' : '#111827',
+                                            borderRadius: '9999px',
+                                            fontSize: '0.875rem',
+                                            fontWeight: '500',
+                                            border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`
+                                        }}
+                                    >
+                                        {logoUrl ? (
+                                            <img src={logoUrl} alt="" style={{ width: '16px', height: '16px' }} />
+                                        ) : (
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                <polyline points="16 18 22 12 16 6"></polyline>
+                                                <polyline points="8 6 2 12 8 18"></polyline>
+                                            </svg>
+                                        )}
+                                        {skill}
+                                    </motion.span>
+                                )
+                            })}
                         </motion.div>
                     </motion.div>
                 </motion.div>
@@ -1174,6 +1318,18 @@ export default function HomePage() {
                 }}>
                     Featured Projects
                 </h2>
+                <p style={{
+                    color: isDark ? '#9ca3af' : '#6b7280',
+                    fontSize: '0.875rem',
+                    fontWeight: '600',
+                    letterSpacing: '0.15em',
+                    maxWidth: '600px',
+                    lineHeight: '1.6',
+                    marginBottom: '24px',
+                    opacity: 0.8
+                }}>
+                    Projects ranging from full stack web development, machine learning, and AI to computer vision and more.
+                </p>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     {projects.map((project) => (
@@ -1267,21 +1423,25 @@ export default function HomePage() {
                             {/* Info */}
                             <div>
                                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '8px', gap: '16px' }}>
-                                    <h3 style={{
-                                        fontSize: '1.375rem',
-                                        fontWeight: 'bold',
-                                        color: isDark ? 'white' : '#1c1917',
-                                        margin: 0
-                                    }}>
-                                        {project.title}
-                                    </h3>
+                                    <ProjectTitle project={project} isDark={isDark} />
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                        <div style={{
-                                            width: '8px',
-                                            height: '8px',
-                                            borderRadius: '50%',
-                                            backgroundColor: project.status === 'Live' ? '#22c55e' : '#eab308'
-                                        }}></div>
+                                        <motion.div
+                                            animate={{
+                                                scale: [1, 1.3, 1],
+                                                opacity: [1, 0.7, 1]
+                                            }}
+                                            transition={{
+                                                duration: 2,
+                                                repeat: Infinity,
+                                                ease: "easeInOut"
+                                            }}
+                                            style={{
+                                                width: '8px',
+                                                height: '8px',
+                                                borderRadius: '50%',
+                                                backgroundColor: project.status === 'Live' ? '#3b82f6' : '#eab308'
+                                            }}
+                                        />
                                         <span style={{ color: isDark ? '#94a3b8' : '#64748b', fontSize: '0.8125rem', fontWeight: '500' }}>{project.status}</span>
                                     </div>
                                 </div>
@@ -1306,11 +1466,11 @@ export default function HomePage() {
                                                 cursor: 'default',
                                                 padding: '4px 12px',
                                                 borderRadius: '9999px',
-                                                backgroundColor: isDark ? '#1E3A8A' : '#DBEAFE',
-                                                color: isDark ? '#BFDBFE' : '#1E40AF',
+                                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                                color: isDark ? '#E5E7EB' : '#111827',
                                                 fontSize: '0.75rem',
                                                 fontWeight: '500',
-                                                border: `1px solid ${isDark ? '#1D4ED8' : '#BFDBFE'}`
+                                                border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`
                                             }}
                                         >
                                             {tech}
@@ -1361,8 +1521,9 @@ export default function HomePage() {
                                             whileTap={{ scale: 0.95 }}
                                             style={{
                                                 padding: '8px 16px',
-                                                backgroundColor: '#2563eb',
-                                                color: 'white',
+                                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                                color: isDark ? '#E5E7EB' : '#111827',
+                                                border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
                                                 borderRadius: '6px',
                                                 fontSize: '0.875rem',
                                                 fontWeight: '500',
@@ -1409,9 +1570,10 @@ export default function HomePage() {
                         gap: '8px',
                         fontSize: '0.875rem',
                         fontWeight: '500',
-                        color: 'white',
+                        color: isDark ? '#E5E7EB' : '#111827',
                         textDecoration: 'none',
-                        backgroundColor: '#2563eb',
+                        backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                        border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
                         padding: '10px 20px',
                         borderRadius: '8px',
                         transition: 'opacity 0.2s'
