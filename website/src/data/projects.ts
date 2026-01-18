@@ -25,9 +25,7 @@ export const projects: Project[] = [
         image: '/assets/ScriblPic.png',
         github: 'https://github.com/kaificial/scribl',
         demo: 'https://scribl.vercel.app',
-        longDescription: `## Timeline
-
-`,
+        // longDescription removed as requested
     },
     {
         id: 'rooke',
@@ -107,7 +105,18 @@ Because Web Workers don't share memory with the main thread, the board state is 
         github: 'https://github.com/kaificial/texify',
         demo: 'https://texifylatex.vercel.app',
         video: '/assets/TeXify.mp4',
-        longDescription: `## Timeline
-November 2025`
+        longDescription: `
+
+    },
+    {
+        id: 'portfolio',
+        title: 'Personal Portfolio',
+        description: "The website you're looking at right now",
+        tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'SCSS'],
+        status: 'Live',
+        url: 'kaikim.ca',
+        github: 'https://github.com/kaificial/personalwebsite2',
+        demo: 'https://kaikim.ca',
+        video: '/assets/website.mp4',
     },
 ];
