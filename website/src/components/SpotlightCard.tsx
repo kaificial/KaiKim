@@ -31,7 +31,7 @@ export const SpotlightCard = ({ children, isDark }: SpotlightCardProps) => {
                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
                 borderRadius: '12px',
                 padding: '16px',
-                backgroundColor: isDark ? '#0a0a0a' : 'white',
+                backgroundColor: isDark ? '#0e0e0d' : 'white',
                 position: 'relative',
                 overflow: 'hidden'
             }}
