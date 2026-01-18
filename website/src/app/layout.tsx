@@ -21,14 +21,14 @@ const ibmPlexMono = IBM_Plex_Mono({
 // site metadata for SEO and social sharing
 // this shows up in browser tabs and when people share links
 export const metadata: Metadata = {
-    title: "Kai Kim",
+    title: "Kai Kim | Product Engineer",
     keywords: ["Kai Kim", "software developer", "portfolio", "web developer", "React", "Next.js"],
     authors: [{ name: "Kai Kim" }],
     icons: {
         icon: '/assets/newjeans.png',
     },
     openGraph: {
-        title: "Kai Kim",
+        title: "Kai Kim | Product Engineer",
         description: "Hey! I'm Kai",
         type: "website",
     },
