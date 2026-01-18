@@ -1320,7 +1320,7 @@ export default function HomePage() {
 
                                 {/* Footer: Buttons */}
                                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
-                                    {project.longDescription ? (
+                                    <div>
                                         <Link
                                             href={`/projects/${project.id}`}
                                             style={{
@@ -1350,9 +1350,7 @@ export default function HomePage() {
                                                 <path d="M12 5l7 7-7 7"></path>
                                             </svg>
                                         </Link>
-                                    ) : (
-                                        <div></div>
-                                    )}
+                                    </div>
 
                                     <div style={{ display: 'flex', gap: '12px' }}>
                                         <motion.a
