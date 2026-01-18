@@ -24,14 +24,16 @@ export const ProjectDescription: React.FC<ProjectDescriptionProps> = ({ content 
                 remarkPlugins={[remarkMath]}
                 rehypePlugins={[rehypeKatex, rehypeRaw]}
                 components={{
-                    p: ({ node, ...props }) => <p style={{ marginBottom: '16px' }} {...props} />,
+                    p: ({ node, ...props }) => <p style={{ marginBottom: '24px' }} {...props} />,
                     h3: ({ node, ...props }) => (
                         <h3 style={{
-                            fontSize: '1.125rem',
-                            fontWeight: '700',
-                            marginTop: '24px',
-                            marginBottom: '12px',
-                            color: isDark ? 'white' : '#1c1917'
+                            fontSize: '1.25rem',
+                            fontWeight: '600',
+                            marginTop: '32px',
+                            marginBottom: '16px',
+                            color: isDark ? 'white' : '#1c1917',
+                            letterSpacing: '-0.02em',
+                            textTransform: 'lowercase'
                         }} {...props} />
                     ),
                     strong: ({ node, ...props }) => <strong style={{ fontWeight: '600', color: isDark ? 'white' : '#111827' }} {...props} />,
