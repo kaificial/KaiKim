@@ -1313,23 +1313,11 @@ export default function Home() {
                 <h2 style={{
                     fontSize: '2rem',
                     fontWeight: 'bold',
-                    marginBottom: '16px',
+                    marginBottom: '24px',
                     color: isDark ? 'white' : '#1c1917'
                 }}>
                     Featured Projects
                 </h2>
-                <p style={{
-                    color: isDark ? '#9ca3af' : '#6b7280',
-                    fontSize: '0.875rem',
-                    fontWeight: '600',
-                    letterSpacing: '0.15em',
-                    maxWidth: '600px',
-                    lineHeight: '1.6',
-                    marginBottom: '24px',
-                    opacity: 0.8
-                }}>
-                    Projects ranging from full stack web development, machine learning, and AI to computer vision and more.
-                </p>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
                     {projects.map((project) => (
