@@ -5,6 +5,7 @@ import "../styles/globals.scss";
 import "katex/dist/katex.min.css";
 import Header from "../components/Header";
 import { ThemeProvider } from "../components/ThemeContext";
+import ScrollToTop from "../components/ScrollToTop";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -72,6 +73,7 @@ export default function RootLayout({
             </head>
             <body className={`${inter.variable} ${ibmPlexMono.variable}`}>
                 <ThemeProvider>
+                    <ScrollToTop />
                     <Header />
                     <main>
                         {children}

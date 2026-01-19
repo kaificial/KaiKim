@@ -29,7 +29,7 @@ export const SpotlightCard = ({ children, isDark }: SpotlightCardProps) => {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             style={{
                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                borderRadius: '12px',
+                borderRadius: '16px',
                 padding: '16px',
                 backgroundColor: isDark ? '#0e0e0d' : 'white',
                 position: 'relative',
