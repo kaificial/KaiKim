@@ -10,7 +10,7 @@ interface ThemeContextType {
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-    const [isDark, setIsDark] = useState(true);
+    const [isDark, setIsDark] = useState(false);
     const [mounted, setMounted] = useState(false);
 
     useEffect(() => {
@@ -20,17 +20,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
         const savedTheme = localStorage.getItem("theme");
 
         if (savedTheme) {
-            // User chose n a theme before- use that
+            // User chose a theme before - use that
             const prefersDark = savedTheme === "dark";
             setIsDark(prefersDark);
             document.documentElement.classList.toggle("dark", prefersDark);
         } else {
-            // check system preference
-            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-            setIsDark(prefersDark);
-            document.documentElement.classList.toggle("dark", prefersDark);
+            // Default to light mode for everyone on load
+            setIsDark(false);
+            document.documentElement.classList.remove("dark");
             // Save the preference
-            localStorage.setItem("theme", prefersDark ? "dark" : "light");
+            localStorage.setItem("theme", "light");
         }
     }, []);
 

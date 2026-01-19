@@ -131,19 +131,10 @@ export default function ProjectsPage() {
                             Projects
                         </motion.h1>
                         <motion.p
-                            style={{
-                                color: isDark ? '#9ca3af' : '#6b7280',
-                                fontSize: '0.875rem',
-                                fontWeight: '600',
-                                letterSpacing: '0.15em',
-                                maxWidth: '600px',
-                                lineHeight: '1.6',
-                                marginTop: '16px',
-                                whiteSpace: 'normal',
-                                opacity: 0.8
-                            }}
+                            className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-xl text-left"
+                            style={{ marginTop: '16px', marginBottom: '20px' }}
                             initial={{ opacity: 0 }}
-                            animate={{ opacity: 0.8 }}
+                            animate={{ opacity: 1 }}
                             transition={{ delay: 1.35, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                         >
                             Projects ranging from full stack web development, machine learning, and AI to computer vision and more.

@@ -1320,7 +1320,7 @@ export default function Home() {
                 </h2>
 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    {projects.map((project) => (
+                    {projects.filter(p => p.id !== 'portfolio').map((project) => (
                         <SpotlightCard key={project.id} isDark={isDark}>
                             {/* Browser Window Mockup */}
                             <div style={{
