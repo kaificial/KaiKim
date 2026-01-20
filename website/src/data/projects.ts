@@ -20,9 +20,9 @@ export const projects: Project[] = [
         title: 'Scribl',
         description: 'A web app to collaborate with friends to create a interactive birthday experience.',
         tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Java Spring Boot', 'PostgreSQL', 'Docker', 'WebSockets'],
-        status: 'Building',
+        status: 'Live',
         url: 'scribl.vercel.app',
-        image: '/assets/ScriblPic.png',
+        video: '/assets/scribldemo.mp4',
         github: 'https://github.com/kaificial/scribl',
         demo: 'https://scribl.vercel.app',
         // longDescription removed as requested
@@ -89,11 +89,11 @@ Because Web Workers don't share memory with the main thread, the board state is 
 
 (And you can toggle these visualizations on/off thoughout your game!)`,
         tags: ['Three.js', 'JavaScript (ES6+)', 'HTML5', 'CSS3 (Vanilla)', 'WebGL', 'GSAP', 'Web Workers API', 'Vite', 'PostCSS'],
-        status: 'Building',
+        status: 'Live',
         url: 'rooke.vercel.app',
         github: 'https://github.com/kaificial/rooke',
         demo: 'https://rooke.vercel.app',
-        video: '/assets/rooke-video.mp4'
+        video: '/assets/demorooke.mp4'
     },
     {
         id: 'texify',
@@ -104,7 +104,7 @@ Because Web Workers don't share memory with the main thread, the board state is 
         url: 'https://texifylatex.vercel.app',
         github: 'https://github.com/kaificial/texify',
         demo: 'https://texifylatex.vercel.app',
-        video: '/assets/TeXify.mp4',
+        video: '/assets/demoscribe.mp4',
         longDescription: ``,
     },
     {
@@ -116,6 +116,6 @@ Because Web Workers don't share memory with the main thread, the board state is 
         url: 'kaikim.ca',
         github: 'https://github.com/kaificial/personalwebsite2',
         demo: 'https://kaikim.ca',
-        video: '/assets/website.mp4',
+        video: '/assets/demowebsite.mp4',
     },
 ];
