@@ -116,7 +116,7 @@ export default function ProjectsPage() {
 
             <div style={{
                 width: '96%',
-                maxWidth: '700px',
+                maxWidth: '1200px',
                 margin: '0 auto',
                 padding: '0 0 48px 0'
             }}>
@@ -222,7 +222,7 @@ export default function ProjectsPage() {
                     <motion.div
                         style={{
                             display: 'grid',
-                            gridTemplateColumns: '1fr',
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
                             gap: '20px'
                         }}
                         initial={{ opacity: 0 }}
@@ -250,11 +250,14 @@ export default function ProjectsPage() {
                                         }}>
                                             {/* Top: Preview Image/Video */}
                                             <div style={{
-                                                borderRadius: '16px',
+                                                borderRadius: '8px',
                                                 overflow: 'hidden',
                                                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
                                                 backgroundColor: project.solidColor || (isDark ? '#171717' : '#f8f9fa'),
-                                                aspectRatio: '16/9',
+                                                aspectRatio: project.id === 'rooke' ? '2220/1080' :
+                                                    project.id === 'texify' ? '2292/1080' :
+                                                        project.id === 'portfolio' ? '2188/1080' :
+                                                            project.id === 'scribl' ? '2220/1080' : '16/9',
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
@@ -271,7 +274,8 @@ export default function ProjectsPage() {
                                                         style={{
                                                             width: '100%',
                                                             height: '100%',
-                                                            objectFit: 'cover'
+                                                            objectFit: 'cover',
+                                                            transform: project.id === 'portfolio' ? 'scale(1.15)' : 'none'
                                                         }}
                                                     />
                                                 ) : project.image ? (
@@ -316,7 +320,7 @@ export default function ProjectsPage() {
                                                                     width: '6px',
                                                                     height: '6px',
                                                                     borderRadius: '50%',
-                                                                    backgroundColor: project.status === 'Live' ? '#10b981' : '#eab308'
+                                                                    backgroundColor: project.status === 'Live' ? '#3b82f6' : '#eab308'
                                                                 }}
                                                             />
                                                             <span style={{

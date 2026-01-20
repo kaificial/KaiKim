@@ -53,7 +53,7 @@ export default function ProjectPage() {
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}
                     style={{
-                        borderRadius: '8px',
+                        borderRadius: '4px',
                         overflow: 'hidden',
                         border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
                         marginBottom: '24px'
@@ -114,7 +114,8 @@ export default function ProjectPage() {
                                 style={{
                                     width: '100%',
                                     height: 'auto',
-                                    display: 'block'
+                                    display: 'block',
+                                    transform: project.id === 'portfolio' ? 'scale(1.15)' : 'none'
                                 }}
                             />
                         ) : project.image ? (
@@ -151,7 +152,7 @@ export default function ProjectPage() {
                                 width: '8px',
                                 height: '8px',
                                 borderRadius: '50%',
-                                backgroundColor: project.status === 'Live' ? '#22c55e' : '#eab308'
+                                backgroundColor: project.status === 'Live' ? '#3b82f6' : '#eab308'
                             }}></div>
                             <span style={{ color: isDark ? '#94a3b8' : '#64748b', fontSize: '0.8125rem', fontWeight: '500' }}>{project.status}</span>
                         </div>

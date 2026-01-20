@@ -29,11 +29,12 @@ export const SpotlightCard = ({ children, isDark }: SpotlightCardProps) => {
             transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
             style={{
                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                borderRadius: '16px',
+                borderRadius: '8px',
                 padding: '16px',
                 backgroundColor: isDark ? '#0e0e0d' : 'white',
                 position: 'relative',
-                overflow: 'hidden'
+                overflow: 'hidden',
+                boxShadow: isDark ? 'none' : '0 0 0 1px rgba(0, 0, 0, 0.05)'
             }}
         >
             <motion.div

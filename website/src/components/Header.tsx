@@ -157,17 +157,19 @@ export default function Header() {
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.1, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
             >
-                <nav className={`header-nav ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.href}
-                            href={link.href}
-                            className={`nav-link ${pathname === link.href ? "active" : ""}`}
-                            onClick={() => setIsMobileMenuOpen(false)}
-                        >
-                            {link.label}
-                        </Link>
-                    ))}
+                <nav className="nav-pill-container">
+                    <div className={`header-nav ${isMobileMenuOpen ? 'mobile-open' : ''}`}>
+                        {navLinks.map((link) => (
+                            <Link
+                                key={link.href}
+                                href={link.href}
+                                className={`nav-link ${pathname === link.href ? "active" : ""}`}
+                                onClick={() => setIsMobileMenuOpen(false)}
+                            >
+                                {link.label}
+                            </Link>
+                        ))}
+                    </div>
                 </nav>
 
                 <div style={{ display: 'flex', gap: '12px', alignItems: 'center', position: 'relative' }}>

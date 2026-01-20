@@ -1,6 +1,6 @@
 
 import type { Metadata } from "next";
-import { Inter, IBM_Plex_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono } from "next/font/google";
 import "../styles/globals.scss";
 import "katex/dist/katex.min.css";
 import Header from "../components/Header";
@@ -13,10 +13,10 @@ const inter = Inter({
     weight: ["300", "400", "500", "600", "700"],
 });
 
-const ibmPlexMono = IBM_Plex_Mono({
+const jetbrainsMono = JetBrains_Mono({
     subsets: ["latin"],
     variable: "--font-mono",
-    weight: ["400"],
+    weight: ["400", "500", "600"],
 });
 
 // site metadata for SEO and social sharing
@@ -71,7 +71,7 @@ export default function RootLayout({
                     }}
                 />
             </head>
-            <body className={`${inter.variable} ${ibmPlexMono.variable}`}>
+            <body className={`${inter.variable} ${jetbrainsMono.variable}`}>
                 <ThemeProvider>
                     <ScrollToTop />
                     <Header />
