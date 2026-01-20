@@ -308,6 +308,12 @@ export default function Home() {
                                     href: "/resume",
                                     label: 'Resume',
                                     icon: <svg style={{ width: '20px', height: '20px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                                },
+                                {
+                                    id: 'hero-x',
+                                    href: "https://x.com/kaijinju",
+                                    label: 'X',
+                                    icon: <svg style={{ width: '20px', height: '20px' }} fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
                                 }
                             ].map((social) => (
                                 <motion.a
@@ -324,9 +330,11 @@ export default function Home() {
                                         justifyContent: 'center',
                                         backgroundColor: iconColors.bg,
                                         color: iconColors.icon,
-                                        borderRadius: '8px',
+                                        borderRadius: '10px',
                                         border: iconColors.border,
-                                        boxShadow: iconColors.shadow
+                                        boxShadow: isDark
+                                            ? '0 1px 2px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05)'
+                                            : '0 1px 2px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05)'
                                     }}
                                     variants={{
                                         hidden: { opacity: 0, y: 10 },
@@ -1073,12 +1081,12 @@ export default function Home() {
                         }
                     }}
                 >
-                    {/* Languages */}
+                    {/* Frontend & Frameworks */}
                     <motion.div variants={{
                         hidden: { opacity: 0, y: 10 },
                         visible: { opacity: 1, y: 0 }
                     }}>
-                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Languages</h3>
+                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Frontend & Frameworks</h3>
                         <motion.div
                             style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}
                             variants={{
@@ -1089,7 +1097,7 @@ export default function Home() {
                                 }
                             }}
                         >
-                            {['JavaScript', 'TypeScript', 'HTML/CSS', 'Python', 'Java', 'Arduino'].map((skill, index) => {
+                            {['React', 'Next.js', 'TypeScript', 'JavaScript', 'Tailwind CSS', 'HTML/CSS', 'Framer Motion'].map((skill, index) => {
                                 const logoUrl = getSkillLogo(skill, isDark);
                                 return (
                                     <motion.span
@@ -1130,12 +1138,12 @@ export default function Home() {
                         </motion.div>
                     </motion.div>
 
-                    {/* Frontend */}
+                    {/* Backend & Databases */}
                     <motion.div variants={{
                         hidden: { opacity: 0, y: 10 },
                         visible: { opacity: 1, y: 0 }
                     }}>
-                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Frontend</h3>
+                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Backend & Databases</h3>
                         <motion.div
                             style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}
                             variants={{
@@ -1146,7 +1154,7 @@ export default function Home() {
                                 }
                             }}
                         >
-                            {['React', 'Next.js', 'Tailwind CSS'].map((skill, index) => {
+                            {['Node.js', 'Express.js', 'Python', 'Java', 'Spring Boot', 'MongoDB', 'PostgreSQL', 'REST APIs'].map((skill, index) => {
                                 const logoUrl = getSkillLogo(skill, isDark);
                                 return (
                                     <motion.span
@@ -1187,12 +1195,12 @@ export default function Home() {
                         </motion.div>
                     </motion.div>
 
-                    {/* Backend */}
+                    {/* Tools & Technologies */}
                     <motion.div variants={{
                         hidden: { opacity: 0, y: 10 },
                         visible: { opacity: 1, y: 0 }
                     }}>
-                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Backend</h3>
+                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Tools & Technologies</h3>
                         <motion.div
                             style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}
                             variants={{
@@ -1203,64 +1211,7 @@ export default function Home() {
                                 }
                             }}
                         >
-                            {['Node.js', 'Express.js', 'MongoDB'].map((skill, index) => {
-                                const logoUrl = getSkillLogo(skill, isDark);
-                                return (
-                                    <motion.span
-                                        key={index}
-                                        variants={{
-                                            hidden: { opacity: 0, scale: 0.8 },
-                                            visible: { opacity: 1, scale: 1 }
-                                        }}
-                                        whileHover={{ scale: 1.1, y: -2 }}
-                                        transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                                        whileTap={{ scale: 0.95 }}
-                                        style={{
-                                            display: 'inline-flex',
-                                            alignItems: 'center',
-                                            gap: '8px',
-                                            cursor: 'default',
-                                            padding: '6px 16px',
-                                            backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
-                                            color: isDark ? '#E5E7EB' : '#111827',
-                                            borderRadius: '9999px',
-                                            fontSize: '0.875rem',
-                                            fontWeight: '500',
-                                            border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`
-                                        }}
-                                    >
-                                        {logoUrl ? (
-                                            <img src={logoUrl} alt="" style={{ width: '16px', height: '16px' }} />
-                                        ) : (
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                                <polyline points="16 18 22 12 16 6"></polyline>
-                                                <polyline points="8 6 2 12 8 18"></polyline>
-                                            </svg>
-                                        )}
-                                        {skill}
-                                    </motion.span>
-                                )
-                            })}
-                        </motion.div>
-                    </motion.div>
-
-                    {/* Tools & Others */}
-                    <motion.div variants={{
-                        hidden: { opacity: 0, y: 10 },
-                        visible: { opacity: 1, y: 0 }
-                    }}>
-                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Tools & Others</h3>
-                        <motion.div
-                            style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}
-                            variants={{
-                                visible: {
-                                    transition: {
-                                        staggerChildren: 0.05
-                                    }
-                                }
-                            }}
-                        >
-                            {['Git', 'REST APIs', 'VS Code', 'Figma', 'Canva'].map((skill, index) => {
+                            {['Git', 'GitHub', 'VS Code', 'Figma', 'Canva', 'Docker', 'AWS', 'Vercel'].map((skill, index) => {
                                 const logoUrl = getSkillLogo(skill, isDark);
                                 return (
                                     <motion.span
@@ -1319,61 +1270,32 @@ export default function Home() {
                     Featured Projects
                 </h2>
 
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
                     {projects.filter(p => p.id !== 'portfolio').map((project) => (
                         <SpotlightCard key={project.id} isDark={isDark}>
-                            {/* Browser Window Mockup */}
                             <div style={{
-                                borderRadius: '8px',
-                                overflow: 'hidden',
-                                border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                                marginBottom: '24px'
-                            }}>
-                                {/* Browser Header */}
+                                display: 'grid',
+                                gridTemplateColumns: '1fr',
+                                gap: '20px',
+                                '@media (min-width: 640px)': {
+                                    gridTemplateColumns: '200px 1fr'
+                                }
+                            } as any}>
+                                {/* Left: Preview Image/Video */}
                                 <div style={{
-                                    backgroundColor: '#1f2937', // dark slate
-                                    padding: '12px 16px',
+                                    borderRadius: '8px',
+                                    overflow: 'hidden',
+                                    border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
+                                    backgroundColor: project.solidColor || (isDark ? '#171717' : '#f8f9fa'),
+                                    aspectRatio: project.id === 'rooke' ? '2220/1080' :
+                                        project.id === 'texify' ? '2292/1080' :
+                                            project.id === 'portfolio' ? '2188/1080' :
+                                                project.id === 'scribl' ? '2220/1080' : '16/10',
                                     display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '16px'
-                                }}>
-                                    {/* Address Bar */}
-                                    <div style={{
-                                        flex: 1,
-                                        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                                        borderRadius: '4px',
-                                        padding: '4px 12px',
-                                        fontSize: '0.75rem',
-                                        color: '#9ca3af',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        gap: '8px'
-                                    }}>
-                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
-                                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                                        </svg>
-                                        {project.url}
-                                    </div>
-                                    {/* Window Controls */}
-                                    <div style={{ display: 'flex', gap: '6px' }}>
-                                        <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#6b7280' }}></div>
-                                        <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#6b7280' }}></div>
-                                        <div style={{ width: '10px', height: '10px', borderRadius: '50%', backgroundColor: '#6b7280' }}></div>
-                                    </div>
-                                </div>
-
-                                {/* Browser Body / Preview Area */}
-                                <div style={{
-                                    height: project.video ? 'auto' : 'clamp(280px, 50vw, 400px)',
-                                    aspectRatio: project.video ? '16/9' : 'auto',
-                                    backgroundColor: project.solidColor || (isDark ? '#171717' : '#f3f4f6'),
-                                    display: 'flex',
-                                    flexDirection: 'column',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    color: '#9ca3af',
-                                    position: 'relative'
+                                    position: 'relative',
+                                    minHeight: '140px'
                                 }}>
                                     {project.video ? (
                                         <video
@@ -1384,8 +1306,9 @@ export default function Home() {
                                             playsInline
                                             style={{
                                                 width: '100%',
-                                                height: 'auto',
-                                                display: 'block'
+                                                height: '100%',
+                                                objectFit: 'cover',
+                                                transform: project.id === 'portfolio' ? 'scale(1.15)' : 'none'
                                             }}
                                         />
                                     ) : project.image ? (
@@ -1396,79 +1319,97 @@ export default function Home() {
                                             style={{ objectFit: 'cover' }}
                                         />
                                     ) : (
-                                        !(project as any).solidColor && (
-                                            <>
-                                                <span style={{ fontSize: '2rem', marginBottom: '8px' }}>{project.icon}</span>
-                                                <p style={{ fontWeight: '500' }}>{project.title}</p>
-                                                <p style={{ fontSize: '0.875rem' }}>Screenshot Preview</p>
-                                            </>
-                                        )
+                                        <span style={{ fontSize: '2.5rem', opacity: 0.3 }}>{project.icon}</span>
                                     )}
                                 </div>
-                            </div>
 
-
-                            {/* Info */}
-                            <div>
-                                <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: '8px', gap: '16px' }}>
-                                    <ProjectTitle project={project} isDark={isDark} />
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                                        <motion.div
-                                            animate={{
-                                                scale: [1, 1.3, 1],
-                                                opacity: [1, 0.7, 1]
-                                            }}
-                                            transition={{
-                                                duration: 2,
-                                                repeat: Infinity,
-                                                ease: "easeInOut"
-                                            }}
-                                            style={{
-                                                width: '8px',
-                                                height: '8px',
-                                                borderRadius: '50%',
-                                                backgroundColor: project.status === 'Live' ? '#3b82f6' : '#eab308'
-                                            }}
-                                        />
-                                        <span style={{ color: isDark ? '#94a3b8' : '#64748b', fontSize: '0.8125rem', fontWeight: '500' }}>{project.status}</span>
-                                    </div>
-                                </div>
-                                <p style={{
-                                    fontSize: '0.875rem',
-                                    color: isDark ? '#9ca3af' : '#6b7280',
-                                    marginBottom: '16px'
-                                }}>
-                                    {project.description}
-                                </p>
-
-                                {/* Tech Stack */}
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '24px' }}>
-                                    {project.tags.map((tech, i) => (
-                                        <motion.span
-                                            key={i}
-                                            whileHover={{ scale: 1.1, y: -2 }}
-                                            transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            style={{
-                                                display: 'inline-block',
-                                                cursor: 'default',
-                                                padding: '4px 12px',
-                                                borderRadius: '9999px',
-                                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
-                                                color: isDark ? '#E5E7EB' : '#111827',
-                                                fontSize: '0.75rem',
-                                                fontWeight: '500',
-                                                border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`
-                                            }}
-                                        >
-                                            {tech}
-                                        </motion.span>
-                                    ))}
-                                </div>
-
-                                {/* Footer: Buttons */}
-                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                                {/* Right: Content */}
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                    {/* Header with title and status */}
                                     <div>
+                                        <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px', marginBottom: '4px' }}>
+                                            <ProjectTitle project={project} isDark={isDark} />
+                                            <div style={{
+                                                display: 'flex',
+                                                alignItems: 'center',
+                                                gap: '6px',
+                                                padding: '4px 10px',
+                                                borderRadius: '9999px',
+                                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.6)' : '#f3f4f6',
+                                                border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
+                                                flexShrink: 0
+                                            }}>
+                                                <motion.div
+                                                    animate={{
+                                                        scale: [1, 1.3, 1],
+                                                        opacity: [1, 0.7, 1]
+                                                    }}
+                                                    transition={{
+                                                        duration: 2,
+                                                        repeat: Infinity,
+                                                        ease: "easeInOut"
+                                                    }}
+                                                    style={{
+                                                        width: '6px',
+                                                        height: '6px',
+                                                        borderRadius: '50%',
+                                                        backgroundColor: project.status === 'Live' ? '#3b82f6' : '#eab308'
+                                                    }}
+                                                />
+                                                <span style={{
+                                                    color: isDark ? '#d1d5db' : '#4b5563',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    whiteSpace: 'nowrap'
+                                                }}>{project.status}</span>
+                                            </div>
+                                        </div>
+                                        <p style={{
+                                            fontSize: '0.8125rem',
+                                            color: isDark ? '#9ca3af' : '#6b7280',
+                                            lineHeight: '1.5',
+                                            margin: 0
+                                        }}>
+                                            {project.description}
+                                        </p>
+                                    </div>
+
+                                    {/* Tech Stack */}
+                                    <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                                        {project.tags.slice(0, 5).map((tech, i) => (
+                                            <motion.span
+                                                key={i}
+                                                whileHover={{ scale: 1.05 }}
+                                                transition={{ type: "spring", stiffness: 400, damping: 10 }}
+                                                style={{
+                                                    display: 'inline-block',
+                                                    padding: '4px 12px',
+                                                    borderRadius: '9999px',
+                                                    backgroundColor: isDark ? 'rgba(55, 65, 81, 0.5)' : '#f3f4f6',
+                                                    color: isDark ? '#d1d5db' : '#374151',
+                                                    fontSize: '0.7rem',
+                                                    fontWeight: '500',
+                                                    border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`
+                                                }}
+                                            >
+                                                {tech}
+                                            </motion.span>
+                                        ))}
+                                        {project.tags.length > 5 && (
+                                            <span style={{
+                                                display: 'inline-block',
+                                                padding: '3px 10px',
+                                                fontSize: '0.7rem',
+                                                color: isDark ? '#9ca3af' : '#6b7280',
+                                                fontWeight: '500'
+                                            }}>
+                                                +{project.tags.length - 5} more
+                                            </span>
+                                        )}
+                                    </div>
+
+                                    {/* Footer: Buttons */}
+                                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginTop: 'auto', flexWrap: 'wrap' }}>
                                         <Link
                                             href={`/projects/${project.id}`}
                                             style={{
@@ -1476,74 +1417,75 @@ export default function Home() {
                                                 alignItems: 'center',
                                                 gap: '6px',
                                                 color: '#2563eb',
-                                                fontSize: '0.875rem',
+                                                fontSize: '0.8125rem',
                                                 fontWeight: '500',
                                                 textDecoration: 'underline',
                                                 textUnderlineOffset: '3px',
                                                 cursor: 'pointer',
                                                 transition: 'all 0.2s ease'
                                             }}
-                                            onMouseEnter={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                                                e.currentTarget.style.color = '#1d4ed8';
-                                                e.currentTarget.style.gap = '10px';
-                                            }}
-                                            onMouseLeave={(e: React.MouseEvent<HTMLAnchorElement>) => {
-                                                e.currentTarget.style.color = '#2563eb';
-                                                e.currentTarget.style.gap = '6px';
-                                            }}
                                         >
-                                            View Project
-                                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            View Details
+                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                 <path d="M5 12h14"></path>
                                                 <path d="M12 5l7 7-7 7"></path>
                                             </svg>
                                         </Link>
-                                    </div>
 
-                                    <div style={{ display: 'flex', gap: '12px' }}>
-                                        <motion.a
-                                            href={project.demo || '#'}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            style={{
-                                                padding: '8px 16px',
-                                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
-                                                color: isDark ? '#E5E7EB' : '#111827',
-                                                border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
-                                                borderRadius: '6px',
-                                                fontSize: '0.875rem',
-                                                fontWeight: '500',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '6px'
-                                            }}
-                                        >
-                                            Live Demo
-                                            <svg width="14" height="14" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                                        </motion.a>
-                                        <motion.a
-                                            href={project.github || '#'}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            whileHover={{ scale: 1.05 }}
-                                            whileTap={{ scale: 0.95 }}
-                                            style={{
-                                                padding: '8px 16px',
-                                                backgroundColor: isDark ? '#374151' : '#f3f4f6',
-                                                color: isDark ? 'white' : '#1f2937',
-                                                borderRadius: '6px',
-                                                fontSize: '0.875rem',
-                                                fontWeight: '500',
-                                                display: 'flex',
-                                                alignItems: 'center',
-                                                gap: '6px'
-                                            }}
-                                        >
-                                            GitHub
-                                            <svg width="14" height="14" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
-                                        </motion.a>
+                                        <div style={{ display: 'flex', gap: '10px' }}>
+                                            <motion.a
+                                                href={project.demo || '#'}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                whileHover={{ scale: 1.02 }}
+                                                whileTap={{ scale: 0.98 }}
+                                                style={{
+                                                    padding: '6px 12px',
+                                                    backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : '#ffffff',
+                                                    color: isDark ? '#e5e7eb' : '#1f2937',
+                                                    border: `1px solid ${isDark ? '#374151' : '#d1d5db'}`,
+                                                    borderRadius: '8px',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    gap: '6px',
+                                                    textDecoration: 'none',
+                                                    transition: 'all 0.2s ease'
+                                                }}
+                                            >
+                                                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                                </svg>
+                                                Demo
+                                            </motion.a>
+                                            <motion.a
+                                                href={project.github || '#'}
+                                                target="_blank"
+                                                rel="noopener noreferrer"
+                                                whileHover={{ scale: 1.02 }}
+                                                whileTap={{ scale: 0.98 }}
+                                                style={{
+                                                    padding: '6px 12px',
+                                                    backgroundColor: isDark ? '#374151' : '#f3f4f6',
+                                                    color: isDark ? 'white' : '#1f2937',
+                                                    borderRadius: '8px',
+                                                    fontSize: '0.75rem',
+                                                    fontWeight: '500',
+                                                    display: 'inline-flex',
+                                                    alignItems: 'center',
+                                                    gap: '6px',
+                                                    textDecoration: 'none',
+                                                    border: `1px solid ${isDark ? '#374151' : '#d1d5db'}`,
+                                                    transition: 'all 0.2s ease'
+                                                }}
+                                            >
+                                                <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
+                                                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                                                </svg>
+                                                GitHub
+                                            </motion.a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
