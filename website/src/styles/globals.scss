@@ -39,7 +39,7 @@ html {
 }
 
 body {
-    font-family: var(--font-mono), "IBM Plex Mono", "Courier New", "Courier", monospace;
+    font-family: var(--font-mono), "JetBrains Mono", "Courier New", "Courier", monospace;
     font-weight: 400;
     background-color: var(--bg-color);
     color: var(--text-color);
@@ -108,7 +108,7 @@ textarea {
 code,
 kbd,
 pre {
-    font-family: var(--font-mono), 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-family: var(--font-mono), 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 .sr-only {
@@ -139,61 +139,78 @@ pre {
     justify-content: space-between;
 }
 
+.nav-pill-container {
+    background-color: rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 12px;
+    padding: 6px;
+    box-shadow:
+        0 2px 8px rgba(0, 0, 0, 0.04),
+        0 0 0 1px rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(10px);
+}
+
 .header-nav {
     display: flex;
-    gap: 0.75rem; // 12px
+    gap: 6px;
+    align-items: center;
 }
 
 .nav-link {
-    padding: 0.55rem 1rem;
-    font-size: 1rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.9375rem;
     font-weight: 500;
     color: var(--text-color);
-    background-color: var(--bg-color);
-    border: 1px solid rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-radius: 8px;
     transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    line-height: normal;
-
-    // very subtle shadow
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+    line-height: 1;
+    white-space: nowrap;
 
     &:hover {
-        transform: translateY(-1px);
-        border-color: rgba(0, 0, 0, 0.2);
+        background-color: rgba(0, 0, 0, 0.04);
     }
 
     &.active {
         background-color: white;
         color: #1c1917;
-        border-color: transparent;
+        border-color: rgba(0, 0, 0, 0.06);
         box-shadow:
-            0 4px 6px -1px rgba(0, 0, 0, 0.05),
-            0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            0 2px 4px rgba(0, 0, 0, 0.06),
+            0 1px 2px rgba(0, 0, 0, 0.04);
     }
 }
 
-// dark mode adjustments for the buttons
+// dark mode adjustments for the nav pill and buttons
 .dark {
+    .nav-pill-container {
+        background-color: rgba(23, 23, 23, 0.6);
+        border-color: rgba(255, 255, 255, 0.1);
+        box-shadow:
+            0 2px 8px rgba(0, 0, 0, 0.3),
+            0 0 0 1px rgba(255, 255, 255, 0.05);
+    }
+
     .nav-link {
-        background-color: #121212;
-        border-color: transparent;
-        color: rgba(255, 255, 255, 0.8);
+        color: rgba(255, 255, 255, 0.7);
 
         &:hover {
-            border-color: rgba(255, 255, 255, 0.3);
-            color: white;
+            background-color: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.9);
         }
 
         &.active {
             background-color: #2a2a2a;
             color: white;
-            border-color: rgba(255, 255, 255, 0.2);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            border-color: rgba(255, 255, 255, 0.15);
+            box-shadow:
+                0 2px 4px rgba(0, 0, 0, 0.4),
+                0 1px 2px rgba(0, 0, 0, 0.3);
         }
     }
 }
