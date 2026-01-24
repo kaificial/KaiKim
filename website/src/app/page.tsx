@@ -438,141 +438,6 @@ export default function Home() {
 
                 {/* Experience Items */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                    {/* PolicyEngine */}
-                    <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                        <div className="experience-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
-                            <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-start' }}>
-                                {/* PolicyEngine Logo */}
-                                <div className="experience-logo-container" style={{ width: '48px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
-                                    <Image
-                                        src="/assets/PE.png"
-                                        alt="PolicyEngine Logo"
-                                        width={36}
-                                        height={36}
-                                        style={{
-                                            borderRadius: '8px',
-                                            objectFit: 'cover'
-                                        }}
-                                    />
-                                </div>
-
-                                <div>
-                                    <h3 style={{
-                                        fontSize: '1rem',
-                                        fontWeight: '600',
-                                        marginBottom: '0px',
-                                        color: isDark ? 'white' : '#1c1917'
-                                    }}>
-                                        PolicyEngine
-                                    </h3>
-                                    <p style={{
-                                        fontSize: '0.875rem',
-                                        color: isDark ? '#9ca3af' : '#6b7280'
-                                    }}>
-                                        Software Developer
-                                    </p>
-                                </div>
-                            </div>
-
-                            <span className="experience-date" style={{
-                                fontSize: '0.875rem',
-                                color: isDark ? '#9ca3af' : '#6b7280',
-                                whiteSpace: 'nowrap'
-                            }}>
-                                Jan. 2026 - Present
-                            </span>
-                        </div>
-
-                        <motion.button
-                            className="experience-btn"
-                            onClick={() => toggleExpand('policyengine')}
-                            animate={{
-                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
-                                color: isDark ? '#d1d5db' : '#374151',
-                                borderColor: isDark ? '#374151' : '#e5e7eb',
-                            }}
-                            whileHover={{
-                                scale: 1.05,
-                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.9)' : '#E5E7EB',
-                                color: isDark ? '#E5E7EB' : '#111827',
-                                borderColor: isDark ? '#374151' : '#D1D5DB'
-                            }}
-                            whileTap={{ scale: 0.95 }}
-                            style={{
-                                border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                                background: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
-                                color: isDark ? '#d1d5db' : '#374151',
-                                fontSize: '0.7rem',
-                                cursor: 'pointer',
-                                padding: '3px 8px',
-                                borderRadius: '9999px',
-                                textAlign: 'left',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '4px',
-                                alignSelf: 'flex-start',
-                                fontWeight: '500',
-                                marginLeft: '52px',
-                                marginTop: '4px'
-                            }}
-                        >
-                            {expandedItems['policyengine'] ? 'Show less' : 'Read more'}
-                            <motion.svg
-                                width="12"
-                                height="12"
-                                viewBox="0 0 12 12"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                animate={{ rotate: expandedItems['policyengine'] ? 180 : 0 }}
-                            >
-                                <path d="M2 4l4 4 4-4" />
-                            </motion.svg>
-                        </motion.button>
-
-                        <AnimatePresence>
-                            {expandedItems['policyengine'] && (
-                                <motion.div
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: 'auto', opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    transition={{ duration: 0.2 }}
-                                    style={{ overflow: 'hidden' }}
-                                >
-                                    <div style={{ marginLeft: '52px', marginTop: '0px', paddingBottom: '12px' }}>
-                                        <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
-                                            Building
-                                        </p>
-                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '4px', margin: '-4px' }}>
-                                            {['Python'].map((skill, index) => (
-                                                <motion.span
-                                                    key={index}
-                                                    whileHover={{ scale: 1.1, y: -2 }}
-                                                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                                                    whileTap={{ scale: 0.95 }}
-                                                    style={{
-                                                        display: 'inline-block',
-                                                        cursor: 'default',
-                                                        padding: '4px 12px',
-                                                        backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
-                                                        color: isDark ? '#E5E7EB' : '#111827',
-                                                        border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
-                                                        borderRadius: '9999px',
-                                                        fontSize: '0.75rem',
-                                                        fontWeight: '500'
-                                                    }}
-                                                >
-                                                    {skill}
-                                                </motion.span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
 
                     {/* QMIND */}
                     <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
@@ -981,6 +846,120 @@ export default function Home() {
                             )}
                         </AnimatePresence>
                     </div >
+
+                    {/* RenoRun */}
+                    <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                        <div className="experience-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-start' }}>
+                                {/* RenoRun Logo */}
+                                <div className="experience-logo-container" style={{ width: '48px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
+                                    <Image
+                                        src="/assets/Reno Run.png"
+                                        alt="RenoRun Logo"
+                                        width={36}
+                                        height={36}
+                                        style={{
+                                            borderRadius: '8px',
+                                            objectFit: 'cover',
+                                            filter: isDark ? 'grayscale(1) brightness(1.2)' : 'grayscale(1) brightness(0.6)'
+                                        }}
+                                    />
+                                </div>
+
+                                <div>
+                                    <h3 style={{
+                                        fontSize: '1rem',
+                                        fontWeight: '600',
+                                        marginBottom: '0px',
+                                        color: isDark ? 'white' : '#1c1917'
+                                    }}>
+                                        RenoRun
+                                    </h3>
+                                    <p style={{
+                                        fontSize: '0.875rem',
+                                        color: isDark ? '#9ca3af' : '#6b7280'
+                                    }}>
+                                        Software Engineer Intern
+                                    </p>
+                                </div>
+                            </div>
+
+                            <span className="experience-date" style={{
+                                fontSize: '0.875rem',
+                                color: isDark ? '#9ca3af' : '#6b7280',
+                                whiteSpace: 'nowrap'
+                            }}>
+                                Dec. 2022 - April 2023
+                            </span>
+                        </div>
+
+                        <motion.button
+                            className="experience-btn"
+                            onClick={() => toggleExpand('renorun')}
+                            animate={{
+                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
+                                color: isDark ? '#d1d5db' : '#374151',
+                                borderColor: isDark ? '#374151' : '#e5e7eb',
+                            }}
+                            whileHover={{
+                                scale: 1.05,
+                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.9)' : '#E5E7EB',
+                                color: isDark ? '#E5E7EB' : '#111827',
+                                borderColor: isDark ? '#374151' : '#D1D5DB'
+                            }}
+                            whileTap={{ scale: 0.95 }}
+                            style={{
+                                border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
+                                background: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
+                                color: isDark ? '#d1d5db' : '#374151',
+                                fontSize: '0.7rem',
+                                cursor: 'pointer',
+                                padding: '3px 8px',
+                                borderRadius: '9999px',
+                                textAlign: 'left',
+                                display: 'inline-flex',
+                                alignItems: 'center',
+                                gap: '4px',
+                                alignSelf: 'flex-start',
+                                fontWeight: '500',
+                                marginLeft: '52px',
+                                marginTop: '4px'
+                            }}
+                        >
+                            {expandedItems['renorun'] ? 'Show less' : 'Read more'}
+                            <motion.svg
+                                width="12"
+                                height="12"
+                                viewBox="0 0 12 12"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="1.5"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                animate={{ rotate: expandedItems['renorun'] ? 180 : 0 }}
+                            >
+                                <path d="M2 4l4 4 4-4" />
+                            </motion.svg>
+                        </motion.button>
+
+                        <AnimatePresence>
+                            {expandedItems['renorun'] && (
+                                <motion.div
+                                    initial={{ height: 0, opacity: 0 }}
+                                    animate={{ height: 'auto', opacity: 1 }}
+                                    exit={{ height: 0, opacity: 0 }}
+                                    transition={{ duration: 0.2 }}
+                                    style={{ overflow: 'hidden' }}
+                                >
+                                    <div style={{ marginLeft: '52px', marginTop: '0px', paddingBottom: '12px' }}>
+                                        <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '0px' }}>
+                                            -
+                                        </p>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
                 </div>
             </motion.section>
 
@@ -1437,7 +1416,12 @@ export default function Home() {
                                                 href={project.demo || '#'}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                whileHover={{ scale: 1.02 }}
+                                                whileHover={{
+                                                    scale: 1.05,
+                                                    boxShadow: isDark
+                                                        ? '0 0 25px rgba(59, 130, 246, 0.8), 0 0 50px rgba(59, 130, 246, 0.4), 0 0 75px rgba(59, 130, 246, 0.2)'
+                                                        : '0 0 25px rgba(37, 99, 235, 0.6), 0 0 50px rgba(37, 99, 235, 0.3), 0 0 75px rgba(37, 99, 235, 0.15)'
+                                                }}
                                                 whileTap={{ scale: 0.98 }}
                                                 style={{
                                                     padding: '6px 12px',
@@ -1463,8 +1447,14 @@ export default function Home() {
                                                 href={project.github || '#'}
                                                 target="_blank"
                                                 rel="noopener noreferrer"
-                                                whileHover={{ scale: 1.02 }}
+                                                whileHover={{
+                                                    scale: 1.05,
+                                                    boxShadow: isDark
+                                                        ? '0 0 25px rgba(59, 130, 246, 0.8), 0 0 50px rgba(59, 130, 246, 0.4), 0 0 75px rgba(59, 130, 246, 0.2)'
+                                                        : '0 0 25px rgba(37, 99, 235, 0.6), 0 0 50px rgba(37, 99, 235, 0.3), 0 0 75px rgba(37, 99, 235, 0.15)'
+                                                }}
                                                 whileTap={{ scale: 0.98 }}
+                                                transition={{ duration: 0.2 }}
                                                 style={{
                                                     padding: '6px 12px',
                                                     backgroundColor: isDark ? '#374151' : '#f3f4f6',
@@ -1476,8 +1466,7 @@ export default function Home() {
                                                     alignItems: 'center',
                                                     gap: '6px',
                                                     textDecoration: 'none',
-                                                    border: `1px solid ${isDark ? '#374151' : '#d1d5db'}`,
-                                                    transition: 'all 0.2s ease'
+                                                    border: `1px solid ${isDark ? '#374151' : '#d1d5db'}`
                                                 }}
                                             >
                                                 <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
