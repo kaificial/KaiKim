@@ -16,6 +16,17 @@ export interface Project {
 
 export const projects: Project[] = [
     {
+        id: 'clairo',
+        title: 'Clairo',
+        description: 'AI-powered assistant to help you understand medical terminology, records, and reports with clarity.',
+        tags: ['TypeScript', 'Qwen 3', 'RAG', 'AI/ML'],
+        status: 'Building',
+        url: '',
+        video: '/assets/ClairoVideo.mp4',
+        github: '',
+        demo: '',
+    },
+    {
         id: 'scribl',
         title: 'Scribl',
         description: 'A web app to collaborate with friends to create a interactive birthday experience.',

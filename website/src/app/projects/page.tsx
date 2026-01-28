@@ -257,7 +257,8 @@ export default function ProjectsPage() {
                                                 aspectRatio: project.id === 'rooke' ? '2220/1080' :
                                                     project.id === 'texify' ? '2292/1080' :
                                                         project.id === 'portfolio' ? '2188/1080' :
-                                                            project.id === 'scribl' ? '2220/1080' : '16/9',
+                                                            project.id === 'scribl' ? '2220/1080' :
+                                                                project.id === 'clairo' ? '2220/1080' : '16/9',
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',

@@ -1269,7 +1269,8 @@ export default function Home() {
                                     aspectRatio: project.id === 'rooke' ? '2220/1080' :
                                         project.id === 'texify' ? '2292/1080' :
                                             project.id === 'portfolio' ? '2188/1080' :
-                                                project.id === 'scribl' ? '2220/1080' : '16/10',
+                                                project.id === 'scribl' ? '2220/1080' :
+                                                    project.id === 'clairo' ? '2220/1080' : '16/10',
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
