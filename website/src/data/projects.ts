@@ -22,7 +22,7 @@ export const projects: Project[] = [
         tags: ['TypeScript', 'Qwen 3', 'RAG', 'AI/ML'],
         status: 'Building',
         url: '',
-        video: '/assets/ClairoVideo.mp4',
+        video: '/assets/Clairo.mp4',
         github: '',
         demo: '',
     },
