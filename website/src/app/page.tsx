@@ -9,6 +9,7 @@ import { SpotlightCard } from '../components/SpotlightCard';
 import { projects } from '../data/projects';
 import FloatingDock from '../components/FloatingDock';
 import { ProjectDescription } from '../components/ProjectDescription';
+import Webring from '../components/Webring';
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion';
 
 // Helper to get logo URL
@@ -1511,7 +1512,10 @@ export default function Home() {
             </motion.section>
 
             {/* Blank Footer Space */}
-            <div style={{ height: '96px' }} />
+            <div style={{ height: '12px' }} />
+            <Webring />
+            <div style={{ height: '80px' }} />
+
             <FloatingDock />
         </div>
     );

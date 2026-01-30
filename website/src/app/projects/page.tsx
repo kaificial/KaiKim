@@ -9,6 +9,7 @@ import FloatingDock from '../../components/FloatingDock';
 import Link from 'next/link';
 import { useState } from 'react';
 import { ProjectDescription } from '../../components/ProjectDescription';
+import Webring from '../../components/Webring';
 
 const ProjectTitle = ({ project, isDark }: { project: any, isDark: boolean }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -533,6 +534,8 @@ export default function ProjectsPage() {
                     </motion.div>
                 </section>
 
+                <div style={{ height: '12px' }} />
+                <Webring />
                 <div style={{ height: '80px' }} />
                 <FloatingDock />
             </div>
