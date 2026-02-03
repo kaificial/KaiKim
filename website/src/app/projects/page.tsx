@@ -10,6 +10,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { ProjectDescription } from '../../components/ProjectDescription';
 import Webring from '../../components/Webring';
+import { ProjectVideo } from '../../components/ProjectVideo';
 
 const ProjectTitle = ({ project, isDark }: { project: any, isDark: boolean }) => {
     const [isHovered, setIsHovered] = useState(false);
@@ -267,16 +268,11 @@ export default function ProjectsPage() {
                                                 minHeight: '200px'
                                             }}>
                                                 {project.video ? (
-                                                    <video
+                                                    <ProjectVideo
                                                         src={project.video}
-                                                        autoPlay
-                                                        loop
-                                                        muted
-                                                        playsInline
+                                                        resetTime={project.id === 'portfolio' ? 2 : 0}
+                                                        iconColor={project.id === 'rooke' ? 'white' : 'black'}
                                                         style={{
-                                                            width: '100%',
-                                                            height: '100%',
-                                                            objectFit: 'cover',
                                                             transform: project.id === 'portfolio' ? 'scale(1.15)' : 'none'
                                                         }}
                                                     />

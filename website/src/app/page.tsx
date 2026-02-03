@@ -11,6 +11,7 @@ import FloatingDock from '../components/FloatingDock';
 import { ProjectDescription } from '../components/ProjectDescription';
 import Webring from '../components/Webring';
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion';
+import { ProjectVideo } from '../components/ProjectVideo';
 
 // Helper to get logo URL
 const getSkillLogo = (skill: string, isDark: boolean) => {
@@ -1279,16 +1280,11 @@ export default function Home() {
                                     minHeight: '140px'
                                 }}>
                                     {project.video ? (
-                                        <video
+                                        <ProjectVideo
                                             src={project.video}
-                                            autoPlay
-                                            loop
-                                            muted
-                                            playsInline
+                                            resetTime={project.id === 'portfolio' ? 2 : 0}
+                                            iconColor={project.id === 'rooke' ? 'white' : 'black'}
                                             style={{
-                                                width: '100%',
-                                                height: '100%',
-                                                objectFit: 'cover',
                                                 transform: project.id === 'portfolio' ? 'scale(1.15)' : 'none'
                                             }}
                                         />
