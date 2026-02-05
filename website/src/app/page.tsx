@@ -1028,7 +1028,7 @@ export default function Home() {
                         color: isDark ? '#9ca3af' : '#6b7280',
                         fontWeight: '500'
                     }}>
-                        2029
+                        2028
                     </span>
                 </div>
             </motion.section>
