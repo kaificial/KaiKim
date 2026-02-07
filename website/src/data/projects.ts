@@ -30,7 +30,7 @@ export const projects: Project[] = [
         id: 'scribl',
         title: 'Scribl',
         description: 'A web app to collaborate with friends to create a interactive birthday experience.',
-        tags: ['Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'Framer Motion', 'Java Spring Boot', 'PostgreSQL', 'Docker', 'WebSockets'],
+        tags: ['Java Spring Boot', 'Docker', 'PostgreSQL', 'Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'WebSockets'],
         status: 'Live',
         url: 'scribl.vercel.app',
         video: '/assets/scribldemo.mp4',
@@ -99,7 +99,7 @@ Because Web Workers don't share memory with the main thread, the board state is 
 - **Principal Variation (PV) Ghosts**: these are 3D projections (holograms) of the AI's predicted move sequences which show you exactly what it expects to happen next.
 
 (And you can toggle these visualizations on/off thoughout your game!)`,
-        tags: ['Three.js', 'JavaScript (ES6+)', 'HTML5', 'CSS3 (Vanilla)', 'WebGL', 'GSAP', 'Web Workers API', 'Vite', 'PostCSS'],
+        tags: ['WebGL', 'Web Workers API', 'Three.js', 'JavaScript', 'HTML5', 'CSS3 (Vanilla)', 'GSAP', 'Vite', 'PostCSS'],
         status: 'Live',
         url: 'rooke.vercel.app',
         github: 'https://github.com/kaificial/rooke',

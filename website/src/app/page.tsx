@@ -1353,7 +1353,7 @@ export default function Home() {
 
                                     {/* Tech Stack */}
                                     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                                        {project.tags.slice(0, 5).map((tech, i) => (
+                                        {project.tags.map((tech, i) => (
                                             <motion.span
                                                 key={i}
                                                 whileHover={{ scale: 1.05 }}
@@ -1372,17 +1372,7 @@ export default function Home() {
                                                 {tech}
                                             </motion.span>
                                         ))}
-                                        {project.tags.length > 5 && (
-                                            <span style={{
-                                                display: 'inline-block',
-                                                padding: '3px 10px',
-                                                fontSize: '0.7rem',
-                                                color: isDark ? '#9ca3af' : '#6b7280',
-                                                fontWeight: '500'
-                                            }}>
-                                                +{project.tags.length - 5} more
-                                            </span>
-                                        )}
+
                                     </div>
 
                                     {/* Footer: Buttons */}
