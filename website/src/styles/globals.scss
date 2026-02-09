@@ -6,6 +6,10 @@
 @import "tailwindcss/theme" layer(theme);
 @import "tailwindcss/utilities" layer(utilities);
 
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 // css reset stuff - makes things consistent for all browsers
 *,
 *::before,

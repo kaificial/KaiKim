@@ -1,13 +1,13 @@
 "use client";
 
-import { projects } from '../../../data/projects';
+import { projects } from '../../../../data/projects';
 import { notFound, useParams } from 'next/navigation';
-import { ProjectDescription } from '../../../components/ProjectDescription';
+import { ProjectDescription } from '../../../../components/ProjectDescription';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useTheme } from '../../../components/ThemeContext';
+import { useTheme } from '../../../../components/ThemeContext';
 import { motion } from 'framer-motion';
-import FloatingDock from '../../../components/FloatingDock';
+import FloatingDock from '../../../../components/FloatingDock';
 
 export default function ProjectPage() {
     const { id } = useParams();
