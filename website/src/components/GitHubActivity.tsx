@@ -6,6 +6,7 @@ import { useTheme } from './ThemeContext';
 
 interface GitHubActivityProps {
     username: string;
+    shouldStart?: boolean;
 }
 
 interface ContributionDay {
@@ -20,20 +21,24 @@ interface UserStats {
     following: number;
 }
 
-export function GitHubActivity({ username }: GitHubActivityProps) {
+export function GitHubActivity({ username, shouldStart = true }: GitHubActivityProps) {
     const { isDark } = useTheme();
     const [contributions, setContributions] = useState<ContributionDay[]>([]);
     const [totalContributions, setTotalContributions] = useState(0);
     const [currentStreak, setCurrentStreak] = useState(0);
     const [longestStreak, setLongestStreak] = useState(0);
     const [userStats, setUserStats] = useState<UserStats | null>(null);
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
     const [animationComplete, setAnimationComplete] = useState(false);
+    const [hasStarted, setHasStarted] = useState(false);
 
     useEffect(() => {
+        if (!shouldStart || hasStarted) return;
+
         const fetchData = async () => {
             try {
                 setLoading(true);
+                setHasStarted(true);
 
                 const contribResponse = await fetch(
                     `https://github-contributions-api.jogruber.de/v4/${username}?y=last`
@@ -109,7 +114,7 @@ export function GitHubActivity({ username }: GitHubActivityProps) {
         };
 
         fetchData();
-    }, [username]);
+    }, [username, shouldStart, hasStarted]);
 
     const getContributionColor = (level: number) => {
         if (isDark) {
@@ -139,7 +144,7 @@ export function GitHubActivity({ username }: GitHubActivityProps) {
         weeks.push(contributions.slice(i, i + 7));
     }
 
-    if (loading) {
+    if (!shouldStart || !hasStarted || loading) {
         return (
             <div
                 style={{
@@ -203,42 +208,20 @@ export function GitHubActivity({ username }: GitHubActivityProps) {
                     </svg>
                     <span style={{ fontWeight: 500, fontSize: '0.9375rem', position: 'relative' }}>
                         @{username}
-                        {/* Static underline */}
-                        <span
+                        <motion.span
                             style={{
                                 position: 'absolute',
                                 bottom: '-2px',
                                 left: 0,
                                 width: '100%',
-                                height: '1px',
-                                backgroundColor: isDark ? 'rgba(255,255,255,0.3)' : 'rgba(0,0,0,0.2)',
-                            }}
-                        />
-                        {/* Animated shimmer on hover */}
-                        <motion.span
-                            variants={{
-                                hover: {
-                                    left: ['0%', '100%'],
-                                    transition: {
-                                        duration: 0.8,
-                                        repeat: Infinity,
-                                        ease: 'linear',
-                                    }
-                                }
-                            }}
-                            style={{
-                                position: 'absolute',
-                                bottom: '-2px',
-                                left: '0%',
-                                width: '30%',
                                 height: '2px',
-                                background: isDark
-                                    ? 'linear-gradient(90deg, transparent, #60a5fa, transparent)'
-                                    : 'linear-gradient(90deg, transparent, #3b82f6, transparent)',
-                                opacity: 0,
+                                backgroundColor: isDark ? '#93c5fd' : '#2563eb',
+                                transformOrigin: 'left',
                             }}
-                            initial={{ opacity: 0 }}
-                            whileHover={{ opacity: 1 }}
+                            initial={{ scaleX: 0 }}
+                            animate={{ scaleX: 0 }}
+                            whileHover={{ scaleX: 1 }}
+                            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
                         />
                     </span>
                 </motion.a>
