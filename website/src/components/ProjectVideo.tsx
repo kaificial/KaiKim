@@ -13,7 +13,7 @@ interface ProjectVideoProps {
 
 export const ProjectVideo = ({ src, style, className, resetTime = 0, iconColor = 'black' }: ProjectVideoProps) => {
     const videoRef = useRef<HTMLVideoElement>(null);
-    const [iconState, setIconState] = useState<'play' | 'pause' | null>(null);
+    const [iconState, setIconState] = useState<'play' | 'pause' | null>('play');
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleClick = (e: React.MouseEvent) => {
@@ -35,18 +35,14 @@ export const ProjectVideo = ({ src, style, className, resetTime = 0, iconColor =
                     console.error("Video play prevented:", error);
                 });
             }
-            setIconState('play');
+            setIconState(null);
         } else {
             // Pause checks
             videoRef.current.pause();
             videoRef.current.currentTime = resetTime;
-            setIconState('pause');
+            // Show play icon to and keep it visible
+            setIconState('play');
         }
-
-        // Set timeout
-        timeoutRef.current = setTimeout(() => {
-            setIconState(null);
-        }, 2000);
     };
 
     const iconBgClass = iconColor === 'white'
@@ -66,7 +62,7 @@ export const ProjectVideo = ({ src, style, className, resetTime = 0, iconColor =
             <video
                 ref={videoRef}
                 src={src}
-                autoPlay
+                // removed autoPlay
                 loop
                 muted
                 playsInline
