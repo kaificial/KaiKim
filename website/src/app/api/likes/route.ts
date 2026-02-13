@@ -60,22 +60,6 @@ export async function POST(request: Request) {
             );
         }
 
-        // optional: CORS validation (uncomment if needed)
-        // const origin = request.headers.get("origin");
-        // const allowedOrigins = [
-        //     process.env.NEXT_PUBLIC_SITE_URL,
-        //     "http://localhost:3000",
-        //     "http://localhost:3001"
-        // ].filter(Boolean);
-        // 
-        // if (origin && !allowedOrigins.includes(origin)) {
-        //     console.warn(`Blocked request from unauthorized origin: ${origin}`);
-        //     return NextResponse.json(
-        //         { error: "forbidden", message: "Unauthorized origin" },
-        //         { status: 403 }
-        //     );
-        // }
-
         // check if this IP has already liked (24 hour expiration)
         const likeKey = `liked:${ip}`;
         const hasLiked = await kv.get(likeKey);
