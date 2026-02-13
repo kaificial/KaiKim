@@ -586,3 +586,15 @@ pre {
         display: none !important;
     }
 }
+
+// Custom grid for projects page to guarantee 2 columns
+.projects-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem; // 24px
+    padding-bottom: 3rem; // 48px
+
+    @media (min-width: 768px) {
+        grid-template-columns: 1fr 1fr;
+    }
+}

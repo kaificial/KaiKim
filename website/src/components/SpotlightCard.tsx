@@ -6,9 +6,10 @@ import React from 'react';
 interface SpotlightCardProps {
     children: React.ReactNode;
     isDark: boolean;
+    noPadding?: boolean;
 }
 
-export const SpotlightCard = ({ children, isDark }: SpotlightCardProps) => {
+export const SpotlightCard = ({ children, isDark, noPadding = false }: SpotlightCardProps) => {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
 
@@ -30,11 +31,14 @@ export const SpotlightCard = ({ children, isDark }: SpotlightCardProps) => {
             style={{
                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
                 borderRadius: '8px',
-                padding: '16px',
+                padding: noPadding ? '0' : '16px',
                 backgroundColor: isDark ? '#0e0e0d' : 'white',
                 position: 'relative',
                 overflow: 'hidden',
-                boxShadow: isDark ? 'none' : '0 0 0 1px rgba(0, 0, 0, 0.05)'
+                boxShadow: isDark ? 'none' : '0 0 0 1px rgba(0, 0, 0, 0.05)',
+                height: '100%',
+                display: 'flex',
+                flexDirection: 'column'
             }}
         >
             <motion.div
@@ -50,7 +54,7 @@ export const SpotlightCard = ({ children, isDark }: SpotlightCardProps) => {
                     transition: 'opacity 0.3s'
                 }}
             />
-            <div style={{ position: 'relative', zIndex: 1 }}>
+            <div style={{ position: 'relative', zIndex: 1, height: '100%', display: 'flex', flexDirection: 'column', flex: 1 }}>
                 {children}
             </div>
         </motion.div>

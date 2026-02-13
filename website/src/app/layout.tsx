@@ -1,6 +1,6 @@
 
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { Inter, JetBrains_Mono, Source_Serif_4 } from "next/font/google";
 import "../styles/globals.scss";
 import "katex/dist/katex.min.css";
 import Header from "../components/Header";
@@ -17,6 +17,12 @@ const jetbrainsMono = JetBrains_Mono({
     subsets: ["latin"],
     variable: "--font-mono",
     weight: ["400", "500", "600"],
+});
+
+const sourceSerif = Source_Serif_4({
+    subsets: ["latin"],
+    variable: "--font-serif",
+    weight: ["400", "600", "700"],
 });
 
 // site metadata for SEO and social sharing
@@ -71,7 +77,7 @@ export default function RootLayout({
                     }}
                 />
             </head>
-            <body className={`${inter.variable} ${jetbrainsMono.variable}`}>
+            <body className={`${inter.variable} ${jetbrainsMono.variable} ${sourceSerif.variable}`}>
                 <ThemeProvider>
                     <ScrollToTop />
                     <Header />

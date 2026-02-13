@@ -118,7 +118,7 @@ export default function ProjectsPage() {
 
             <div style={{
                 width: '96%',
-                maxWidth: '1200px',
+                maxWidth: '1400px',
                 margin: '0 auto',
                 padding: '0 0 48px 0'
             }}>
@@ -222,11 +222,7 @@ export default function ProjectsPage() {
                     </motion.div>
 
                     <motion.div
-                        style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 340px), 1fr))',
-                            gap: '20px'
-                        }}
+                        className="projects-grid"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 1.6, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
@@ -243,29 +239,25 @@ export default function ProjectsPage() {
                                         duration: 0.4,
                                         ease: [0.22, 1, 0.36, 1]
                                     }}
+                                    className="h-full"
                                 >
-                                    <SpotlightCard isDark={isDark}>
+                                    <SpotlightCard isDark={isDark} noPadding={true}>
                                         <div style={{
-                                            display: 'grid',
-                                            gridTemplateColumns: '1fr',
-                                            gap: '20px'
+                                            display: 'flex',
+                                            flexDirection: 'column',
+                                            height: '100%'
                                         }}>
                                             {/* Top: Preview Image/Video */}
                                             <div style={{
-                                                borderRadius: '8px',
+                                                width: '100%',
                                                 overflow: 'hidden',
-                                                border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
+                                                borderBottom: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
                                                 backgroundColor: project.solidColor || (isDark ? '#171717' : '#f8f9fa'),
-                                                aspectRatio: project.id === 'rooke' ? '2220/1080' :
-                                                    project.id === 'texify' ? '2292/1080' :
-                                                        project.id === 'portfolio' ? '2188/1080' :
-                                                            project.id === 'scribl' ? '2220/1080' :
-                                                                project.id === 'clairo' ? '2220/1080' : '16/9',
+                                                aspectRatio: '16/9',
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
-                                                position: 'relative',
-                                                minHeight: '200px'
+                                                position: 'relative'
                                             }}>
                                                 {project.video ? (
                                                     <ProjectVideo
@@ -289,7 +281,13 @@ export default function ProjectsPage() {
                                             </div>
 
                                             {/* Bottom: Content */}
-                                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                                            <div style={{
+                                                display: 'flex',
+                                                flexDirection: 'column',
+                                                gap: '8px',
+                                                padding: '20px',
+                                                flex: 1
+                                            }}>
                                                 {/* Header with title and status */}
                                                 <div>
                                                     <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: '12px', marginBottom: '6px' }}>
@@ -340,7 +338,7 @@ export default function ProjectsPage() {
                                                 </div>
 
                                                 {/* Tech Stack */}
-                                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px', marginTop: '12px' }}>
                                                     {project.tags.map((tech, i) => (
                                                         <motion.span
                                                             key={i}
@@ -363,7 +361,7 @@ export default function ProjectsPage() {
                                                 </div>
 
                                                 {/* Footer: Buttons */}
-                                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginTop: '4px', flexWrap: 'wrap' }}>
+                                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginTop: 'auto', flexWrap: 'wrap' }}>
                                                     <Link
                                                         href={`/projects/${project.id}`}
                                                         style={{
