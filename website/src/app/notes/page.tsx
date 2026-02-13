@@ -3,8 +3,10 @@
 import React, { useState, useRef } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+
 import Image from "next/image";
 import { useTheme } from "../../components/ThemeContext";
+import FloatingDock from "../../components/FloatingDock";
 
 // --- Media Data & Components (Extracted from Interests) ---
 
@@ -507,6 +509,8 @@ export default function NotesPage() {
                     onToggleTrack={togglePlayback}
                 />
             </section>
+
+            <FloatingDock />
         </div>
     );
 }
