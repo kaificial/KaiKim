@@ -13,7 +13,7 @@ interface ProjectVideoProps {
 
 export const ProjectVideo = ({ src, style, className, resetTime = 0, iconColor = 'black' }: ProjectVideoProps) => {
     const videoRef = useRef<HTMLVideoElement>(null);
-    const [iconState, setIconState] = useState<'play' | 'pause' | null>('play');
+    const [iconState, setIconState] = useState<'play' | 'pause' | null>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleClick = (e: React.MouseEvent) => {
@@ -62,7 +62,7 @@ export const ProjectVideo = ({ src, style, className, resetTime = 0, iconColor =
             <video
                 ref={videoRef}
                 src={src}
-                // removed autoPlay
+                autoPlay
                 loop
                 muted
                 playsInline

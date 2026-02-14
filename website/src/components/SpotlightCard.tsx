@@ -32,10 +32,12 @@ export const SpotlightCard = ({ children, isDark, noPadding = false }: Spotlight
                 border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
                 borderRadius: '8px',
                 padding: noPadding ? '0' : '16px',
-                backgroundColor: isDark ? '#0e0e0d' : 'white',
+                backgroundColor: isDark ? '#171717' : 'white',
                 position: 'relative',
                 overflow: 'hidden',
-                boxShadow: isDark ? 'none' : '0 0 0 1px rgba(0, 0, 0, 0.05)',
+                boxShadow: isDark
+                    ? '0 4px 6px -1px rgba(0, 0, 0, 0.5), 0 2px 4px -1px rgba(0, 0, 0, 0.3)'
+                    : '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column'
