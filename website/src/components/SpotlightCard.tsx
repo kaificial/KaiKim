@@ -9,9 +9,12 @@ interface SpotlightCardProps {
     noPadding?: boolean;
 }
 
+import { useUISound } from '@/hooks/use-ui-sound';
+
 export const SpotlightCard = ({ children, isDark, noPadding = false }: SpotlightCardProps) => {
     const mouseX = useMotionValue(0);
     const mouseY = useMotionValue(0);
+    const { playHover } = useUISound();
 
     function handleMouseMove({ currentTarget, clientX, clientY }: React.MouseEvent) {
         const { left, top } = currentTarget.getBoundingClientRect();
@@ -22,6 +25,7 @@ export const SpotlightCard = ({ children, isDark, noPadding = false }: Spotlight
     return (
         <motion.div
             onMouseMove={handleMouseMove}
+            onMouseEnter={() => playHover()}
             className="group relative"
             initial={{ scale: 0.99 }}
             whileInView={{ scale: 0.99 }}

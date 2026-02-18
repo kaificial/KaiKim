@@ -97,7 +97,21 @@ const HerReviewContent = () => {
 
 // From Interests Page
 
-const mediaData = {
+// From Interests Page
+
+interface MediaItem {
+    id: string;
+    title: string;
+    year: string;
+    poster: string;
+    rating: number;
+    imdbUrl: string;
+    description: string;
+    soundtrack: { title: string; audioPath: string };
+    content?: React.ReactNode;
+}
+
+const mediaData: Record<string, MediaItem[]> = {
     movies: [
         { id: 'drive', title: 'Drive', year: '2011', poster: '/music/Drive.jpg', rating: 3.5, imdbUrl: 'https://www.imdb.com/title/tt0780504/', description: 'Add your thoughts about Drive here...', soundtrack: { title: 'Nightcall – Kavinsky', audioPath: '/music/drive.mp3' } },
         { id: 'interstellar', title: 'Interstellar', year: '2014', poster: '/music/Interstellar.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt0816692/', description: 'Add your thoughts about Interstellar here...', soundtrack: { title: 'Cornfield Chase – Hans Zimmer', audioPath: '/music/Interstellar.mp3' } },
@@ -233,6 +247,8 @@ const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack }:
     const rowHover = isDark ? 'rgba(255,255,255,0.03)' : 'rgba(0,0,0,0.02)';
     const selectedBg = isDark ? 'rgba(56, 189, 248, 0.06)' : 'rgba(37, 99, 235, 0.04)';
 
+    const items = mediaData[activeCategory];
+
     return (
         <div style={{
             backgroundColor: bg,
@@ -297,7 +313,7 @@ const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack }:
                 transition={{ duration: 0.25 }}
             >
                 {items.map((item, index) => {
-                    const isSelected = selected?.id === item.id;
+                    const isSelected = selectedItem === item.id;
                     const isHovered = hoveredRow === item.id;
                     const isThisTrackPlaying = activeTrack === `media-${item.id}` && isTrackPlaying;
 

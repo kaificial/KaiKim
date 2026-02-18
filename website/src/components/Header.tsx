@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Flame } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useTheme } from "./ThemeContext";
+import { useUISound } from "@/hooks/use-ui-sound";
 
 // nav links for the header
 const navLinks = [
@@ -18,6 +19,7 @@ const navLinks = [
 export default function Header() {
     const pathname = usePathname();
     const { isDark, toggleTheme } = useTheme();
+    const { playClick, playHover, playOn, playOff } = useUISound();
 
     // State for local display and hover
     const [count, setCount] = useState(0);
@@ -164,7 +166,8 @@ export default function Header() {
                                 key={link.href}
                                 href={link.href}
                                 className={`nav-link ${pathname === link.href ? "active" : ""}`}
-                                onClick={() => setIsMobileMenuOpen(false)}
+                                onClick={() => { setIsMobileMenuOpen(false); playClick(); }}
+                                onMouseEnter={() => playHover()}
                             >
                                 {link.label}
                             </Link>
@@ -176,7 +179,7 @@ export default function Header() {
                     {/* Mobile menu button */}
                     <button
                         className="mobile-menu-btn"
-                        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                        onClick={() => { setIsMobileMenuOpen(!isMobileMenuOpen); playClick(); }}
                         aria-label="Toggle mobile menu"
                     >
                         {isMobileMenuOpen ? (
@@ -194,7 +197,7 @@ export default function Header() {
                     </button>
 
                     <motion.div
-                        onMouseEnter={() => setIsHovered(true)}
+                        onMouseEnter={() => { setIsHovered(true); playHover(); }}
                         onMouseLeave={() => setIsHovered(false)}
                         style={{ position: 'relative' }}
                     >
@@ -236,7 +239,7 @@ export default function Header() {
                         </AnimatePresence>
 
                         <motion.button
-                            onClick={handleLikeClick}
+                            onClick={() => { handleLikeClick(); playClick(); }}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             transition={{ type: "spring", stiffness: 400, damping: 17 }}
@@ -269,7 +272,7 @@ export default function Header() {
                     </motion.div>
 
                     <button
-                        onClick={toggleTheme}
+                        onClick={() => { toggleTheme(); playClick(); }}
                         className="theme-toggle"
                         aria-label="Toggle dark mode"
                     >
