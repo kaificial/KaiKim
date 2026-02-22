@@ -23,8 +23,8 @@ export const projects: Project[] = [
         status: 'Building',
         url: '',
         video: '/assets/Clairo.mp4',
-        github: '',
-        demo: '',
+        github: 'https://github.com/kaificial/clairo',
+        demo: 'https://clairomedical.vercel.app/',
     },
     {
         id: 'scribl',
