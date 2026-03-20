@@ -3,7 +3,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { useState } from 'react';
+import { CSSProperties, ReactNode, useState } from 'react';
 import { useTheme } from '../components/ThemeContext';
 import { SpotlightCard } from '../components/SpotlightCard';
 import { projects } from '../data/projects';
@@ -53,7 +53,7 @@ const ProjectTitle = ({ project, isDark }: { project: any, isDark: boolean }) =>
                 color: isDark ? 'white' : '#1c1917',
                 margin: 0
             }}>
-                {project.title}
+                <TextReveal delay={0.22}>{project.title}</TextReveal>
             </h3>
         );
     }
@@ -83,7 +83,7 @@ const ProjectTitle = ({ project, isDark }: { project: any, isDark: boolean }) =>
                         transition={{ duration: 0.2 }}
                         style={{ color: '#3b82f6' }} // blue highlight for the effect
                     >
-                        DeJa Vu?
+                        <TextReveal delay={0.2}>DeJa Vu?</TextReveal>
                     </motion.span>
                 ) : (
                     <motion.span
@@ -93,7 +93,7 @@ const ProjectTitle = ({ project, isDark }: { project: any, isDark: boolean }) =>
                         exit={{ opacity: 0, y: -5 }}
                         transition={{ duration: 0.2 }}
                     >
-                        {project.title}
+                        <TextReveal delay={0.2}>{project.title}</TextReveal>
                     </motion.span>
                 )}
             </AnimatePresence>
@@ -101,49 +101,36 @@ const ProjectTitle = ({ project, isDark }: { project: any, isDark: boolean }) =>
     );
 };
 
+type TextRevealProps = {
+    children: ReactNode;
+    delay?: number;
+    as?: keyof typeof motion;
+    className?: string;
+    style?: CSSProperties;
+};
+
+const TextReveal = ({ children, delay = 0, as = 'span', className, style }: TextRevealProps) => {
+    const Component = motion[as] as any;
+
+    return (
+        <Component
+            className={`text-reveal ${className || ''}`.trim()}
+            initial={{ opacity: 0, filter: 'blur(12px)' }}
+            animate={{ opacity: 1, filter: 'blur(0px)' }}
+            transition={{ delay, duration: 1.15, ease: [0.22, 1, 0.36, 1] }}
+            style={{
+                ...style,
+                ['--reveal-delay' as string]: `${delay}s`
+            }}
+        >
+            {children}
+        </Component>
+    );
+};
+
 export default function Home() {
     const { isDark, toggleTheme } = useTheme();
     const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
-
-    const Tooltip = ({ text }: { text: string }) => (
-        <motion.div
-            initial={{ opacity: 0, y: 10, scale: 0.8, x: '-50%' }}
-            animate={{ opacity: 1, y: 0, scale: 1, x: '-50%' }}
-            exit={{ opacity: 0, scale: 0.8, x: '-50%' }}
-            transition={{ duration: 0.15 }}
-            style={{
-                position: 'absolute',
-                bottom: '100%',
-                left: '50%',
-                marginBottom: '12px',
-                padding: '6px 12px',
-                backgroundColor: isDark ? '#1f2937' : 'white',
-                color: isDark ? 'white' : 'black',
-                borderRadius: '8px',
-                fontSize: '12px',
-                fontWeight: '500',
-                whiteSpace: 'nowrap',
-                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                pointerEvents: 'none',
-                zIndex: 50,
-                border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`,
-            }}
-        >
-            {text}
-            <div style={{
-                position: 'absolute',
-                bottom: '-4px',
-                left: '50%',
-                marginLeft: '-4px',
-                width: '8px',
-                height: '8px',
-                backgroundColor: 'inherit',
-                borderRight: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`,
-                borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`,
-                transform: 'rotate(45deg)'
-            }} />
-        </motion.div>
-    );
     const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
     const [isTorontoHovered, setIsTorontoHovered] = useState(false);
     const [isHeroImageHovered, setIsHeroImageHovered] = useState(false);
@@ -156,23 +143,23 @@ export default function Home() {
     };
 
 
-    const iconColors = {
-        bg: isDark ? '#121212' : '#f5f5f4',
-        bgHover: isDark ? '#2a2a2a' : '#ffffff',
-        icon: isDark ? 'white' : '#1c1917',
-        border: isDark ? '1px solid rgba(255, 255, 255, 0.1)' : '1px solid rgba(0, 0, 0, 0.1)',
-        shadow: isDark ? 'none' : '0 1px 2px rgba(0, 0, 0, 0.04)'
-    };
-
     const { scrollYProgress } = useScroll();
     const scaleX = useSpring(scrollYProgress, {
         stiffness: 100,
         damping: 30,
         restDelta: 0.001
     });
+    const revealBaseDelay = 0.15;
+    const revealStep = 0.08;
+    const revealDelay = (slot: number) => revealBaseDelay + slot * revealStep;
+    const rt = (text: ReactNode, slot: number, className?: string) => (
+        <TextReveal delay={revealDelay(slot)} className={className}>
+            {text}
+        </TextReveal>
+    );
 
     return (
-        <div className="w-full">
+        <div className="w-full homepage-text-reveal">
             <motion.div
                 style={{
                     scaleX,
@@ -189,39 +176,185 @@ export default function Home() {
             {/* 
                 Hero Section
             */}
-            <section className="hero-section">
-                <div className="hero-layout">
-                    {/* Left Column - Hero Text */}
-                    <div className="hero-content" style={{ position: 'relative', zIndex: 10 }}>
-                        {/* name and title */}
-                        <motion.h1
-                            className="hero-title font-bold text-gray-900 dark:text-white tracking-tight leading-none text-left"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.2, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
-                        >
-                            Kai Kim
-                        </motion.h1>
+            <section className="hero-section" style={{ position: 'relative', zIndex: 10 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {/* Header Row: Title/Name + Image */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '24px', justifyContent: 'space-between' }}>
+                        
+                        {/* Text Container */}
+                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1, minWidth: 0 }}>
+                            <motion.h1
+                                className="font-bold text-gray-900 dark:text-white tracking-tight leading-none text-left"
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.2, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
+                                style={{ fontSize: '4rem', marginBottom: '4px', marginTop: 0 }}
+                            >
+                                {rt('Kai Kim', 0, 'text-reveal-hero')}
+                            </motion.h1>
 
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 1.2, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                                style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}
+                            >
+                                <span className="text-gray-900 dark:text-gray-100 font-medium m-0" style={{ fontSize: '1.1rem' }}>
+                                    {rt("CS @ Queen's University", 1)}
+                                </span>
+                                <motion.div
+                                    className="location-pill"
+                                    whileHover={{ scale: 1.05 }}
+                                    whileTap={{ scale: 0.95 }}
+                                    style={{ position: 'relative', cursor: 'pointer', padding: '2px 8px', fontSize: '0.75rem', opacity: 0.8 }}
+                                    onMouseEnter={() => setIsTorontoHovered(true)}
+                                    onMouseLeave={() => setIsTorontoHovered(false)}
+                                >
+                                    <AnimatePresence>
+                                        {isTorontoHovered && (
+                                            <motion.div
+                                                initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                                                animate={{ opacity: 1, y: 0, scale: 1 }}
+                                                exit={{ opacity: 0, y: 10, scale: 0.9 }}
+                                                transition={{ duration: 0.2 }}
+                                                style={{
+                                                    position: 'absolute',
+                                                    bottom: '120%',
+                                                    left: '40px',
+                                                    transform: 'translateX(-50%)',
+                                                    width: '180px',
+                                                    height: '110px',
+                                                    borderRadius: '12px',
+                                                    overflow: 'hidden',
+                                                    boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
+                                                    border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
+                                                    zIndex: 50,
+                                                    pointerEvents: 'none',
+                                                    background: isDark ? '#1f2937' : 'white'
+                                                }}
+                                            >
+                                                <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                                                    <Image
+                                                        src="/assets/toto.png"
+                                                        alt="Toronto Skyline"
+                                                        fill
+                                                        style={{ objectFit: 'cover' }}
+                                                    />
+                                                </div>
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style={{ width: '10px', height: '10px', opacity: 0.8 }}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                    </svg>
+                                    {rt('Toronto, ON', 2)}
+                                </motion.div>
+                            </motion.div>
+                        </div>
+
+                        {/* Image Container */}
                         <motion.div
-                            className="hero-subtitle-row"
+                            style={{ position: 'relative', flexShrink: 0 }}
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
-                            transition={{ delay: 1.2, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                            transition={{ delay: 0.8, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                         >
-                            <span className="hero-subtitle text-gray-900 dark:text-gray-100 font-medium m-0">
-                                CS @ Queen's
-                            </span>
-                            <motion.div
-                                className="location-pill"
-                                whileHover={{ scale: 1.05 }}
-                                whileTap={{ scale: 0.95 }}
-                                style={{ position: 'relative', cursor: 'pointer' }}
-                                onMouseEnter={() => setIsTorontoHovered(true)}
-                                onMouseLeave={() => setIsTorontoHovered(false)}
+                            <div
+                                style={{
+                                    position: 'relative',
+                                    width: '112px',
+                                    height: '112px',
+                                    borderRadius: '20px',
+                                    padding: '3px',
+                                    boxShadow: isDark ? '0 0 0 2px #374151' : '0 0 0 2px #D1D5DB',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                    backgroundColor: 'transparent'
+                                }}
+                                onMouseEnter={() => setIsHeroImageHovered(true)}
+                                onMouseLeave={() => setIsHeroImageHovered(false)}
                             >
                                 <AnimatePresence>
-                                    {isTorontoHovered && (
+                                    {isHeroImageHovered && (
+                                        <motion.div
+                                            initial={{ opacity: 0, scale: 0.8, rotate: -25 }}
+                                            animate={{ opacity: 1, scale: 1, rotate: -15 }}
+                                            exit={{ opacity: 0, scale: 0.8, rotate: -25 }}
+                                            transition={{ duration: 0.2, ease: "backOut" }}
+                                            style={{
+                                                position: 'absolute',
+                                                top: '-20px',
+                                                left: '-25px',
+                                                backgroundColor: isDark ? '#1f2937' : 'white',
+                                                color: isDark ? 'white' : '#1f2937',
+                                                padding: '4px 10px',
+                                                borderRadius: '8px',
+                                                fontSize: '0.75rem',
+                                                fontWeight: '600',
+                                                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                                                zIndex: 20,
+                                                pointerEvents: 'none',
+                                                whiteSpace: 'nowrap',
+                                                border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`
+                                            }}
+                                        >
+                                            Hello!
+                                            <div style={{
+                                                position: 'absolute',
+                                                bottom: '-5px',
+                                                right: '12px',
+                                                width: '10px',
+                                                height: '10px',
+                                                backgroundColor: isDark ? '#1f2937' : 'white',
+                                                transform: 'rotate(45deg)',
+                                                borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`,
+                                                borderRight: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`,
+                                            }} />
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+
+                                <Image
+                                    src="/assets/pfp.jpg"
+                                    alt="Kai Kim"
+                                    width={112}
+                                    height={112}
+                                    style={{
+                                        width: '100%',
+                                        height: '100%',
+                                        objectFit: 'cover',
+                                        objectPosition: '25% 50%',
+                                        borderRadius: '17px',
+                                        filter: 'brightness(1.15)'
+                                    }}
+                                    priority
+                                />
+                            </div>
+                        </motion.div>
+                    </div>
+
+
+                    {/* Paragraph and Socials */}
+                    <div>
+                        <motion.p
+                            className="text-base sm:text-lg text-gray-800 dark:text-gray-300 text-left"
+                            style={{ marginBottom: '12px', width: '100%', lineHeight: 1.6 }}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ delay: 1.35, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
+                        >
+                            {rt("I build reliable software and explore new technologies. When I'm not coding, you can find me watching ", 3)}{' '}
+                            <span 
+                                className="relative inline cursor-pointer"
+                                onMouseEnter={() => setHoveredIcon('films')}
+                                onMouseLeave={() => setHoveredIcon(null)}
+                                style={{ textDecoration: 'underline', textUnderlineOffset: '4px' }}
+                            >
+                                {rt('films', 4.2)}
+                                <AnimatePresence>
+                                    {hoveredIcon === 'films' && (
                                         <motion.div
                                             initial={{ opacity: 0, y: 10, scale: 0.9 }}
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -229,196 +362,34 @@ export default function Home() {
                                             transition={{ duration: 0.2 }}
                                             style={{
                                                 position: 'absolute',
-                                                bottom: '120%',
+                                                bottom: '100%',
                                                 left: '50%',
                                                 transform: 'translateX(-50%)',
-                                                width: '180px',
-                                                height: '110px',
-                                                borderRadius: '12px',
+                                                marginBottom: '12px',
+                                                display: 'grid',
+                                                gridTemplateColumns: '1fr 1fr 1fr 1fr',
+                                                gridTemplateRows: '1fr',
+                                                gap: '0px',
+                                                width: '320px',
+                                                height: '120px',
+                                                borderRadius: '16px',
                                                 overflow: 'hidden',
-                                                boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05)',
-                                                border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'}`,
-                                                zIndex: 50,
+                                                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)',
                                                 pointerEvents: 'none',
-                                                background: isDark ? '#1f2937' : 'white'
+                                                zIndex: 50,
+                                                border: '1px solid rgba(255,255,255,0.1)'
                                             }}
                                         >
-                                            <div style={{ position: 'relative', width: '100%', height: '100%' }}>
-                                                <Image
-                                                    src="/assets/toto.png"
-                                                    alt="Toronto Skyline"
-                                                    fill
-                                                    style={{ objectFit: 'cover' }}
-                                                />
-                                            </div>
+                                            <div style={{ backgroundImage: 'url(/music/Interstellar.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                                            <div style={{ backgroundImage: 'url(/music/Drive.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                                            <div style={{ backgroundImage: 'url(/music/Arrival.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                                            <div style={{ backgroundImage: 'url(/music/lalaland.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
-                                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                                Toronto, ON
-                            </motion.div>
-                        </motion.div>
-
-                        <motion.p
-                            className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-xl text-left"
-                            style={{ marginBottom: '20px' }}
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 1.35, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-                        >
-                            I enjoy designing and building reliable software. From algorithms to full stack solutions, I love exploring new technologies that push my skills forward!
+                            </span>{rt(', discovering new music, or playing racket sports.', 4)}
                         </motion.p>
-
-                        {/* social icon links */}
-                        <motion.div
-                            style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', marginBottom: '24px' }}
-                            initial="hidden"
-                            animate="visible"
-                            variants={{
-                                visible: {
-                                    transition: {
-                                        delayChildren: 1.5,
-                                        staggerChildren: 0.1
-                                    }
-                                }
-                            }}
-                        >
-                            {[
-                                {
-                                    id: 'hero-github',
-                                    href: "https://github.com/kaificial",
-                                    label: 'GitHub',
-                                    icon: <svg style={{ width: '20px', height: '20px' }} fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
-                                },
-                                {
-                                    id: 'hero-linkedin',
-                                    href: "https://www.linkedin.com/in/newjeans/",
-                                    label: 'LinkedIn',
-                                    icon: <svg style={{ width: '20px', height: '20px' }} fill="currentColor" viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" /></svg>
-                                },
-                                {
-                                    id: 'hero-email',
-                                    href: "mailto:kaikimto@gmail.com",
-                                    label: 'Mail: kaikimto@gmail.com',
-                                    icon: <svg style={{ width: '20px', height: '20px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 4.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                                },
-                                {
-                                    id: 'hero-resume',
-                                    href: "/resume",
-                                    label: 'Resume',
-                                    icon: <svg style={{ width: '20px', height: '20px' }} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                                },
-                                {
-                                    id: 'hero-x',
-                                    href: "https://x.com/kaijinju",
-                                    label: 'X',
-                                    icon: <svg style={{ width: '20px', height: '20px' }} fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" /></svg>
-                                }
-                            ].map((social) => (
-                                <motion.a
-                                    key={social.id}
-                                    href={social.href}
-                                    target={social.href.startsWith('http') ? "_blank" : undefined}
-                                    rel={social.href.startsWith('http') ? "noopener noreferrer" : undefined}
-                                    style={{
-                                        position: 'relative',
-                                        width: '40px',
-                                        height: '40px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        backgroundColor: iconColors.bg,
-                                        color: iconColors.icon,
-                                        borderRadius: '10px',
-                                        border: iconColors.border,
-                                        boxShadow: isDark
-                                            ? '0 1px 2px rgba(0, 0, 0, 0.3), 0 0 0 1px rgba(255, 255, 255, 0.05)'
-                                            : '0 1px 2px rgba(0, 0, 0, 0.04), 0 0 0 1px rgba(0, 0, 0, 0.05)'
-                                    }}
-                                    variants={{
-                                        hidden: { opacity: 0, y: 10 },
-                                        visible: { opacity: 1, y: 0 }
-                                    }}
-                                    whileHover={{ backgroundColor: iconColors.bgHover, scale: 1.1 }}
-                                    whileTap={{ scale: 0.95 }}
-                                    aria-label={social.label}
-                                    onMouseEnter={() => setHoveredIcon(social.id)}
-                                    onMouseLeave={() => setHoveredIcon(null)}
-                                >
-                                    <AnimatePresence>
-                                        {hoveredIcon === social.id && <Tooltip text={social.label} />}
-                                    </AnimatePresence>
-                                    {social.icon}
-                                </motion.a>
-                            ))}
-                        </motion.div>
                     </div>
-
-                    {/* Right Column - Image */}
-                    <motion.div
-                        className="hero-image-container"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 1.65, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
-                    >
-                        <div
-                            className="image-placeholder"
-                            style={{ position: 'relative' }}
-                            onMouseEnter={() => setIsHeroImageHovered(true)}
-                            onMouseLeave={() => setIsHeroImageHovered(false)}
-                        >
-                            <AnimatePresence>
-                                {isHeroImageHovered && (
-                                    <motion.div
-                                        initial={{ opacity: 0, scale: 0.8, rotate: -25 }}
-                                        animate={{ opacity: 1, scale: 1, rotate: -15 }}
-                                        exit={{ opacity: 0, scale: 0.8, rotate: -25 }}
-                                        transition={{ duration: 0.2, ease: "backOut" }}
-                                        style={{
-                                            position: 'absolute',
-                                            top: '-15px',
-                                            left: '-15px',
-                                            backgroundColor: isDark ? '#1f2937' : 'white',
-                                            color: isDark ? 'white' : '#1f2937',
-                                            padding: '6px 14px',
-                                            borderRadius: '8px',
-                                            fontSize: '0.875rem',
-                                            fontWeight: '600',
-                                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                                            zIndex: 20,
-                                            pointerEvents: 'none',
-                                            whiteSpace: 'nowrap',
-                                            border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`
-                                        }}
-                                    >
-                                        Hello!
-                                        <div style={{
-                                            position: 'absolute',
-                                            bottom: '-6px',
-                                            right: '12px',
-                                            width: '12px',
-                                            height: '12px',
-                                            backgroundColor: isDark ? '#1f2937' : 'white',
-                                            transform: 'rotate(45deg)',
-                                            borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`,
-                                            borderRight: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`,
-                                        }} />
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-                            <Image
-                                src="/assets/latte2.jpg"
-                                alt="Kai Kim"
-                                width={160}
-                                height={160}
-                                className="hero-image"
-                                priority
-                            />
-                        </div>
-                    </motion.div>
                 </div>
             </section>
 
@@ -435,11 +406,103 @@ export default function Home() {
                     marginBottom: '16px',
                     color: isDark ? 'white' : '#1c1917'
                 }}>
-                    Experience
+                    {rt('Experience', 5)}
                 </h2>
 
                 {/* Experience Items */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+
+                    {/* CIBC Bank */}
+                    <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                        <div className="experience-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-start' }}>
+                                {/* CIBC Logo */}
+                                <div className="experience-logo-container" style={{ width: '48px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
+                                    <Image
+                                        src="/assets/cibc.png"
+                                        alt="CIBC Logo"
+                                        width={36}
+                                        height={36}
+                                        style={{ 
+                                            borderRadius: '8px', 
+                                            objectFit: 'contain',
+                                            filter: isDark ? 'none' : 'invert(1)'
+                                        }}
+                                    />
+                                </div>
+
+                                <div>
+                                    <h3 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0px', color: isDark ? 'white' : '#1c1917' }}>
+                                        {rt('CIBC Bank', 5.2)}
+                                    </h3>
+                                    <p style={{ fontSize: '0.875rem', color: isDark ? '#9ca3af' : '#6b7280' }}>
+                                        {rt('Incoming Web Developer Intern', 5.3)}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', flexShrink: 0 }}>
+                                <span className="experience-date" style={{ fontSize: '0.875rem', color: isDark ? '#9ca3af' : '#6b7280', whiteSpace: 'nowrap' }}>
+                                    {rt('Summer 2026', 5.35)}
+                                </span>
+                                <motion.button
+                                    className="experience-btn"
+                                    onClick={(e) => { e.stopPropagation(); toggleExpand('cibc'); }}
+                                    animate={{
+                                        backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                        color: isDark ? '#E5E7EB' : '#111827',
+                                        borderColor: isDark ? '#374151' : '#D1D5DB',
+                                    }}
+                                    whileHover={{
+                                        scale: 1.05,
+                                        backgroundColor: isDark ? 'rgba(50, 50, 50, 0.9)' : '#d1d5db',
+                                        color: isDark ? '#ffffff' : '#111827',
+                                        borderColor: isDark ? '#4b5563' : '#9ca3af'
+                                    }}
+                                    whileTap={{ scale: 0.95 }}
+                                    style={{
+                                        border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
+                                        background: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                        color: isDark ? '#E5E7EB' : '#111827',
+                                        fontSize: '0.7rem',
+                                        cursor: 'pointer',
+                                        padding: '3px 8px',
+                                        borderRadius: '9999px',
+                                        textAlign: 'left',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '4px',
+                                        fontWeight: '500',
+                                        marginTop: '4px'
+                                    }}
+                                >
+                                    {expandedItems['cibc'] ? 'Show less' : 'Read more'}
+                                    <motion.svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" animate={{ rotate: expandedItems['cibc'] ? 180 : 0 }}>
+                                        <path d="M2 4l4 4 4-4" />
+                                    </motion.svg>
+                                </motion.button>
+                            </div>
+                        </div>
+
+                        <AnimatePresence>
+                            {expandedItems['cibc'] && (
+                                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} style={{ overflow: 'hidden' }}>
+                                    <div style={{ marginLeft: '52px', marginTop: '0px', paddingBottom: '12px' }}>
+                                        <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
+                                            Joining the digital engineering team to construct and maintain internal web tools and enterprise-scale banking applications.
+                                        </p>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '4px', margin: '-4px' }}>
+                                            {['React', 'TypeScript', 'Node.js', 'Enterprise Architecture', 'Web Development'].map((skill, index) => (
+                                                <motion.span key={index} whileHover={{ scale: 1.1, y: -2 }} transition={{ type: "spring", stiffness: 400, damping: 10 }} whileTap={{ scale: 0.95 }} style={{ display: 'inline-block', cursor: 'default', padding: '4px 12px', backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB', color: isDark ? '#E5E7EB' : '#111827', border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`, borderRadius: '9999px', fontSize: '0.75rem', fontWeight: '500' }}>
+                                                    {skill}
+                                                </motion.span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
 
                     {/* QMIND */}
                     <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
@@ -466,74 +529,63 @@ export default function Home() {
                                         marginBottom: '0px',
                                         color: isDark ? 'white' : '#1c1917'
                                     }}>
-                                        QMIND
+                                        {rt('QMIND', 5.8)}
                                     </h3>
                                     <p style={{
                                         fontSize: '0.875rem',
                                         color: isDark ? '#9ca3af' : '#6b7280'
                                     }}>
-                                        AI/ML Team Member
+                                        {rt('AI/ML Team Member', 5.9)}
                                     </p>
                                 </div>
                             </div>
 
-                            <span className="experience-date" style={{
-                                fontSize: '0.875rem',
-                                color: isDark ? '#9ca3af' : '#6b7280',
-                                whiteSpace: 'nowrap'
-                            }}>
-                                Oct. 2025 - Present
-                            </span>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', flexShrink: 0 }}>
+                                <span className="experience-date" style={{
+                                    fontSize: '0.875rem',
+                                    color: isDark ? '#9ca3af' : '#6b7280',
+                                    whiteSpace: 'nowrap'
+                                }}>
+                                    {rt('Oct. 2025 - Present', 5.95)}
+                                </span>
+                                <motion.button
+                                    className="experience-btn"
+                                    onClick={(e) => { e.stopPropagation(); toggleExpand('qmind'); }}
+                                    animate={{
+                                        backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                        color: isDark ? '#E5E7EB' : '#111827',
+                                        borderColor: isDark ? '#374151' : '#D1D5DB',
+                                    }}
+                                    whileHover={{
+                                        scale: 1.05,
+                                        backgroundColor: isDark ? 'rgba(50, 50, 50, 0.9)' : '#d1d5db',
+                                        color: isDark ? '#ffffff' : '#111827',
+                                        borderColor: isDark ? '#4b5563' : '#9ca3af'
+                                    }}
+                                    whileTap={{ scale: 0.95 }}
+                                    style={{
+                                        border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
+                                        background: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                        color: isDark ? '#E5E7EB' : '#111827',
+                                        fontSize: '0.7rem',
+                                        cursor: 'pointer',
+                                        padding: '3px 8px',
+                                        borderRadius: '9999px',
+                                        textAlign: 'left',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '4px',
+                                        fontWeight: '500',
+                                        marginTop: '4px'
+                                    }}
+                                >
+                                    {expandedItems['qmind'] ? 'Show less' : 'Read more'}
+                                    <motion.svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" animate={{ rotate: expandedItems['qmind'] ? 180 : 0 }}>
+                                        <path d="M2 4l4 4 4-4" />
+                                    </motion.svg>
+                                </motion.button>
+                            </div>
                         </div>
-
-                        <motion.button
-                            className="experience-btn"
-                            onClick={() => toggleExpand('qmind')}
-                            animate={{
-                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
-                                color: isDark ? '#d1d5db' : '#374151',
-                                borderColor: isDark ? '#374151' : '#e5e7eb',
-                            }}
-                            whileHover={{
-                                scale: 1.05,
-                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.9)' : '#E5E7EB',
-                                color: isDark ? '#E5E7EB' : '#111827',
-                                borderColor: isDark ? '#374151' : '#D1D5DB'
-                            }}
-                            whileTap={{ scale: 0.95 }}
-                            style={{
-                                border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                                background: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
-                                color: isDark ? '#d1d5db' : '#374151',
-                                fontSize: '0.7rem',
-                                cursor: 'pointer',
-                                padding: '3px 8px',
-                                borderRadius: '9999px',
-                                textAlign: 'left',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '4px',
-                                alignSelf: 'flex-start',
-                                fontWeight: '500',
-                                marginLeft: '52px',
-                                marginTop: '4px'
-                            }}
-                        >
-                            {expandedItems['qmind'] ? 'Show less' : 'Read more'}
-                            <motion.svg
-                                width="12"
-                                height="12"
-                                viewBox="0 0 12 12"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                animate={{ rotate: expandedItems['qmind'] ? 180 : 0 }}
-                            >
-                                <path d="M2 4l4 4 4-4" />
-                            </motion.svg>
-                        </motion.button>
 
                         <AnimatePresence>
                             {expandedItems['qmind'] && (
@@ -577,141 +629,7 @@ export default function Home() {
                         </AnimatePresence>
                     </div>
 
-                    {/* QAC */}
-                    <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                        <div className="experience-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
-                            <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-start' }}>
-                                {/* QAC Logo */}
-                                <div className="experience-logo-container" style={{ width: '48px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
-                                    <Image
-                                        src="/assets/QAC_LOGO_CROP.png"
-                                        alt="QAC Logo"
-                                        width={36}
-                                        height={36}
-                                        style={{
-                                            borderRadius: '8px',
-                                            objectFit: 'contain'
-                                        }}
-                                    />
-                                </div>
 
-                                <div style={{ marginTop: '-4px' }}>
-                                    <h3 style={{
-                                        fontSize: '1rem',
-                                        fontWeight: '600',
-                                        marginBottom: '0px',
-                                        color: isDark ? 'white' : '#1c1917'
-                                    }}>
-                                        QAC (Queen's Actuarial-Science Club)
-                                    </h3>
-                                    <p style={{
-                                        fontSize: '0.875rem',
-                                        color: isDark ? '#9ca3af' : '#6b7280'
-                                    }}>
-                                        Web Developer
-                                    </p>
-                                </div>
-                            </div>
-
-                            <span className="experience-date" style={{
-                                fontSize: '0.875rem',
-                                color: isDark ? '#9ca3af' : '#6b7280',
-                                whiteSpace: 'nowrap'
-                            }}>
-                                Oct. 2025 - Present
-                            </span>
-                        </div>
-
-                        <motion.button
-                            className="experience-btn"
-                            onClick={() => toggleExpand('qac')}
-                            animate={{
-                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
-                                color: isDark ? '#d1d5db' : '#374151',
-                                borderColor: isDark ? '#374151' : '#e5e7eb',
-                            }}
-                            whileHover={{
-                                scale: 1.05,
-                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.9)' : '#E5E7EB',
-                                color: isDark ? '#E5E7EB' : '#111827',
-                                borderColor: isDark ? '#374151' : '#D1D5DB'
-                            }}
-                            whileTap={{ scale: 0.95 }}
-                            style={{
-                                border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                                background: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
-                                color: isDark ? '#d1d5db' : '#374151',
-                                fontSize: '0.7rem',
-                                cursor: 'pointer',
-                                padding: '3px 8px',
-                                borderRadius: '9999px',
-                                textAlign: 'left',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '4px',
-                                alignSelf: 'flex-start',
-                                fontWeight: '500',
-                                marginLeft: '52px',
-                                marginTop: '4px'
-                            }}
-                        >
-                            {expandedItems['qac'] ? 'Show less' : 'Read more'}
-                            <motion.svg
-                                width="12"
-                                height="12"
-                                viewBox="0 0 12 12"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                animate={{ rotate: expandedItems['qac'] ? 180 : 0 }}
-                            >
-                                <path d="M2 4l4 4 4-4" />
-                            </motion.svg>
-                        </motion.button>
-
-                        <AnimatePresence>
-                            {expandedItems['qac'] && (
-                                <motion.div
-                                    initial={{ height: 0, opacity: 0 }}
-                                    animate={{ height: 'auto', opacity: 1 }}
-                                    exit={{ height: 0, opacity: 0 }}
-                                    transition={{ duration: 0.2 }}
-                                    style={{ overflow: 'hidden' }}
-                                >
-                                    <div style={{ marginLeft: '52px', marginTop: '0px', paddingBottom: '12px' }}>
-                                        <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
-                                            Developing and maintaining the club's website and digital presence
-                                        </p>
-                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '4px', margin: '-4px' }}>
-                                            {['React', 'Next.js', 'TypeScript', 'Web Design'].map((skill, index) => (
-                                                <motion.span
-                                                    key={index}
-                                                    whileHover={{ scale: 1.1, y: -2 }}
-                                                    transition={{ type: "spring", stiffness: 400, damping: 10 }}
-                                                    whileTap={{ scale: 0.95 }}
-                                                    style={{
-                                                        display: 'inline-block',
-                                                        cursor: 'default',
-                                                        padding: '4px 12px',
-                                                        backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
-                                                        color: isDark ? '#E5E7EB' : '#111827',
-                                                        border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
-                                                        borderRadius: '9999px',
-                                                        fontSize: '0.75rem',
-                                                        fontWeight: '500'
-                                                    }}
-                                                >
-                                                    {skill}
-                                                </motion.span>
-                                            ))}
-                                        </div>
-                                    </div>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
 
                     {/* QBiT */}
                     <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
@@ -739,73 +657,63 @@ export default function Home() {
                                         marginBottom: '0px',
                                         color: isDark ? 'white' : '#1c1917'
                                     }}>
-                                        QBiT (Queen's Biomedical Innovation Team)
+                                        {rt("QBiT (Queen's Biomedical Innovation Team)", 6.2)}
                                     </h3>
                                     <p style={{
                                         fontSize: '0.875rem',
                                         color: isDark ? '#9ca3af' : '#6b7280'
                                     }}>
-                                        Software Engineer
+                                        {rt('Software Engineer', 6.25)}
                                     </p>
                                 </div>
                             </div>
 
-                            <span className="experience-date" style={{
-                                fontSize: '0.875rem',
-                                color: isDark ? '#9ca3af' : '#6b7280',
-                                whiteSpace: 'nowrap'
-                            }}>
-                                Sept. 2025 - Present
-                            </span>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', flexShrink: 0 }}>
+                                <span className="experience-date" style={{
+                                    fontSize: '0.875rem',
+                                    color: isDark ? '#9ca3af' : '#6b7280',
+                                    whiteSpace: 'nowrap'
+                                }}>
+                                    {rt('Sept. 2025 - Present', 6.3)}
+                                </span>
+                                <motion.button
+                                    className="experience-btn"
+                                    onClick={(e) => { e.stopPropagation(); toggleExpand('qbit'); }}
+                                    animate={{
+                                        backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                        color: isDark ? '#E5E7EB' : '#111827',
+                                        borderColor: isDark ? '#374151' : '#D1D5DB',
+                                    }}
+                                    whileHover={{
+                                        scale: 1.05,
+                                        backgroundColor: isDark ? 'rgba(50, 50, 50, 0.9)' : '#d1d5db',
+                                        color: isDark ? '#ffffff' : '#111827',
+                                        borderColor: isDark ? '#4b5563' : '#9ca3af'
+                                    }}
+                                    whileTap={{ scale: 0.95 }}
+                                    style={{
+                                        border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
+                                        background: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                        color: isDark ? '#E5E7EB' : '#111827',
+                                        fontSize: '0.7rem',
+                                        cursor: 'pointer',
+                                        padding: '3px 8px',
+                                        borderRadius: '9999px',
+                                        textAlign: 'left',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '4px',
+                                        fontWeight: '500',
+                                        marginTop: '4px'
+                                    }}
+                                >
+                                    {expandedItems['qbit'] ? 'Show less' : 'Read more'}
+                                    <motion.svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" animate={{ rotate: expandedItems['qbit'] ? 180 : 0 }}>
+                                        <path d="M2 4l4 4 4-4" />
+                                    </motion.svg>
+                                </motion.button>
+                            </div>
                         </div>
-
-                        <motion.button
-                            className="experience-btn"
-                            onClick={() => toggleExpand('qbit')}
-                            animate={{
-                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
-                                color: isDark ? '#d1d5db' : '#374151',
-                                borderColor: isDark ? '#374151' : '#e5e7eb',
-                            }}
-                            whileHover={{
-                                scale: 1.05,
-                                backgroundColor: isDark ? 'rgba(38, 38, 38, 0.9)' : '#E5E7EB',
-                                color: isDark ? '#E5E7EB' : '#111827',
-                                borderColor: isDark ? '#374151' : '#D1D5DB'
-                            }}
-                            whileTap={{ scale: 0.95 }}
-                            style={{
-                                border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
-                                background: isDark ? 'rgba(38, 38, 38, 0.4)' : '#ffffff',
-                                color: isDark ? '#d1d5db' : '#374151',
-                                fontSize: '0.7rem',
-                                cursor: 'pointer',
-                                padding: '2px 8px',
-                                borderRadius: '9999px',
-                                textAlign: 'left',
-                                display: 'inline-flex',
-                                alignItems: 'center',
-                                gap: '4px',
-                                alignSelf: 'flex-start',
-                                fontWeight: '500',
-                                marginLeft: '52px'
-                            }}
-                        >
-                            {expandedItems['qbit'] ? 'Show less' : 'Read more'}
-                            <motion.svg
-                                width="12"
-                                height="12"
-                                viewBox="0 0 12 12"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="1.5"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                animate={{ rotate: expandedItems['qbit'] ? 180 : 0 }}
-                            >
-                                <path d="M2 4l4 4 4-4" />
-                            </motion.svg>
-                        </motion.button>
 
                         <AnimatePresence>
                             {expandedItems['qbit'] && (
@@ -848,13 +756,128 @@ export default function Home() {
                             )}
                         </AnimatePresence>
                     </div >
+                    {/* Zeen */}
+                    <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                        <div className="experience-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-start' }}>
+                                {/* Zeen Logo */}
+                                <div className="experience-logo-container" style={{ width: '48px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
+                                    <Image
+                                        src="/assets/zeen.jpg"
+                                        alt="Zeen Logo"
+                                        width={36}
+                                        height={36}
+                                        style={{ borderRadius: '8px', objectFit: 'cover' }}
+                                    />
+                                </div>
+
+                                <div>
+                                    <h3 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0px', color: isDark ? 'white' : '#1c1917' }}>
+                                        {rt('Zeen', 6.6)}
+                                    </h3>
+                                    <p style={{ fontSize: '0.875rem', color: isDark ? '#9ca3af' : '#6b7280' }}>
+                                        {rt('Software Engineer Intern', 6.65)}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', flexShrink: 0 }}>
+                                <span className="experience-date" style={{ fontSize: '0.875rem', color: isDark ? '#9ca3af' : '#6b7280', whiteSpace: 'nowrap' }}>
+                                    {rt('Jun. 2025- Aug. 2025', 6.7)}
+                                </span>
+                                <motion.button
+                                    className="experience-btn"
+                                    onClick={(e) => { e.stopPropagation(); toggleExpand('zeen'); }}
+                                    animate={{
+                                        backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                        color: isDark ? '#E5E7EB' : '#111827',
+                                        borderColor: isDark ? '#374151' : '#D1D5DB',
+                                    }}
+                                    whileHover={{
+                                        scale: 1.05,
+                                        backgroundColor: isDark ? 'rgba(50, 50, 50, 0.9)' : '#d1d5db',
+                                        color: isDark ? '#ffffff' : '#111827',
+                                        borderColor: isDark ? '#4b5563' : '#9ca3af'
+                                    }}
+                                    whileTap={{ scale: 0.95 }}
+                                    style={{
+                                        border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
+                                        background: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                        color: isDark ? '#E5E7EB' : '#111827',
+                                        fontSize: '0.7rem',
+                                        cursor: 'pointer',
+                                        padding: '3px 8px',
+                                        borderRadius: '9999px',
+                                        textAlign: 'left',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '4px',
+                                        fontWeight: '500',
+                                        marginTop: '4px'
+                                    }}
+                                >
+                                    {expandedItems['zeen'] ? 'Show less' : 'Read more'}
+                                    <motion.svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" animate={{ rotate: expandedItems['zeen'] ? 180 : 0 }}>
+                                        <path d="M2 4l4 4 4-4" />
+                                    </motion.svg>
+                                </motion.button>
+                            </div>
+                        </div>
+
+                        <AnimatePresence>
+                            {expandedItems['zeen'] && (
+                                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} style={{ overflow: 'hidden' }}>
+                                    <div style={{ marginLeft: '52px', marginTop: '0px', paddingBottom: '12px' }}>
+                                        <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
+                                            Worked on developing robust, scalable software products and expanding capabilities across the tech stack alongside cross-functional teams.
+                                        </p>
+                                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '4px', margin: '-4px' }}>
+                                            {['React', 'TypeScript', 'Node.js', 'Software Architecture'].map((skill, index) => (
+                                                <motion.span key={index} whileHover={{ scale: 1.1, y: -2 }} transition={{ type: "spring", stiffness: 400, damping: 10 }} whileTap={{ scale: 0.95 }} style={{ display: 'inline-block', cursor: 'default', padding: '4px 12px', backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB', color: isDark ? '#E5E7EB' : '#111827', border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`, borderRadius: '9999px', fontSize: '0.75rem', fontWeight: '500' }}>
+                                                    {skill}
+                                                </motion.span>
+                                            ))}
+                                        </div>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+
+                    {/* View More LinkedIn Button */}
+                    <div style={{ marginTop: '0px', display: 'flex', justifyContent: 'flex-start', marginLeft: '8px' }}>
+                        <Link href="https://www.linkedin.com/in/newjeans/" target="_blank" rel="noopener noreferrer" style={{
+                            display: 'inline-flex',
+                            alignItems: 'center',
+                            gap: '6px',
+                            fontSize: '0.7rem',
+                            fontWeight: '500',
+                            color: isDark ? '#E5E7EB' : '#111827',
+                            textDecoration: 'none',
+                            backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                            border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
+                            padding: '4px 10px',
+                            borderRadius: '8px',
+                            transition: 'opacity 0.2s'
+                        }}
+                            onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
+                            onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
+                        >
+                            {rt('View more', 6.95)}
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M5 12h14"></path>
+                                <path d="M12 5l7 7-7 7"></path>
+                            </svg>
+                        </Link>
+                    </div>
 
                 </div>
             </motion.section>
 
+
             {/* Education Section */}
             <motion.section
-                style={{ marginTop: '48px' }}
+                style={{ marginTop: '32px' }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ delay: 1.95, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
@@ -862,31 +885,31 @@ export default function Home() {
                 <h2 style={{
                     fontSize: '2rem',
                     fontWeight: 'bold',
-                    marginBottom: '16px',
+                    marginBottom: '8px',
                     color: isDark ? 'white' : '#1c1917'
                 }}>
-                    Education
+                    {rt('Education', 6)}
                 </h2>
 
                 <div style={{
                     border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
-                    backgroundColor: isDark ? '#0e0e0d' : '#ffffff',
+                    backgroundColor: isDark ? '#111110' : '#ffffff',
                     borderRadius: '12px',
-                    padding: '12px',
+                    padding: '8px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
                     boxShadow: isDark
-                        ? '0 0 0 4px #0e0e0d, 0 0 0 5px #374151'
+                        ? '0 0 0 4px #111110, 0 0 0 5px #374151'
                         : '0 0 0 4px #f5f5f4, 0 0 0 5px #D1D5DB',
-                    margin: '4px' // Add margin to prevent shadow clipping
+                    margin: '2px'
                 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
                         <Image
                             src="/assets/queens.png"
                             alt="Queen's University Logo"
-                            width={42}
-                            height={42}
+                            width={36}
+                            height={36}
                             style={{
                                 objectFit: 'contain',
                                 filter: 'none'
@@ -899,13 +922,13 @@ export default function Home() {
                                 marginBottom: '0px',
                                 color: isDark ? 'white' : '#1c1917'
                             }}>
-                                Queen's University
+                                {rt("Queen's University", 7.2)}
                             </h3>
                             <p style={{
                                 fontSize: '0.75rem',
                                 color: isDark ? '#9ca3af' : '#6b7280'
                             }}>
-                                Bachelor of Computing
+                                {rt('Bachelor of Computing', 7.4)}
                             </p>
                         </div>
                     </div>
@@ -915,7 +938,7 @@ export default function Home() {
                         color: isDark ? '#9ca3af' : '#6b7280',
                         fontWeight: '500'
                     }}>
-                        2028
+                        {rt('2028', 7.5)}
                     </span>
                 </div>
             </motion.section>
@@ -933,11 +956,11 @@ export default function Home() {
                     marginBottom: '16px',
                     color: isDark ? 'white' : '#1c1917'
                 }}>
-                    Skills
+                    {rt('Skills', 7)}
                 </h2>
 
                 <motion.div
-                    style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}
+                    style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}
                     initial="hidden"
                     whileInView="visible"
                     viewport={{ once: true }}
@@ -954,9 +977,9 @@ export default function Home() {
                         hidden: { opacity: 0, y: 10 },
                         visible: { opacity: 1, y: 0 }
                     }}>
-                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Frontend & Frameworks</h3>
+                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '8px', color: isDark ? 'white' : '#1c1917' }}>{rt('Frontend & Frameworks', 7.6)}</h3>
                         <motion.div
-                            style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}
+                            style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}
                             variants={{
                                 visible: {
                                     transition: {
@@ -980,26 +1003,26 @@ export default function Home() {
                                         style={{
                                             display: 'inline-flex',
                                             alignItems: 'center',
-                                            gap: '8px',
+                                            gap: '6px',
                                             cursor: 'default',
-                                            padding: '6px 16px',
+                                            padding: '4px 10px',
                                             backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
                                             color: isDark ? '#E5E7EB' : '#111827',
                                             borderRadius: '9999px',
-                                            fontSize: '0.875rem',
+                                            fontSize: '0.75rem',
                                             fontWeight: '500',
                                             border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`
                                         }}
                                     >
                                         {logoUrl ? (
-                                            <img src={logoUrl} alt="" style={{ width: '16px', height: '16px' }} />
+                                            <img src={logoUrl} alt="" style={{ width: '13px', height: '13px' }} />
                                         ) : (
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                 <polyline points="16 18 22 12 16 6"></polyline>
                                                 <polyline points="8 6 2 12 8 18"></polyline>
                                             </svg>
                                         )}
-                                        {skill}
+                                        <TextReveal delay={revealDelay(8.1 + index * 0.04)}>{skill}</TextReveal>
                                     </motion.span>
                                 )
                             })}
@@ -1011,9 +1034,9 @@ export default function Home() {
                         hidden: { opacity: 0, y: 10 },
                         visible: { opacity: 1, y: 0 }
                     }}>
-                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Backend & Databases</h3>
+                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '8px', color: isDark ? 'white' : '#1c1917' }}>{rt('Backend & Databases', 7.8)}</h3>
                         <motion.div
-                            style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}
+                            style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}
                             variants={{
                                 visible: {
                                     transition: {
@@ -1037,26 +1060,26 @@ export default function Home() {
                                         style={{
                                             display: 'inline-flex',
                                             alignItems: 'center',
-                                            gap: '8px',
+                                            gap: '6px',
                                             cursor: 'default',
-                                            padding: '6px 16px',
+                                            padding: '4px 10px',
                                             backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
                                             color: isDark ? '#E5E7EB' : '#111827',
                                             borderRadius: '9999px',
-                                            fontSize: '0.875rem',
+                                            fontSize: '0.75rem',
                                             fontWeight: '500',
                                             border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`
                                         }}
                                     >
                                         {logoUrl ? (
-                                            <img src={logoUrl} alt="" style={{ width: '16px', height: '16px' }} />
+                                            <img src={logoUrl} alt="" style={{ width: '13px', height: '13px' }} />
                                         ) : (
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                 <polyline points="16 18 22 12 16 6"></polyline>
                                                 <polyline points="8 6 2 12 8 18"></polyline>
                                             </svg>
                                         )}
-                                        {skill}
+                                        <TextReveal delay={revealDelay(8.5 + index * 0.04)}>{skill}</TextReveal>
                                     </motion.span>
                                 )
                             })}
@@ -1068,9 +1091,9 @@ export default function Home() {
                         hidden: { opacity: 0, y: 10 },
                         visible: { opacity: 1, y: 0 }
                     }}>
-                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '12px', color: isDark ? 'white' : '#1c1917' }}>Tools & Technologies</h3>
+                        <h3 style={{ fontSize: '1.125rem', fontWeight: '500', marginBottom: '8px', color: isDark ? 'white' : '#1c1917' }}>{rt('Tools & Technologies', 8)}</h3>
                         <motion.div
-                            style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}
+                            style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}
                             variants={{
                                 visible: {
                                     transition: {
@@ -1094,26 +1117,26 @@ export default function Home() {
                                         style={{
                                             display: 'inline-flex',
                                             alignItems: 'center',
-                                            gap: '8px',
+                                            gap: '6px',
                                             cursor: 'default',
-                                            padding: '6px 16px',
+                                            padding: '4px 10px',
                                             backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
                                             color: isDark ? '#E5E7EB' : '#111827',
                                             borderRadius: '9999px',
-                                            fontSize: '0.875rem',
+                                            fontSize: '0.75rem',
                                             fontWeight: '500',
                                             border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`
                                         }}
                                     >
                                         {logoUrl ? (
-                                            <img src={logoUrl} alt="" style={{ width: '16px', height: '16px' }} />
+                                            <img src={logoUrl} alt="" style={{ width: '13px', height: '13px' }} />
                                         ) : (
-                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                 <polyline points="16 18 22 12 16 6"></polyline>
                                                 <polyline points="8 6 2 12 8 18"></polyline>
                                             </svg>
                                         )}
-                                        {skill}
+                                        <TextReveal delay={revealDelay(8.9 + index * 0.04)}>{skill}</TextReveal>
                                     </motion.span>
                                 )
                             })}
@@ -1135,7 +1158,7 @@ export default function Home() {
                     marginBottom: '24px',
                     color: isDark ? 'white' : '#1c1917'
                 }}>
-                    Featured Projects
+                    {rt('Featured Projects', 8)}
                 </h2>
 
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
@@ -1225,7 +1248,7 @@ export default function Home() {
                                                     fontSize: '0.75rem',
                                                     fontWeight: '500',
                                                     whiteSpace: 'nowrap'
-                                                }}>{project.status}</span>
+                                                }}><TextReveal delay={revealDelay(9.2)}>{project.status}</TextReveal></span>
                                             </div>
                                         </div>
                                         <p style={{
@@ -1234,7 +1257,7 @@ export default function Home() {
                                             lineHeight: '1.5',
                                             margin: 0
                                         }}>
-                                            {project.description}
+                                            <TextReveal delay={revealDelay(9.3)}>{project.description}</TextReveal>
                                         </p>
                                     </div>
 
@@ -1256,7 +1279,7 @@ export default function Home() {
                                                     border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`
                                                 }}
                                             >
-                                                {tech}
+                                                <TextReveal delay={revealDelay(9.4 + i * 0.04)}>{tech}</TextReveal>
                                             </motion.span>
                                         ))}
 
@@ -1279,7 +1302,7 @@ export default function Home() {
                                                 transition: 'all 0.2s ease'
                                             }}
                                         >
-                                            View Details
+                                            {rt('View Details', 9.6)}
                                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                 <path d="M5 12h14"></path>
                                                 <path d="M12 5l7 7-7 7"></path>
@@ -1316,7 +1339,7 @@ export default function Home() {
                                                 <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                                                 </svg>
-                                                Demo
+                                                {rt('Demo', 9.7)}
                                             </motion.a>
                                             <motion.a
                                                 href={project.github || '#'}
@@ -1347,7 +1370,7 @@ export default function Home() {
                                                 <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24">
                                                     <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
                                                 </svg>
-                                                GitHub
+                                                {rt('GitHub', 9.75)}
                                             </motion.a>
                                         </div>
                                     </div>
@@ -1361,22 +1384,22 @@ export default function Home() {
                     <Link href="/projects" style={{
                         display: 'inline-flex',
                         alignItems: 'center',
-                        gap: '8px',
-                        fontSize: '0.875rem',
+                        gap: '6px',
+                        fontSize: '0.8rem',
                         fontWeight: '500',
                         color: isDark ? '#E5E7EB' : '#111827',
                         textDecoration: 'none',
                         backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
                         border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
-                        padding: '10px 20px',
+                        padding: '7px 16px',
                         borderRadius: '8px',
                         transition: 'opacity 0.2s'
                     }}
                         onMouseEnter={(e) => e.currentTarget.style.opacity = '0.9'}
                         onMouseLeave={(e) => e.currentTarget.style.opacity = '1'}
                     >
-                        View All Projects
-                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        {rt('View All Projects', 9.9)}
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M5 12h14"></path>
                             <path d="M12 5l7 7-7 7"></path>
                         </svg>
@@ -1387,7 +1410,7 @@ export default function Home() {
             {/* Blank Footer Space */}
             <div style={{ height: '12px' }} />
             <Webring />
-            <div style={{ height: '80px' }} />
+            <div className="footer-spacer" />
 
             <FloatingDock />
         </div>
