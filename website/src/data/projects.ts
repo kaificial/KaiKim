@@ -26,18 +26,7 @@ export const projects: Project[] = [
         github: 'https://github.com/kaificial/clairo',
         demo: 'https://clairomedical.vercel.app/',
     },
-    {
-        id: 'scribl',
-        title: 'Scribl',
-        description: 'A web app to collaborate with friends to create a interactive birthday experience.',
-        tags: ['Java Spring Boot', 'Docker', 'PostgreSQL', 'Next.js', 'React', 'TypeScript', 'Tailwind CSS', 'WebSockets'],
-        status: 'Live',
-        url: 'scribl.vercel.app',
-        video: '/assets/scribldemo.mp4',
-        github: 'https://github.com/kaificial/scribl',
-        demo: 'https://scribl.vercel.app',
-        // longDescription removed as requested
-    },
+
     {
         id: 'rooke',
         title: 'Rooke',
