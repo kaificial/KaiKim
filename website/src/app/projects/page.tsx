@@ -485,12 +485,7 @@ export default function ProjectsPage() {
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 1.8, duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-                        style={{
-                            display: 'flex',
-                            justifyContent: 'flex-start',
-                            marginTop: '24px',
-                            marginBottom: '12px'
-                        }}
+                        className="back-to-home-wrapper"
                     >
                         <Link
                             href="/"
@@ -528,9 +523,8 @@ export default function ProjectsPage() {
                     </motion.div>
                 </section>
 
-                <div style={{ height: '12px' }} />
                 <Webring />
-                <div style={{ height: '80px' }} />
+                <div className="footer-spacer compact" />
                 <FloatingDock />
             </div>
         </div>
