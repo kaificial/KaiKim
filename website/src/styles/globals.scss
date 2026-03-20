@@ -319,9 +319,17 @@ pre {
     line-height: 1 !important;
     margin-bottom: 0.25rem !important;
 
-    @media (min-width: 640px) {
-        font-size: 3.5rem !important;
+    @media (max-width: 639px) {
+        font-size: 3.25rem !important;
         margin-bottom: 0.375rem !important;
+    }
+
+    @media (max-width: 480px) {
+        font-size: 2.25rem !important;
+    }
+
+    @media (max-width: 380px) {
+        font-size: 1.875rem !important;
     }
 
     @media (min-width: 1024px) {
@@ -383,12 +391,12 @@ pre {
 // hero layout styling stacked on ip[hone, 2 columns on larger screens, laptop, lablet, etc.
 .hero-layout {
     display: grid;
-    grid-template-columns: 1fr !important;
-    gap: 1rem;
-    align-items: center;
+    grid-template-columns: 1fr auto !important;
+    gap: 0.75rem !important;
+    align-items: flex-start;
 
     @media (min-width: 560px) {
-        grid-template-columns: 1fr 0.8fr !important;
+        grid-template-columns: 1fr auto !important;
         gap: 2rem;
         align-items: start;
     }
@@ -398,7 +406,7 @@ pre {
     }
 
     @media (min-width: 1024px) {
-        grid-template-columns: 1fr 1fr !important;
+        grid-template-columns: 1fr auto !important;
         gap: 3rem;
     }
 }
@@ -438,6 +446,10 @@ pre {
     padding: 3px;
     box-shadow: 0 0 0 2px #D1D5DB;
     margin: 6px; // spacing for the shadow
+
+    @media (max-width: 559px) {
+        max-width: 96px !important;
+    }
 
     @media (min-width: 640px) {
         max-width: 200px;

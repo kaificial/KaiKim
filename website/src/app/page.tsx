@@ -177,18 +177,17 @@ export default function Home() {
                 Hero Section
             */}
             <section className="hero-section" style={{ position: 'relative', zIndex: 10 }}>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-                    {/* Header Row: Title/Name + Image */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '24px', justifyContent: 'space-between' }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div className="hero-layout">
                         
                         {/* Text Container */}
-                        <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1, minWidth: 0 }}>
+                        <div className="hero-content" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1, minWidth: 0 }}>
                             <motion.h1
-                                className="font-bold text-gray-900 dark:text-white tracking-tight leading-none text-left"
+                                className="hero-title font-bold text-gray-900 dark:text-white tracking-tight leading-none text-left"
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ delay: 0.2, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
-                                style={{ fontSize: '4rem', marginBottom: '4px', marginTop: 0 }}
+                                style={{ marginBottom: '4px', marginTop: 0 }}
                             >
                                 {rt('Kai Kim', 0, 'text-reveal-hero')}
                             </motion.h1>
