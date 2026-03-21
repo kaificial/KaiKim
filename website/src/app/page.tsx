@@ -656,7 +656,7 @@ export default function Home() {
                                         marginBottom: '0px',
                                         color: isDark ? 'white' : '#1c1917'
                                     }}>
-                                        {rt("QBiT (Queen's Biomedical Innovation Team)", 6.2)}
+                                        {rt("QBiT", 6.2)}
                                     </h3>
                                     <p style={{
                                         fontSize: '0.875rem',
