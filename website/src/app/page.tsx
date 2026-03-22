@@ -411,7 +411,7 @@ export default function Home() {
                 {/* Experience Items */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
-                    {/* CIBC Bank */}
+                    {/* CIBC */}
                     <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         <div className="experience-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
                             <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-start' }}>
@@ -432,7 +432,7 @@ export default function Home() {
 
                                 <div>
                                     <h3 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0px', color: isDark ? 'white' : '#1c1917' }}>
-                                        {rt('CIBC Bank', 5.2)}
+                                        {rt('CIBC', 5.2)}
                                     </h3>
                                     <p style={{ fontSize: '0.875rem', color: isDark ? '#9ca3af' : '#6b7280' }}>
                                         {rt('Incoming Web Developer Intern', 5.3)}
