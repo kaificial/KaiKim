@@ -3,7 +3,7 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { CSSProperties, ReactNode, useState } from 'react';
+import { CSSProperties, ReactNode, useState, useEffect } from 'react';
 import { useTheme } from '../components/ThemeContext';
 import { SpotlightCard } from '../components/SpotlightCard';
 import { projects } from '../data/projects';
@@ -128,6 +128,34 @@ const TextReveal = ({ children, delay = 0, as = 'span', className, style }: Text
     );
 };
 
+const LiveAge = () => {
+    const [age, setAge] = useState<string>('');
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+        //Birthday 
+        const birthDate = new Date('2006-12-01T00:00:00').getTime();
+
+        const updateAge = () => {
+            const now = new Date().getTime();
+            const yearInMs = 31556952000; // 365.2425 days
+            const currentAge = (now - birthDate) / yearInMs;
+            setAge(currentAge.toFixed(10));
+        };
+
+        updateAge();
+        const interval = setInterval(updateAge, 50);
+        return () => clearInterval(interval);
+    }, []);
+
+    return (
+        <span style={{ fontVariantNumeric: 'tabular-nums', display: 'inline-block', minWidth: '100px' }}>
+            {mounted && age ? age : '19.3...'}
+        </span>
+    );
+};
+
 export default function Home() {
     const { isDark, toggleTheme } = useTheme();
     const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
@@ -179,7 +207,7 @@ export default function Home() {
             <section className="hero-section" style={{ position: 'relative', zIndex: 10 }}>
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                     <div className="hero-layout">
-                        
+
                         {/* Text Container */}
                         <div className="hero-content" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', flex: 1, minWidth: 0 }}>
                             <motion.h1
@@ -249,6 +277,7 @@ export default function Home() {
                                     </svg>
                                     {rt('Toronto, ON', 2)}
                                 </motion.div>
+
                             </motion.div>
                         </div>
 
@@ -344,14 +373,16 @@ export default function Home() {
                             animate={{ opacity: 1 }}
                             transition={{ delay: 1.35, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                         >
-                            {rt("I build reliable software and explore new technologies. When I'm not coding, you can find me watching ", 3)}{' '}
-                            <span 
-                                className="relative inline cursor-pointer"
+                            {rt("I'm a ", 3)}
+                            {rt(<span style={{ color: isDark ? '#9ca3af' : '#4b5563', paddingRight: '4px' }}><LiveAge /> y/o</span>, 3.1)}
+                            {rt("who loves building reliable software and exploring new technologies. When I'm not coding, you can find me watching ", 3.2)}{' '}
+                            <span
+                                className="relative inline-block cursor-pointer"
                                 onMouseEnter={() => setHoveredIcon('films')}
                                 onMouseLeave={() => setHoveredIcon(null)}
-                                style={{ textDecoration: 'underline', textUnderlineOffset: '4px' }}
+                                style={{ textUnderlineOffset: '4px' }}
                             >
-                                {rt('films', 4.2)}
+                                {rt(<span style={{ textDecoration: 'underline' }}>movies</span>, 4.2)}
                                 <AnimatePresence>
                                     {hoveredIcon === 'films' && (
                                         <motion.div
@@ -359,30 +390,37 @@ export default function Home() {
                                             animate={{ opacity: 1, y: 0, scale: 1 }}
                                             exit={{ opacity: 0, y: 10, scale: 0.9 }}
                                             transition={{ duration: 0.2 }}
-                                            style={{
-                                                position: 'absolute',
-                                                bottom: '100%',
-                                                left: '50%',
-                                                transform: 'translateX(-50%)',
-                                                marginBottom: '12px',
-                                                display: 'grid',
-                                                gridTemplateColumns: '1fr 1fr 1fr 1fr',
-                                                gridTemplateRows: '1fr',
-                                                gap: '0px',
-                                                width: '320px',
-                                                height: '120px',
-                                                borderRadius: '16px',
-                                                overflow: 'hidden',
-                                                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.2), 0 10px 10px -5px rgba(0, 0, 0, 0.1)',
-                                                pointerEvents: 'none',
-                                                zIndex: 50,
-                                                border: '1px solid rgba(255,255,255,0.1)'
-                                            }}
+                                            className="absolute bottom-full mb-3 z-50 pointer-events-none rounded-[16px] overflow-hidden shadow-2xl border border-black/10 dark:border-white/10 grid grid-cols-4 gap-0 left-1/2 -translate-x-[85%] lg:-translate-x-1/2 w-[85vw] max-w-[320px] h-[28vw] max-h-[120px]"
                                         >
                                             <div style={{ backgroundImage: 'url(/music/Interstellar.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
                                             <div style={{ backgroundImage: 'url(/music/Drive.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
                                             <div style={{ backgroundImage: 'url(/music/Arrival.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
                                             <div style={{ backgroundImage: 'url(/music/lalaland.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+                            </span>
+                            {rt(', ', 4.25)}
+                            <span
+                                className="relative inline-block cursor-pointer"
+                                onMouseEnter={() => setHoveredIcon('shows')}
+                                onMouseLeave={() => setHoveredIcon(null)}
+                                style={{ textUnderlineOffset: '4px' }}
+                            >
+                                {rt(<span style={{ textDecoration: 'underline' }}>shows</span>, 4.3)}
+                                <AnimatePresence>
+                                    {hoveredIcon === 'shows' && (
+                                        <motion.div
+                                            initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                                            exit={{ opacity: 0, y: 10, scale: 0.9 }}
+                                            transition={{ duration: 0.2 }}
+                                            className="absolute bottom-full mb-3 z-50 pointer-events-none rounded-[16px] overflow-hidden shadow-2xl border border-black/10 dark:border-white/10 grid grid-cols-4 gap-0 left-1/2 -translate-x-[90%] lg:-translate-x-1/2 w-[85vw] max-w-[320px] h-[28vw] max-h-[120px]"
+                                        >
+                                            <div style={{ backgroundImage: 'url(/music/Barry.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                                            <div style={{ backgroundImage: 'url(/music/Severance.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                                            <div style={{ backgroundImage: 'url(/music/Breaking\\ Bad.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                                            <div style={{ backgroundImage: 'url(/music/media/Invincible.jpg)', backgroundSize: 'cover', backgroundPosition: 'center' }} />
                                         </motion.div>
                                     )}
                                 </AnimatePresence>
@@ -422,8 +460,8 @@ export default function Home() {
                                         alt="CIBC Logo"
                                         width={36}
                                         height={36}
-                                        style={{ 
-                                            borderRadius: '8px', 
+                                        style={{
+                                            borderRadius: '8px',
                                             objectFit: 'contain',
                                             filter: isDark ? 'none' : 'invert(1)'
                                         }}
