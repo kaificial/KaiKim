@@ -529,7 +529,7 @@ export default function Home() {
                                             Joining the digital engineering team to construct and maintain internal web tools and enterprise-scale banking applications.
                                         </p>
                                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '4px', margin: '-4px' }}>
-                                            {['React', 'TypeScript', 'Node.js', 'Enterprise Architecture', 'Web Development'].map((skill, index) => (
+                                            {['Intranet'].map((skill, index) => (
                                                 <motion.span key={index} whileHover={{ scale: 1.1, y: -2 }} transition={{ type: "spring", stiffness: 400, damping: 10 }} whileTap={{ scale: 0.95 }} style={{ display: 'inline-block', cursor: 'default', padding: '4px 12px', backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB', color: isDark ? '#E5E7EB' : '#111827', border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`, borderRadius: '9999px', fontSize: '0.75rem', fontWeight: '500' }}>
                                                     {skill}
                                                 </motion.span>
