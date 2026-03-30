@@ -28,14 +28,14 @@ const sourceSerif = Source_Serif_4({
 // site metadata for SEO and social sharing
 // this shows up in browser tabs and when people share links
 export const metadata: Metadata = {
-    title: "Kai Kim | Product Engineer",
+    title: "Kai Kim | Developer",
     keywords: ["Kai Kim", "software developer", "portfolio", "web developer", "React", "Next.js"],
     authors: [{ name: "Kai Kim" }],
     icons: {
         icon: '/assets/newjeans.png',
     },
     openGraph: {
-        title: "Kai Kim | Product Engineer",
+        title: "Kai Kim | Developer",
         description: "Hey! I'm Kai",
         type: "website",
     },

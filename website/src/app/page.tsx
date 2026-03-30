@@ -473,7 +473,7 @@ export default function Home() {
                                         {rt('CIBC', 5.2)}
                                     </h3>
                                     <p style={{ fontSize: '0.875rem', color: isDark ? '#9ca3af' : '#6b7280' }}>
-                                        {rt('Incoming Web Developer Intern', 5.3)}
+                                        {rt('Incoming Intern', 5.3)}
                                     </p>
                                 </div>
                             </div>
@@ -525,9 +525,6 @@ export default function Home() {
                             {expandedItems['cibc'] && (
                                 <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} style={{ overflow: 'hidden' }}>
                                     <div style={{ marginLeft: '52px', marginTop: '0px', paddingBottom: '12px' }}>
-                                        <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
-                                            Joining the digital engineering team to construct and maintain internal web tools and enterprise-scale banking applications.
-                                        </p>
                                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '4px', margin: '-4px' }}>
                                             {['Intranet'].map((skill, index) => (
                                                 <motion.span key={index} whileHover={{ scale: 1.1, y: -2 }} transition={{ type: "spring", stiffness: 400, damping: 10 }} whileTap={{ scale: 0.95 }} style={{ display: 'inline-block', cursor: 'default', padding: '4px 12px', backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB', color: isDark ? '#E5E7EB' : '#111827', border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`, borderRadius: '9999px', fontSize: '0.75rem', fontWeight: '500' }}>
