@@ -15,6 +15,14 @@ const nextConfig: NextConfig = {
             },
         ],
     },
+    async rewrites() {
+        return [
+            {
+                source: '/writing',
+                destination: '/notes',
+            },
+        ];
+    },
 };
 
 export default nextConfig;

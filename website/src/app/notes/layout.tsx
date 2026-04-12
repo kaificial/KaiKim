@@ -1,17 +1,23 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-    title: 'Notes',
-    description: "Notes and interests by Kai Kim — software engineer at Queen's University.",
-    alternates: { canonical: 'https://kaikim.ca/notes' },
+    title: 'Writing',
+    description: "kai kim · notes and interests — media reviews, music, technical writing. CS @ Queen's University.",
+    alternates: { canonical: 'https://kaikim.ca/writing' },
     openGraph: {
-        title: 'Notes | Kai Kim',
-        description: "Notes and interests by Kai Kim — software engineer at Queen's University.",
-        url: 'https://kaikim.ca/notes',
+        title: 'Writing | Kai Kim',
+        description: "kai kim · notes and interests — media reviews, music, technical writing.",
+        url: 'https://kaikim.ca/writing',
         type: 'website',
+        siteName: 'Kai Kim',
+    },
+    twitter: {
+        card: 'summary_large_image',
+        title: 'Writing | Kai Kim',
+        description: "kai kim · notes and interests — media reviews, music, technical writing.",
     },
 }
 
-export default function NotesLayout({ children }: { children: React.ReactNode }) {
+export default function WritingLayout({ children }: { children: React.ReactNode }) {
     return <>{children}</>
 }

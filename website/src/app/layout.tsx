@@ -31,9 +31,9 @@ export const metadata: Metadata = {
     metadataBase: new URL('https://kaikim.ca'),
     title: {
         template: '%s | Kai Kim',
-        default: 'Kai Kim — Software Engineer',
+        default: 'Kai Kim',
     },
-    description: "Kai Kim — SWE and CS student at Queen's University. Based in Toronto.",
+    description: "what i've been building: Clairo (AI medical assistant), Rooke (chess AI with 3D visualization), Scribe (handwritten LaTeX converter). CS @ Queen's University, Toronto.",
     keywords: [
         "Kai Kim",
         "Kai Kim engineer",
@@ -43,16 +43,35 @@ export const metadata: Metadata = {
         "Kai Kim portfolio",
         "Queen's University computer science",
         "software engineer Toronto",
+        "Clairo",
+        "Rooke chess",
+        "Scribe LaTeX",
     ],
     authors: [{ name: "Kai Kim", url: "https://kaikim.ca" }],
-    robots: { index: true, follow: true, googleBot: { index: true, follow: true } },
+    creator: "Kai Kim",
+    publisher: "Kai Kim",
+    robots: {
+        index: true,
+        follow: true,
+        googleBot: {
+            index: true,
+            follow: true,
+            'max-video-preview': -1,
+            'max-image-preview': 'large' as const,
+            'max-snippet': -1,
+        },
+    },
     alternates: { canonical: 'https://kaikim.ca' },
     icons: {
-        icon: '/assets/newjeans.png',
+        icon: [
+            { url: '/assets/newjeans.png', sizes: '32x32', type: 'image/png' },
+            { url: '/assets/newjeans.png', sizes: '16x16', type: 'image/png' },
+        ],
+        apple: '/assets/newjeans.png',
     },
     openGraph: {
-        title: 'Kai Kim — Software Engineer',
-        description: "CS student at Queen's University. Builder of Clairo, Rooke, and Scribe.",
+        title: 'Kai Kim',
+        description: "what i've been building: Clairo (AI medical assistant), Rooke (chess AI with 3D visualization), Scribe (handwritten LaTeX converter). CS @ Queen's University, Toronto.",
         type: 'website',
         url: 'https://kaikim.ca',
         siteName: 'Kai Kim',
@@ -61,8 +80,9 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Kai Kim — Software Engineer',
-        description: "CS student at Queen's University. Builder of Clairo, Rooke, and Scribe.",
+        title: 'Kai Kim',
+        description: "what i've been building: Clairo (AI medical assistant), Rooke (chess AI with 3D visualization), Scribe (handwritten LaTeX converter). CS @ Queen's University, Toronto.",
+        creator: '@kaificial',
         images: ['/og-image.png'],
     },
 };
@@ -107,9 +127,26 @@ export default function RootLayout({
                     dangerouslySetInnerHTML={{
                         __html: JSON.stringify({
                             "@context": "https://schema.org",
+                            "@type": "WebSite",
+                            "name": "Kai Kim",
+                            "url": "https://kaikim.ca",
+                            "description": "what i've been building: Clairo (AI medical assistant), Rooke (chess AI with 3D visualization), Scribe (handwritten LaTeX converter). CS @ Queen's University, Toronto.",
+                            "publisher": {
+                                "@type": "Person",
+                                "name": "Kai Kim"
+                            }
+                        })
+                    }}
+                />
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            "@context": "https://schema.org",
                             "@type": "Person",
                             "name": "Kai Kim",
                             "url": "https://kaikim.ca",
+                            "image": "https://kaikim.ca/assets/pfp.jpg",
                             "jobTitle": "Software Engineer",
                             "description": "Software engineering student at Queen's University. Builder of Clairo, Rooke, and Scribe.",
                             "alumniOf": {
@@ -119,6 +156,17 @@ export default function RootLayout({
                             },
                             "knowsAbout": ["TypeScript", "React", "Next.js", "Machine Learning", "WebGL", "Three.js"],
                             "sameAs": ["https://github.com/kaificial", "https://kaikim.ca"]
+                        })
+                    }}
+                />
+                <script
+                    type="application/ld+json"
+                    dangerouslySetInnerHTML={{
+                        __html: JSON.stringify({
+                            "@context": "https://schema.org",
+                            "@type": "SiteNavigationElement",
+                            "name": ["Projects", "Writing"],
+                            "url": ["https://kaikim.ca/projects", "https://kaikim.ca/writing"]
                         })
                     }}
                 />
