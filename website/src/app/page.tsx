@@ -32,7 +32,8 @@ const getSkillLogo = (skill: string, isDark: boolean) => {
         'VS Code': 'visualstudiocode',
         'Canva': 'canva',
         'Figma': 'figma',
-        'REST APIs': 'fastapi' // Placeholder/approximate
+        'REST APIs': 'fastapi', // Placeholder/approximate
+        'Vite': 'vite'
     };
 
     const slug = slugMap[skill];
@@ -449,6 +450,88 @@ export default function Home() {
                 {/* Experience Items */}
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
 
+                    {/* CIBC */}
+                    <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                        <div className="experience-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
+                            <div style={{ display: 'flex', gap: '4px', alignItems: 'flex-start' }}>
+                                {/* CIBC Logo */}
+                                <div className="experience-logo-container" style={{ width: '48px', display: 'flex', justifyContent: 'center', flexShrink: 0 }}>
+                                    <Image
+                                        src="/assets/cibc.png"
+                                        alt="CIBC Logo"
+                                        width={36}
+                                        height={36}
+                                        style={{
+                                            borderRadius: '8px',
+                                            objectFit: 'cover',
+                                            filter: isDark ? 'none' : 'invert(1)'
+                                        }}
+                                    />
+                                </div>
+
+                                <div>
+                                    <h3 style={{ fontSize: '1rem', fontWeight: '600', marginBottom: '0px', color: isDark ? 'white' : '#1c1917' }}>
+                                        {rt('CIBC', 5.8)}
+                                    </h3>
+                                    <p style={{ fontSize: '0.875rem', color: isDark ? '#9ca3af' : '#6b7280' }}>
+                                        {rt('Incoming S26', 5.85)}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', flexShrink: 0 }}>
+                                <span className="experience-date" style={{ fontSize: '0.875rem', color: isDark ? '#9ca3af' : '#6b7280', whiteSpace: 'nowrap' }}>
+                                    {rt('May 2026 - Aug. 2026', 5.9)}
+                                </span>
+                                <motion.button
+                                    className="experience-btn"
+                                    onClick={(e) => { e.stopPropagation(); toggleExpand('cibc'); }}
+                                    animate={{
+                                        backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                        color: isDark ? '#E5E7EB' : '#111827',
+                                        borderColor: isDark ? '#374151' : '#D1D5DB',
+                                    }}
+                                    whileHover={{
+                                        scale: 1.05,
+                                        backgroundColor: isDark ? 'rgba(50, 50, 50, 0.9)' : '#d1d5db',
+                                        color: isDark ? '#ffffff' : '#111827',
+                                        borderColor: isDark ? '#4b5563' : '#9ca3af'
+                                    }}
+                                    whileTap={{ scale: 0.95 }}
+                                    style={{
+                                        border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
+                                        background: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
+                                        color: isDark ? '#E5E7EB' : '#111827',
+                                        fontSize: '0.7rem',
+                                        cursor: 'pointer',
+                                        padding: '3px 8px',
+                                        borderRadius: '9999px',
+                                        textAlign: 'left',
+                                        display: 'inline-flex',
+                                        alignItems: 'center',
+                                        gap: '4px',
+                                        fontWeight: '500',
+                                        marginTop: '4px'
+                                    }}
+                                >
+                                    {expandedItems['cibc'] ? 'Show less' : 'Read more'}
+                                    <motion.svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" animate={{ rotate: expandedItems['cibc'] ? 180 : 0 }}>
+                                        <path d="M2 4l4 4 4-4" />
+                                    </motion.svg>
+                                </motion.button>
+                            </div>
+                        </div>
+
+                        <AnimatePresence>
+                            {expandedItems['cibc'] && (
+                                <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} style={{ overflow: 'hidden' }}>
+                                    <div style={{ marginLeft: '52px', marginTop: '0px', paddingBottom: '12px' }}>
+                                    </div>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+
                     {/* QMIND */}
                     <div className="experience-item" style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
                         <div className="experience-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '24px', flexWrap: 'wrap' }}>
@@ -491,7 +574,7 @@ export default function Home() {
                                     color: isDark ? '#9ca3af' : '#6b7280',
                                     whiteSpace: 'nowrap'
                                 }}>
-                                    {rt('Oct. 2025 - Present', 5.95)}
+                                    {rt('Oct. 2025 - May 2026', 5.95)}
                                 </span>
                                 <motion.button
                                     className="experience-btn"
@@ -543,10 +626,10 @@ export default function Home() {
                                 >
                                     <div style={{ marginLeft: '52px', marginTop: '0px', paddingBottom: '12px' }}>
                                         <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
-                                            Working on machine learning and artificial intelligence projects
+                                            Engineered a fairness middleware that audits AI agent reasoning to intercept and correct biased tool-selection in real-time. By implementing an Iterative Validation Cycle using LangGraph and Small Language Models (SLMs), we built a scalable framework to ensure equitable outcomes in autonomous agentic workflows.
                                         </p>
                                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '4px', margin: '-4px' }}>
-                                            {['Python', 'Machine Learning', 'Neural Networks', 'TensorFlow'].map((skill, index) => (
+                                            {['Python', 'LangGraph', 'CrewAI', 'MCP', 'DeepEval', 'Gemini', 'Ollama', 'FastAPI'].map((skill, index) => (
                                                 <motion.span
                                                     key={index}
                                                     whileHover={{ scale: 1.1, y: -2 }}
@@ -619,7 +702,7 @@ export default function Home() {
                                     color: isDark ? '#9ca3af' : '#6b7280',
                                     whiteSpace: 'nowrap'
                                 }}>
-                                    {rt('Sept. 2025 - Present', 6.3)}
+                                    {rt('Sept. 2025 - May 2026', 6.3)}
                                 </span>
                                 <motion.button
                                     className="experience-btn"
@@ -671,10 +754,10 @@ export default function Home() {
                                 >
                                     <div style={{ marginLeft: '52px', marginTop: '4px' }}>
                                         <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
-                                            Building software solutions for biomedical innovation projects
+                                            Built Iodetect, an integrated IoT diagnostic platform that automates the detection of iodine deficiency through a combination of embedded firmware and cloud based data visualization. The system uses an ESP32 driven hardware interface to process optical sensor data and synchronize results with a centralized Firebase repo, providing health officials with real time insights using a Next.js dashboard.
                                         </p>
                                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                                            {['C++', 'Python', 'Medical Imaging', 'Git'].map((skill, index) => (
+                                            {['Next.js', 'TypeScript', 'Firebase', 'ESP32', 'C/C++', 'Tailwind CSS'].map((skill, index) => (
                                                 <motion.span
                                                     key={index}
                                                     whileHover={{ scale: 1.1, y: -2 }}
@@ -728,7 +811,7 @@ export default function Home() {
 
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', flexShrink: 0 }}>
                                 <span className="experience-date" style={{ fontSize: '0.875rem', color: isDark ? '#9ca3af' : '#6b7280', whiteSpace: 'nowrap' }}>
-                                    {rt('Jun. 2025- Aug. 2025', 6.7)}
+                                    {rt('May 2025 - Aug. 2025', 6.7)}
                                 </span>
                                 <motion.button
                                     className="experience-btn"
@@ -774,10 +857,10 @@ export default function Home() {
                                 <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.2 }} style={{ overflow: 'hidden' }}>
                                     <div style={{ marginLeft: '52px', marginTop: '0px', paddingBottom: '12px' }}>
                                         <p style={{ fontSize: '0.875rem', color: isDark ? '#d1d5db' : '#4b5563', marginBottom: '12px' }}>
-                                            Worked on developing robust, scalable software products and expanding capabilities across the tech stack alongside cross-functional teams.
+                                            Built and shipped features across the full stack for Zeen&apos;s B2B SaaS platform. Owned a redesign of the document parsing pipeline, reducing processing latency by 40%. Contributed to a real-time collaboration layer using WebSockets, and helped migrate a legacy REST API surface to a GraphQL schema shared across web and mobile clients.
                                         </p>
                                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '4px', margin: '-4px' }}>
-                                            {['React', 'TypeScript', 'Node.js', 'Software Architecture'].map((skill, index) => (
+                                            {['React', 'TypeScript', 'Node.js', 'GraphQL', 'PostgreSQL', 'Redis', 'WebSockets', 'AWS S3', 'Docker', 'REST APIs'].map((skill, index) => (
                                                 <motion.span key={index} whileHover={{ scale: 1.1, y: -2 }} transition={{ type: "spring", stiffness: 400, damping: 10 }} whileTap={{ scale: 0.95 }} style={{ display: 'inline-block', cursor: 'default', padding: '4px 12px', backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB', color: isDark ? '#E5E7EB' : '#111827', border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`, borderRadius: '9999px', fontSize: '0.75rem', fontWeight: '500' }}>
                                                     {skill}
                                                 </motion.span>
@@ -1047,7 +1130,7 @@ export default function Home() {
                                 }
                             }}
                         >
-                            {['Git', 'GitHub', 'VS Code', 'Figma', 'Canva', 'Docker', 'AWS', 'Vercel'].map((skill, index) => {
+                            {['Git', 'GitHub', 'VS Code', 'Figma', 'Canva', 'Docker', 'AWS', 'Vercel', 'Vite'].map((skill, index) => {
                                 const logoUrl = getSkillLogo(skill, isDark);
                                 return (
                                     <motion.span
@@ -1109,14 +1192,7 @@ export default function Home() {
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
                     {projects.filter(p => p.id !== 'portfolio').map((project) => (
                         <SpotlightCard key={project.id} isDark={isDark}>
-                            <div style={{
-                                display: 'grid',
-                                gridTemplateColumns: '1fr',
-                                gap: '20px',
-                                '@media (min-width: 640px)': {
-                                    gridTemplateColumns: '200px 1fr'
-                                }
-                            } as any}>
+                            <div className="grid grid-cols-1 sm:grid-cols-[200px_1fr] gap-[20px]">
                                 {/* Left: Preview Image/Video */}
                                 <div style={{
                                     borderRadius: '8px',
@@ -1234,11 +1310,11 @@ export default function Home() {
                                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginTop: 'auto', flexWrap: 'wrap' }}>
                                         <Link
                                             href={`/projects/${project.id}`}
+                                            className="group text-gray-500 dark:text-gray-400 hover:text-[#2563eb] transition-colors"
                                             style={{
                                                 display: 'inline-flex',
                                                 alignItems: 'center',
                                                 gap: '6px',
-                                                color: '#2563eb',
                                                 fontSize: '0.8125rem',
                                                 fontWeight: '500',
                                                 textDecoration: 'underline',
@@ -1248,7 +1324,7 @@ export default function Home() {
                                             }}
                                         >
                                             {rt('View Details', 9.6)}
-                                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                            <svg className="transition-transform duration-300 ease-out group-hover:-rotate-45" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                 <path d="M5 12h14"></path>
                                                 <path d="M12 5l7 7-7 7"></path>
                                             </svg>
