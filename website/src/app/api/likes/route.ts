@@ -3,20 +3,25 @@ import { Redis } from "@upstash/redis";
 import { kv } from "@vercel/kv";
 import { NextResponse } from "next/server";
 
-// initialize redis client from environment variables
-const redis = Redis.fromEnv();
+const hasRedisEnv = process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN;
+const hasKvEnv = process.env.KV_REST_API_URL && process.env.KV_REST_API_TOKEN;
 
-// configure rate limiter: 5 requests per minute per IP using sliding window
-const ratelimit = new Ratelimit({
+const redis = hasRedisEnv ? Redis.fromEnv() : null;
+
+// rate limiter: 5 requests per minute per IP using sliding window
+const ratelimit = redis ? new Ratelimit({
     redis,
     limiter: Ratelimit.slidingWindow(5, "1 m"),
     analytics: true, // enable analytics for monitoring
     prefix: "ratelimit:likes",
-});
+}) : null;
 
-// GET endpoint - public read access for like count
 export async function GET() {
     try {
+        if (!hasKvEnv) {
+            return NextResponse.json({ count: 0 }); // Fallback for local development
+        }
+
         const count = await kv.get<number>("love-count") || 0;
         return NextResponse.json({ count });
     } catch (error) {
@@ -31,6 +36,14 @@ export async function GET() {
 // POST endpoint - increment like count with security measures
 export async function POST(request: Request) {
     try {
+        if (!hasKvEnv || !hasRedisEnv || !ratelimit) {
+            return NextResponse.json({
+                count: 1, // Fallback for local development
+                success: true,
+                message: "Thank you for liking! (Local Database Disabled)"
+            });
+        }
+
         // extract client IP from headers (vercel provides x-forwarded-for)
         const forwarded = request.headers.get("x-forwarded-for");
         const realIp = request.headers.get("x-real-ip");
