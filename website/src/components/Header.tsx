@@ -443,6 +443,7 @@ export default function Header() {
     const { isDark, toggleTheme } = useTheme();
     const { playClick, playHover, playOn, playOff } = useUISound();
 
+
     // State for local display and hover
     const [count, setCount] = useState(0);
     const [displayCount, setDisplayCount] = useState(0);
@@ -567,6 +568,8 @@ export default function Header() {
         }
     };
 
+
+    if (pathname?.startsWith('/projects/') && pathname !== '/projects') return null;
 
     return (
         <header className="header">
