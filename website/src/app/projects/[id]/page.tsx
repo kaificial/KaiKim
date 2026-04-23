@@ -1,17 +1,43 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import { projects } from '../../../data/projects';
-import { notFound, useParams } from 'next/navigation';
+import { notFound, useParams, useRouter } from 'next/navigation';
 import { ProjectDescription } from '../../../components/ProjectDescription';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTheme } from '../../../components/ThemeContext';
 import { motion } from 'framer-motion';
 import FloatingDock from '../../../components/FloatingDock';
+import ReadingProgressPill from '../../../components/ReadingProgressPill';
+
+// Map path name to a friendly page name
+function getPageLabel(pathname: string): string {
+    if (pathname === '/') return 'home';
+    if (pathname === '/projects') return 'projects';
+    if (pathname === '/writing') return 'writing';
+    if (pathname === '/notes') return 'notes';
+    if (pathname.startsWith('/projects/')) return 'projects';
+    return 'back';
+}
 
 export default function ProjectPage() {
     const { id } = useParams();
     const { isDark } = useTheme();
+    const router = useRouter();
+    const [referrerLabel, setReferrerLabel] = useState('back');
+
+    // Determine what page the user came from using sessionStorage
+    useEffect(() => {
+        try {
+            const prevPath = sessionStorage.getItem('prevPath');
+            if (prevPath) {
+                setReferrerLabel(getPageLabel(prevPath));
+            }
+        } catch {
+            // ignore storage errors
+        }
+    }, []);
 
     const project = projects.find((p) => p.id === id);
 
@@ -24,26 +50,91 @@ export default function ProjectPage() {
         );
     }
 
+    const hasLongDescription = !!project.longDescription;
+
     return (
         <div className="w-full min-h-screen pb-32">
-            {/* Minimal Header / Back Button */}
-            <div className="pt-2">
-                <Link
-                    href="/"
-                    className="inline-flex items-center gap-2 text-sm font-medium transition-colors hover:opacity-70"
+            {/* Sticky Header: Back Button and Reading Progress bar */}
+            <div className="nav-pill-container" style={{
+                position: 'sticky',
+                top: '16px',
+                zIndex: 100,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+                left: 'auto',
+                transform: 'none'
+            }}>
+                <button
+                    onClick={() => router.back()}
+                    className="nav-link active"
                     style={{
-                        color: isDark ? '#9ca3af' : '#6b7280',
+                        gap: '6px',
+                        cursor: 'pointer',
+                        fontSize: '0.8125rem'
                     }}
                 >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="19" y1="12" x2="5" y2="12"></line>
                         <polyline points="12 19 5 12 12 5"></polyline>
                     </svg>
-                    back
-                </Link>
+                    Back<span className="hidden sm:inline"> to {referrerLabel.charAt(0).toUpperCase() + referrerLabel.slice(1)}</span>
+                </button>
+
+                {/* Center: Reading Progress Pill */}
+                <div style={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '50%',
+                    transform: 'translateX(-50%)',
+                    marginTop: '-18px', // Fixed top position so it grows downwards from current center
+                    zIndex: 1000,
+                    display: 'block', // Overrides globals.scss display: none
+                }}>
+                    <ReadingProgressPill contentSelector="article" projectTitle={project.title} />
+                </div>
+
+                {/* Right: Action Buttons */}
+                <div style={{ display: 'flex', gap: '4px', flexShrink: 0 }}>
+                    {project.demo && (
+                        <a
+                            href={project.demo}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="nav-link active"
+                            style={{
+                                gap: '4px',
+                                textDecoration: 'none',
+                                cursor: 'pointer',
+                                fontSize: '0.75rem'
+                            }}
+                        >
+                            <span className="hidden sm:inline" style={{ position: 'relative', top: '1px' }}>Demo</span>
+                            <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                        </a>
+                    )}
+                    {project.github && (
+                        <a
+                            href={project.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="nav-link active"
+                            style={{
+                                gap: '4px',
+                                textDecoration: 'none',
+                                cursor: 'pointer',
+                                fontSize: '0.75rem'
+                            }}
+                        >
+                            <span className="hidden sm:inline" style={{ position: 'relative', top: '1px' }}>GitHub</span>
+                            <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
+                        </a>
+                    )}
+                </div>
             </div>
 
-            <div style={{ height: '30px' }} />
+            <div style={{ height: '22px' }} />
 
             {/* Content Container */}
             <article>
@@ -188,69 +279,7 @@ export default function ProjectPage() {
                         ))}
                     </div>
 
-                    {/* Action Buttons */}
-                    <div style={{ display: 'flex', gap: '12px', marginBottom: '48px' }}>
-                        {project.demo && (
-                            <motion.a
-                                href={project.demo}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                whileHover={{
-                                    scale: 1.05,
-                                    boxShadow: isDark
-                                        ? '0 0 25px rgba(59, 130, 246, 0.8), 0 0 50px rgba(59, 130, 246, 0.4), 0 0 75px rgba(59, 130, 246, 0.2)'
-                                        : '0 0 25px rgba(37, 99, 235, 0.6), 0 0 50px rgba(37, 99, 235, 0.3), 0 0 75px rgba(37, 99, 235, 0.15)'
-                                }}
-                                whileTap={{ scale: 0.95 }}
-                                transition={{ duration: 0.2 }}
-                                style={{
-                                    padding: '6px 14px',
-                                    backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
-                                    color: isDark ? '#E5E7EB' : '#111827',
-                                    border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
-                                    borderRadius: '9999px',
-                                    fontSize: '0.8125rem',
-                                    fontWeight: '500',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '6px'
-                                }}
-                            >
-                                <span style={{ position: 'relative', top: '1px' }}>live demo</span>
-                                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
-                            </motion.a>
-                        )}
-                        {project.github && (
-                            <motion.a
-                                href={project.github}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                whileHover={{
-                                    scale: 1.05,
-                                    boxShadow: isDark
-                                        ? '0 0 25px rgba(59, 130, 246, 0.8), 0 0 50px rgba(59, 130, 246, 0.4), 0 0 75px rgba(59, 130, 246, 0.2)'
-                                        : '0 0 25px rgba(37, 99, 235, 0.6), 0 0 50px rgba(37, 99, 235, 0.3), 0 0 75px rgba(37, 99, 235, 0.15)'
-                                }}
-                                whileTap={{ scale: 0.95 }}
-                                transition={{ duration: 0.2 }}
-                                style={{
-                                    padding: '6px 14px',
-                                    backgroundColor: isDark ? '#374151' : '#f3f4f6',
-                                    color: isDark ? 'white' : '#1f2937',
-                                    border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
-                                    borderRadius: '9999px',
-                                    fontSize: '0.8125rem',
-                                    fontWeight: '500',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    gap: '6px'
-                                }}
-                            >
-                                <span style={{ position: 'relative', top: '1px' }}>code base</span>
-                                <svg width="12" height="12" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
-                            </motion.a>
-                        )}
-                    </div>
+
                 </motion.div>
 
                 {/* Long Description */}
@@ -263,6 +292,8 @@ export default function ProjectPage() {
                         <ProjectDescription content={project.longDescription} />
                     </motion.div>
                 )}
+
+                <div style={{ height: '120px' }} />
             </article>
 
             <FloatingDock />

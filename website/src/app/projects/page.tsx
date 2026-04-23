@@ -364,11 +364,11 @@ export default function ProjectsPage() {
                                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginTop: 'auto', flexWrap: 'wrap' }}>
                                                     <Link
                                                         href={`/projects/${project.id}`}
+                                                        className="group text-gray-500 dark:text-gray-400 hover:text-[#2563eb] transition-colors"
                                                         style={{
                                                             display: 'inline-flex',
                                                             alignItems: 'center',
                                                             gap: '6px',
-                                                            color: '#2563eb',
                                                             fontSize: '0.8125rem',
                                                             fontWeight: '500',
                                                             textDecoration: 'underline',
@@ -378,7 +378,7 @@ export default function ProjectsPage() {
                                                         }}
                                                     >
                                                         View Details
-                                                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                                        <svg className="transition-transform duration-300 ease-out group-hover:-rotate-45" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                             <path d="M5 12h14"></path>
                                                             <path d="M12 5l7 7-7 7"></path>
                                                         </svg>
