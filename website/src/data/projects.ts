@@ -22,7 +22,7 @@ export const projects: Project[] = [
         tags: ['Next.js', 'TypeScript', 'WebLLM', 'Gemini', 'Transformers.js', 'IndexedDB', 'Framer Motion'],
         status: 'Building',
         url: '',
-        video: '/assets/Clairo.mp4',
+        video: '/assets/ClairoMedicalDemo.mp4',
         github: 'https://github.com/kaificial/clairo',
         demo: 'https://clairomedical.vercel.app/',
         longDescription: `
@@ -494,7 +494,7 @@ The main thread right now sends the board state as a FEN string and gets the res
         url: 'rooke.vercel.app',
         github: 'https://github.com/kaificial/rooke',
         demo: 'https://rooke.vercel.app',
-        video: '/assets/demorooke.mp4'
+        video: '/assets/RookeDemo.mp4'
     },
     {
         id: 'texify',
@@ -505,7 +505,7 @@ The main thread right now sends the board state as a FEN string and gets the res
         url: 'https://texifylatex.vercel.app',
         github: 'https://github.com/kaificial/texify',
         demo: 'https://texifylatex.vercel.app',
-        video: '/assets/demoscribe.mp4',
+        video: '/assets/TeXify.mp4',
         longDescription: ``,
     },
     {
@@ -517,6 +517,6 @@ The main thread right now sends the board state as a FEN string and gets the res
         url: 'kaikim.ca',
         github: 'https://github.com/kaificial/KaiKim',
         demo: 'https://kaikim.ca',
-        video: '/assets/demowebsite.mp4',
+        video: '/assets/PersonalPortfolio.mp4',
     },
 ];

@@ -1192,7 +1192,7 @@ export default function Home() {
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '20px' }}>
                     {projects.filter(p => p.id !== 'portfolio').map((project) => (
                         <SpotlightCard key={project.id} isDark={isDark}>
-                            <div className="grid grid-cols-1 sm:grid-cols-[200px_1fr] gap-[20px]">
+                            <div className="grid grid-cols-1 sm:grid-cols-[300px_1fr] gap-[20px]">
                                 {/* Left: Preview Image/Video */}
                                 <div style={{
                                     borderRadius: '8px',
@@ -1207,8 +1207,7 @@ export default function Home() {
                                     display: 'flex',
                                     alignItems: 'center',
                                     justifyContent: 'center',
-                                    position: 'relative',
-                                    minHeight: '140px'
+                                    position: 'relative'
                                 }}>
                                     {project.video ? (
                                         <ProjectVideo
