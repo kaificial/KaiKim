@@ -804,7 +804,7 @@ export default function Home() {
                                         {rt('Zeen', 6.6)}
                                     </h3>
                                     <p style={{ fontSize: '0.875rem', color: isDark ? '#9ca3af' : '#6b7280' }}>
-                                        {rt('Software Engineer Intern', 6.65)}
+                                        {rt('Software Engineer', 6.65)}
                                     </p>
                                 </div>
                             </div>
