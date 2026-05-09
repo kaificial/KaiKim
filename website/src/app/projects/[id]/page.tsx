@@ -67,7 +67,14 @@ export default function ProjectPage() {
                 transform: 'none'
             }}>
                 <button
-                    onClick={() => router.back()}
+                    onClick={() => {
+                        const prevPath = sessionStorage.getItem('prevPath');
+                        if (prevPath && window.history.length > 1) {
+                            router.back();
+                        } else {
+                            router.push(prevPath || '/projects');
+                        }
+                    }}
                     className="nav-link active"
                     style={{
                         gap: '6px',
@@ -79,10 +86,9 @@ export default function ProjectPage() {
                         <line x1="19" y1="12" x2="5" y2="12"></line>
                         <polyline points="12 19 5 12 12 5"></polyline>
                     </svg>
-                    Back<span className="hidden sm:inline"> to {referrerLabel.charAt(0).toUpperCase() + referrerLabel.slice(1)}</span>
+                    Back<span className="hidden sm:inline">{referrerLabel !== 'back' ? ` to ${referrerLabel.charAt(0).toUpperCase() + referrerLabel.slice(1)}` : ' to Projects'}</span>
                 </button>
 
-                {/* Center: Reading Progress Pill */}
                 <div style={{
                     position: 'absolute',
                     left: '50%',
@@ -91,8 +97,11 @@ export default function ProjectPage() {
                     marginTop: '-18px', // Fixed top position so it grows downwards from current center
                     zIndex: 1000,
                     display: 'block', // Overrides globals.scss display: none
+                    pointerEvents: 'none'
                 }}>
-                    <ReadingProgressPill contentSelector="article" projectTitle={project.title} />
+                    <div style={{ pointerEvents: 'auto' }}>
+                        <ReadingProgressPill contentSelector="article" projectTitle={project.title} />
+                    </div>
                 </div>
 
                 {/* Right: Action Buttons */}

@@ -100,6 +100,8 @@ export default function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <head>
+                <link rel="preconnect" href="https://i.scdn.co" crossOrigin="anonymous" />
+                <link rel="preconnect" href="https://image.tmdb.org" crossOrigin="anonymous" />
                 <script
                     dangerouslySetInnerHTML={{
                         __html: `
