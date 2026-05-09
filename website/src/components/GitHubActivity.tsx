@@ -119,16 +119,16 @@ export function GitHubActivity({ username, shouldStart = true }: GitHubActivityP
     const getContributionColor = (level: number) => {
         if (isDark) {
             const colors = [
-                'rgba(255,255,255,0.04)',
-                'rgba(96, 165, 250, 0.3)',
-                'rgba(96, 165, 250, 0.5)',
-                'rgba(96, 165, 250, 0.7)',
-                'rgba(96, 165, 250, 0.9)',
+                '#1c1c1a',
+                '#1e3a5f',
+                '#2d5a8e',
+                '#3b78c4',
+                '#4b96f5',
             ];
             return colors[level] || colors[0];
         } else {
             const colors = [
-                'rgba(0,0,0,0.04)',
+                '#ebebea',
                 '#bfdbfe',
                 '#60a5fa',
                 '#3b82f6',

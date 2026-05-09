@@ -27,7 +27,8 @@ const ZoomableImage = ({ src, alt, isDark, ...props }: any) => {
                     overflow: 'hidden', 
                     borderRadius: '12px',
                     cursor: 'zoom-in',
-                    position: 'relative'
+                    position: 'relative',
+                    backgroundColor: isDark ? '#111110' : '#ffffff'
                 }}
                 onClick={() => setIsZoomed(true)}
             >
@@ -172,7 +173,7 @@ export const ProjectDescription: React.FC<ProjectDescriptionProps> = ({ content 
                         );
                     },
                     table: ({ node, ...props }) => (
-                        <div style={{ overflowX: 'auto', marginBottom: '32px', borderRadius: '8px', border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}` }}>
+                        <div style={{ overflowX: 'auto', marginBottom: '32px', borderRadius: '8px', border: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`, backgroundColor: isDark ? '#111110' : '#ffffff' }}>
                             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.875rem' }} {...props} />
                         </div>
                     ),
