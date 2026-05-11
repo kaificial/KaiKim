@@ -16,6 +16,17 @@ export interface Project {
 
 export const projects: Project[] = [
     {
+        id: 'quorum',
+        title: 'Quorum',
+        description: 'AI-powered morning briefing dashboard that reads the news, checks the markets, and writes you a structured debrief every day.',
+        tags: ['Python', 'FastAPI', 'LangGraph', 'LangChain', 'Claude AI', 'SQLite', 'yfinance'],
+        status: 'Live',
+        url: 'localhost:3000',
+        solidColor: '#000000',
+        github: 'https://github.com/kaificial/quorum',
+        longDescription: ``,
+    },
+    {
         id: 'clairo',
         title: 'Clairo',
         description: 'AI-powered assistant to help you understand medical terminology, records, and reports with clarity.',

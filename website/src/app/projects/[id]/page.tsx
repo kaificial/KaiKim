@@ -196,6 +196,7 @@ export default function ProjectPage() {
                     {/* Browser Body / Preview Area */}
                     <div style={{
                         width: '100%',
+                        aspectRatio: '16/9',
                         backgroundColor: project.solidColor || (isDark ? '#171717' : '#f3f4f6'),
                         display: 'flex',
                         flexDirection: 'column',
