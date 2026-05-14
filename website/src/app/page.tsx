@@ -563,7 +563,7 @@ export default function Home() {
                                         fontSize: '0.875rem',
                                         color: isDark ? '#9ca3af' : '#6b7280'
                                     }}>
-                                        {rt('AI/ML Team Member', 5.9)}
+                                        {rt('AI Engineer', 5.9)}
                                     </p>
                                 </div>
                             </div>
