@@ -551,8 +551,8 @@ export default function Header() {
                 return;
             }
 
-            // success - update with server count
-            if (data.count) {
+            // success - update with server count (if provided)
+            if (data.count !== undefined && data.count !== null) {
                 setCount(data.count);
                 setDisplayCount(data.count);
             }

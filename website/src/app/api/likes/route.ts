@@ -38,7 +38,6 @@ export async function POST(request: Request) {
     try {
         if (!hasKvEnv || !hasRedisEnv || !ratelimit) {
             return NextResponse.json({
-                count: 1, // Fallback for local development
                 success: true,
                 message: "Thank you for liking! (Local Database Disabled)"
             });
