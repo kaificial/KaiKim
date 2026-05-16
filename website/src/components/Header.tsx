@@ -510,9 +510,10 @@ export default function Header() {
         }
 
         // optimistic update - show immediate feedback
-        const previousCount = count;
-        setCount(count + 1);
-        setDisplayCount(count + 1);
+        // use functional updater to read the latest state, not a stale closure value
+        let previousCount = 0;
+        setCount(prev => { previousCount = prev; return prev + 1; });
+        setDisplayCount(prev => prev + 1);
         setHasLiked(true);
         localStorage.setItem("has-liked-site", "true");
 
@@ -523,9 +524,7 @@ export default function Header() {
             if (!response.ok) {
                 // handle specific error types
                 if (response.status === 429) {
-                    // rate limit exceeded
-
-                    // rollback optimistic update
+                    // rate limit exceeded - rollback optimistic update
                     setCount(previousCount);
                     setDisplayCount(previousCount);
                     setHasLiked(false);
@@ -536,9 +535,7 @@ export default function Header() {
                     // keep the liked state since server confirmed
 
                 } else if (response.status === 403) {
-                    // forbidden (CORS or authorization issue)
-
-                    // rollback optimistic update
+                    // forbidden - rollback optimistic update
                     setCount(previousCount);
                     setDisplayCount(previousCount);
                     setHasLiked(false);
@@ -551,7 +548,7 @@ export default function Header() {
                 return;
             }
 
-            // success - update with server count (if provided)
+            // success - sync to confirmed server count if provided
             if (data.count !== undefined && data.count !== null) {
                 setCount(data.count);
                 setDisplayCount(data.count);
