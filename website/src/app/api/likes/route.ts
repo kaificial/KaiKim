@@ -36,7 +36,8 @@ export async function GET() {
 // POST endpoint - increment like count with security measures
 export async function POST(request: Request) {
     try {
-        if (!hasKvEnv || !hasRedisEnv || !ratelimit) {
+        // if KV is not available at all, nothing can be persisted
+        if (!hasKvEnv) {
             return NextResponse.json({
                 success: true,
                 message: "Thank you for liking! (Local Database Disabled)"
@@ -48,28 +49,30 @@ export async function POST(request: Request) {
         const realIp = request.headers.get("x-real-ip");
         const ip = forwarded?.split(",")[0].trim() || realIp || "anonymous";
 
-        // rate limiting check
-        const { success, limit, remaining, reset } = await ratelimit.limit(ip);
+        // rate limiting check (only if Redis/ratelimit is configured)
+        if (ratelimit) {
+            const { success, limit, remaining, reset } = await ratelimit.limit(ip);
 
-        if (!success) {
-            const resetDate = new Date(reset);
-            console.warn(`Rate limit exceeded for IP: ${ip}`);
+            if (!success) {
+                const resetDate = new Date(reset);
+                console.warn(`Rate limit exceeded for IP: ${ip}`);
 
-            return NextResponse.json(
-                {
-                    error: "rate_limit",
-                    message: "Too many requests. Please try again later.",
-                    resetAt: resetDate.toISOString()
-                },
-                {
-                    status: 429,
-                    headers: {
-                        "X-RateLimit-Limit": limit.toString(),
-                        "X-RateLimit-Remaining": remaining.toString(),
-                        "X-RateLimit-Reset": reset.toString(),
+                return NextResponse.json(
+                    {
+                        error: "rate_limit",
+                        message: "Too many requests. Please try again later.",
+                        resetAt: resetDate.toISOString()
+                    },
+                    {
+                        status: 429,
+                        headers: {
+                            "X-RateLimit-Limit": limit.toString(),
+                            "X-RateLimit-Remaining": remaining.toString(),
+                            "X-RateLimit-Reset": reset.toString(),
+                        }
                     }
-                }
-            );
+                );
+            }
         }
 
         // check if this IP has already liked (24 hour expiration)
