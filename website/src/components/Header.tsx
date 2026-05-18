@@ -22,6 +22,7 @@ const MusicWidget = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [progress, setProgress] = useState(0);
     const [duration, setDuration] = useState(0);
+    const [isWidgetHovered, setIsWidgetHovered] = useState(false);
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const widgetRef = useRef<HTMLDivElement | null>(null);
 
@@ -169,175 +170,158 @@ const MusicWidget = () => {
     const progressFillColor = isDark ? '#ffffff' : '#111827';
 
     return (
-        <motion.div
-            ref={widgetRef}
-            onClick={() => { setIsExpanded(!isExpanded); playClick(); }}
-            initial={false}
-            animate={{
-                width: isExpanded ? 340 : 130,
-                height: isExpanded ? 200 : 36,
-                padding: isExpanded ? '16px 20px' : '3px 12px 3px 3px',
-                borderRadius: isExpanded ? 36 : 10,
-                backgroundColor: widgetBg,
-                borderColor: widgetBorderColor
-            }}
-            transition={{ type: "spring", stiffness: 450, damping: 40 }}
-            style={{
-                display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'flex-start',
-                borderStyle: 'solid',
-                borderWidth: '1px',
-                boxShadow: isExpanded ? (isDark ? '0 25px 60px rgba(0,0,0,0.7), 0 10px 20px rgba(0,0,0,0.4)' : '0 25px 60px rgba(0,0,0,0.25), 0 10px 20px rgba(0,0,0,0.1)') : 'none',
-                zIndex: 1000,
-                overflow: 'hidden',
-                cursor: 'pointer',
-                transformOrigin: 'top center',
-                backdropFilter: isExpanded ? 'blur(20px)' : 'none',
-            }}
+        <div
+            style={{ position: 'relative' }}
+            onMouseEnter={() => setIsWidgetHovered(true)}
+            onMouseLeave={() => setIsWidgetHovered(false)}
         >
-            <audio
-                ref={audioRef}
-                src="/music/newjean.mp3"
-                onTimeUpdate={handleTimeUpdate}
-                onLoadedMetadata={handleLoadedMetadata}
-                onEnded={() => setIsPlaying(false)}
-            />
-            {/* Music Widget */}
-            {/* Top row */}
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+            <motion.div
+                ref={widgetRef}
+                onClick={() => { setIsExpanded(!isExpanded); playClick(); }}
+                initial={false}
+                animate={{
+                    width: isExpanded ? 340 : 130,
+                    height: isExpanded ? 200 : 36,
+                    padding: isExpanded ? '16px 20px' : '3px 12px 3px 3px',
+                    borderRadius: isExpanded ? 36 : 10,
+                    backgroundColor: widgetBg,
+                    borderColor: widgetBorderColor
+                }}
+                transition={{ type: "spring", stiffness: 450, damping: 40 }}
+                style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'flex-start',
+                    borderStyle: 'solid',
+                    borderWidth: '1px',
+                    boxShadow: isExpanded ? (isDark ? '0 25px 60px rgba(0,0,0,0.7), 0 10px 20px rgba(0,0,0,0.4)' : '0 25px 60px rgba(0,0,0,0.25), 0 10px 20px rgba(0,0,0,0.1)') : 'none',
+                    zIndex: 1000,
+                    overflow: 'hidden',
+                    cursor: 'pointer',
+                    transformOrigin: 'top center',
+                    backdropFilter: isExpanded ? 'blur(20px)' : 'none',
+                }}
+            >
+                <audio
+                    ref={audioRef}
+                    src="/music/newjean.mp3"
+                    onTimeUpdate={handleTimeUpdate}
+                    onLoadedMetadata={handleLoadedMetadata}
+                    onEnded={() => setIsPlaying(false)}
+                />
+                {/* Music Widget */}
+                {/* Top row */}
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
 
-                {/* Left side: Album Art + Titles */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: isExpanded ? '12px' : '0px', transition: 'gap 0.3s ease' }}>
-                    {/* Album Art Container */}
-                    <div style={{ position: 'relative', flexShrink: 0 }}>
-                        <motion.div
-                            initial={false}
-                            animate={{
-                                width: isExpanded ? 64 : 28,
-                                height: isExpanded ? 64 : 28,
-                                borderRadius: isExpanded ? 14 : 8,
-                                backgroundColor: isExpanded ? 'transparent' : 'rgba(255,255,255,0.2)',
-                            }}
-                            transition={{ type: "spring", stiffness: 450, damping: 40 }}
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                overflow: 'hidden'
-                            }}
-                        >
+                    {/* Left side: Album Art + Titles */}
+                    <div style={{ display: 'flex', alignItems: 'center', gap: isExpanded ? '12px' : '0px', transition: 'gap 0.3s ease' }}>
+                        {/* Album Art Container */}
+                        <div style={{ position: 'relative', flexShrink: 0 }}>
                             <motion.div
                                 initial={false}
-                                animate={{ padding: isExpanded ? '0px' : '2px' }}
+                                animate={{
+                                    width: isExpanded ? 64 : 28,
+                                    height: isExpanded ? 64 : 28,
+                                    borderRadius: isExpanded ? 14 : 8,
+                                    backgroundColor: isExpanded ? 'transparent' : 'rgba(255,255,255,0.2)',
+                                }}
+                                transition={{ type: "spring", stiffness: 450, damping: 40 }}
                                 style={{
-                                    width: '100%',
-                                    height: '100%',
                                     display: 'flex',
                                     alignItems: 'center',
-                                    justifyContent: 'center'
+                                    justifyContent: 'center',
+                                    overflow: 'hidden'
                                 }}
                             >
                                 <motion.div
                                     initial={false}
-                                    animate={{ borderRadius: isExpanded ? '12px' : '6px' }}
+                                    animate={{ padding: isExpanded ? '0px' : '2px' }}
                                     style={{
                                         width: '100%',
                                         height: '100%',
-                                        backgroundImage: 'url(/assets/music.jpg)',
-                                        backgroundSize: 'cover',
-                                        backgroundPosition: 'center',
-                                    }}
-                                />
-                            </motion.div>
-                        </motion.div>
-
-                    </div>
-
-                    {/* Titles */}
-                    <AnimatePresence>
-                        {isExpanded && (
-                            <motion.div
-                                initial={{ opacity: 0, x: -10 }}
-                                animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -10 }}
-                                transition={{ duration: 0.2 }}
-                                style={{ display: 'flex', flexDirection: 'column', whiteSpace: 'nowrap' }}
-                            >
-                                <span style={{ color: textColor, fontWeight: 700, fontSize: '1.25rem', lineHeight: 1.2, letterSpacing: '-0.02em' }}>ETA</span>
-                                <span style={{ color: subTextColor, fontSize: '0.95rem', fontWeight: 500 }}>NewJeans</span>
-                            </motion.div>
-                        )}
-                    </AnimatePresence>
-                </div>
-
-                {/* Collapsed: Scrolling song title + artist (looped) */}
-                {!isExpanded && (
-                    <div style={{
-                        flex: 1,
-                        overflow: 'hidden',
-                        marginLeft: '6px',
-                        marginRight: '6px',
-                        minWidth: 0,
-                        maskImage: 'linear-gradient(to right, transparent 0%, black 6px, black calc(100% - 6px), transparent 100%)',
-                        WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 6px, black calc(100% - 6px), transparent 100%)',
-                    }}>
-                        <div
-                            style={{
-                                display: 'flex',
-                                whiteSpace: 'nowrap',
-                                animation: 'marquee-scroll 10s linear infinite',
-                                width: 'fit-content',
-                            }}
-                        >
-                            {[0, 1].map((i) => (
-                                <span
-                                    key={i}
-                                    style={{
-                                        color: isDark ? '#d1d5db' : '#374151',
-                                        fontSize: '0.7rem',
-                                        fontWeight: 600,
-                                        letterSpacing: '-0.01em',
-                                        paddingRight: '1.5em',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        justifyContent: 'center'
                                     }}
                                 >
-                                    ETA &bull; NewJeans
-                                </span>
-                            ))}
-                        </div>
-                    </div>
-                )}
+                                    <motion.div
+                                        initial={false}
+                                        animate={{ borderRadius: isExpanded ? '12px' : '6px' }}
+                                        style={{
+                                            width: '100%',
+                                            height: '100%',
+                                            backgroundImage: 'url(/assets/music.jpg)',
+                                            backgroundSize: 'cover',
+                                            backgroundPosition: 'center',
+                                        }}
+                                    />
+                                </motion.div>
+                            </motion.div>
 
-                {/* Right side: Audio visualizaion */}
-                <div style={{ display: 'flex', alignItems: 'center', height: '14px', flexShrink: 0 }}>
-                    {isExpanded ? (
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.2 }}
-                            style={{ display: 'flex', alignItems: 'center', gap: '2.5px', paddingRight: '8px' }}
-                        >
-                            {[
-                                { height: isPlaying ? ['4px', '8px', '4px'] : ['4px', '4px', '4px'], delay: 0.0, duration: 1.0 },
-                                { height: isPlaying ? ['6px', '14px', '6px'] : ['4px', '4px', '4px'], delay: 0.2, duration: 0.8 },
-                                { height: isPlaying ? ['8px', '16px', '8px'] : ['4px', '4px', '4px'], delay: 0.4, duration: 1.2 },
-                                { height: isPlaying ? ['5px', '12px', '5px'] : ['4px', '4px', '4px'], delay: 0.6, duration: 0.9 },
-                                { height: isPlaying ? ['4px', '8px', '4px'] : ['4px', '4px', '4px'], delay: 0.8, duration: 1.1 }
-                            ].map((wave, i) => (
+                        </div>
+
+                        {/* Titles */}
+                        <AnimatePresence>
+                            {isExpanded && (
                                 <motion.div
-                                    key={i}
-                                    initial={false}
-                                    animate={{ height: wave.height }}
-                                    transition={{ duration: wave.duration, repeat: isPlaying ? Infinity : 0, delay: wave.delay, ease: "easeInOut" }}
-                                    style={{ width: '3px', backgroundColor: isPlaying ? '#3b82f6' : waveInactiveColor, borderRadius: '4px' }}
-                                />
-                            ))}
-                        </motion.div>
-                    ) : (
-                        isPlaying ? (
+                                    initial={{ opacity: 0, x: -10 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -10 }}
+                                    transition={{ duration: 0.2 }}
+                                    style={{ display: 'flex', flexDirection: 'column', whiteSpace: 'nowrap' }}
+                                >
+                                    <span style={{ color: textColor, fontWeight: 700, fontSize: '1.25rem', lineHeight: 1.2, letterSpacing: '-0.02em' }}>ETA</span>
+                                    <span style={{ color: subTextColor, fontSize: '0.95rem', fontWeight: 500 }}>NewJeans</span>
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+                    </div>
+
+                    {/* Collapsed: Scrolling song title + artist (looped) */}
+                    {!isExpanded && (
+                        <div style={{
+                            flex: 1,
+                            overflow: 'hidden',
+                            marginLeft: '6px',
+                            marginRight: '6px',
+                            minWidth: 0,
+                            maskImage: 'linear-gradient(to right, transparent 0%, black 6px, black calc(100% - 6px), transparent 100%)',
+                            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 6px, black calc(100% - 6px), transparent 100%)',
+                        }}>
                             <div
-                                onClick={togglePlay}
-                                style={{ display: 'flex', alignItems: 'center', gap: '2.5px', cursor: 'pointer', paddingRight: '4px' }}
+                                style={{
+                                    display: 'flex',
+                                    whiteSpace: 'nowrap',
+                                    animation: 'marquee-scroll 10s linear infinite',
+                                    width: 'fit-content',
+                                }}
+                            >
+                                {[0, 1].map((i) => (
+                                    <span
+                                        key={i}
+                                        style={{
+                                            color: isDark ? '#d1d5db' : '#374151',
+                                            fontSize: '0.7rem',
+                                            fontWeight: 600,
+                                            letterSpacing: '-0.01em',
+                                            paddingRight: '1.5em',
+                                        }}
+                                    >
+                                        ETA &bull; NewJeans
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* Right side: Audio visualizaion */}
+                    <div style={{ display: 'flex', alignItems: 'center', height: '14px', flexShrink: 0 }}>
+                        {isExpanded ? (
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ delay: 0.2 }}
+                                style={{ display: 'flex', alignItems: 'center', gap: '2.5px', paddingRight: '8px' }}
                             >
                                 {[
                                     { height: isPlaying ? ['4px', '8px', '4px'] : ['4px', '4px', '4px'], delay: 0.0, duration: 1.0 },
@@ -351,90 +335,155 @@ const MusicWidget = () => {
                                         initial={false}
                                         animate={{ height: wave.height }}
                                         transition={{ duration: wave.duration, repeat: isPlaying ? Infinity : 0, delay: wave.delay, ease: "easeInOut" }}
-                                        style={{ width: '3px', backgroundColor: '#3b82f6', borderRadius: '4px' }}
+                                        style={{ width: '3px', backgroundColor: isPlaying ? '#3b82f6' : waveInactiveColor, borderRadius: '4px' }}
                                     />
                                 ))}
-                            </div>
+                            </motion.div>
                         ) : (
-                            <div
-                                onClick={togglePlay}
-                                style={{ paddingRight: '4px', display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-                            >
-                                <Play size={14} color={waveInactiveColor} fill={waveInactiveColor} />
-                            </div>
-                        )
-                    )}
+                            isPlaying ? (
+                                <div
+                                    onClick={togglePlay}
+                                    style={{ display: 'flex', alignItems: 'center', gap: '2.5px', cursor: 'pointer', paddingRight: '4px' }}
+                                >
+                                    {[
+                                        { height: isPlaying ? ['4px', '8px', '4px'] : ['4px', '4px', '4px'], delay: 0.0, duration: 1.0 },
+                                        { height: isPlaying ? ['6px', '14px', '6px'] : ['4px', '4px', '4px'], delay: 0.2, duration: 0.8 },
+                                        { height: isPlaying ? ['8px', '16px', '8px'] : ['4px', '4px', '4px'], delay: 0.4, duration: 1.2 },
+                                        { height: isPlaying ? ['5px', '12px', '5px'] : ['4px', '4px', '4px'], delay: 0.6, duration: 0.9 },
+                                        { height: isPlaying ? ['4px', '8px', '4px'] : ['4px', '4px', '4px'], delay: 0.8, duration: 1.1 }
+                                    ].map((wave, i) => (
+                                        <motion.div
+                                            key={i}
+                                            initial={false}
+                                            animate={{ height: wave.height }}
+                                            transition={{ duration: wave.duration, repeat: isPlaying ? Infinity : 0, delay: wave.delay, ease: "easeInOut" }}
+                                            style={{ width: '3px', backgroundColor: '#3b82f6', borderRadius: '4px' }}
+                                        />
+                                    ))}
+                                </div>
+                            ) : (
+                                <div
+                                    onClick={togglePlay}
+                                    style={{ paddingRight: '4px', display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                                >
+                                    <Play size={14} color={waveInactiveColor} fill={waveInactiveColor} />
+                                </div>
+                            )
+                        )}
+                    </div>
+
                 </div>
 
-            </div>
-
-            {/* Bottom Section (Expanded Only) */}
-            <AnimatePresence>
-                {isExpanded && (
-                    <motion.div
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: 10 }}
-                        transition={{ delay: 0.05, duration: 0.2 }}
-                        style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '100%', marginTop: '12px', paddingBottom: '20px' }}
-                    >
-                        {/* Progress Bar */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.75rem', color: subTextColor, fontWeight: 500, fontFamily: 'monospace' }}>
-                            <span style={{ minWidth: '32px' }}>{formatTime(progress)}</span>
-                            <div
-                                onPointerDown={handlePointerDown}
-                                onClick={(e) => e.stopPropagation()}
-                                style={{
-                                    flex: 1,
-                                    height: '24px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    cursor: 'pointer',
-                                    position: 'relative'
-                                }}
-                            >
-                                <div style={{ width: '100%', height: '6px', backgroundColor: progressBgColor, borderRadius: '3px', position: 'relative', overflow: 'hidden' }}>
-                                    <motion.div
-                                        initial={false}
-                                        animate={{ width: `${duration > 0 ? (progress / duration) * 100 : 0}%` }}
-                                        transition={{ ease: "linear", duration: 0.1 }}
-                                        style={{ height: '100%', backgroundColor: progressFillColor, borderRadius: '3px' }}
-                                    />
+                {/* Bottom Section (Expanded Only) */}
+                <AnimatePresence>
+                    {isExpanded && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ delay: 0.05, duration: 0.2 }}
+                            style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '100%', marginTop: '12px', paddingBottom: '20px' }}
+                        >
+                            {/* Progress Bar */}
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.75rem', color: subTextColor, fontWeight: 500, fontFamily: 'monospace' }}>
+                                <span style={{ minWidth: '32px' }}>{formatTime(progress)}</span>
+                                <div
+                                    onPointerDown={handlePointerDown}
+                                    onClick={(e) => e.stopPropagation()}
+                                    style={{
+                                        flex: 1,
+                                        height: '24px',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        cursor: 'pointer',
+                                        position: 'relative'
+                                    }}
+                                >
+                                    <div style={{ width: '100%', height: '6px', backgroundColor: progressBgColor, borderRadius: '3px', position: 'relative', overflow: 'hidden' }}>
+                                        <motion.div
+                                            initial={false}
+                                            animate={{ width: `${duration > 0 ? (progress / duration) * 100 : 0}%` }}
+                                            transition={{ ease: "linear", duration: 0.1 }}
+                                            style={{ height: '100%', backgroundColor: progressFillColor, borderRadius: '3px' }}
+                                        />
+                                    </div>
                                 </div>
+                                <span style={{ minWidth: '32px', textAlign: 'right' }}>-{formatTime(Math.max(0, duration - progress))}</span>
                             </div>
-                            <span style={{ minWidth: '32px', textAlign: 'right' }}>-{formatTime(Math.max(0, duration - progress))}</span>
-                        </div>
 
-                        {/* Controls */}
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '32px', padding: '0 12px' }}>
-                            <SkipBack size={24} color={iconColor} fill={iconColor} style={{ cursor: 'pointer', opacity: 0.8 }} onClick={(e) => {
-                                e.stopPropagation();
-                                playClick();
-                                if (audioRef.current) { audioRef.current.currentTime = 0; }
-                                setProgress(0);
-                            }} />
-                            <motion.div
-                                whileTap={{ scale: 0.9 }}
-                                onClick={togglePlay}
-                                style={{ cursor: 'pointer' }}
-                            >
-                                {isPlaying ? (
-                                    <Pause size={32} color={iconColor} fill={iconColor} />
-                                ) : (
-                                    <Play size={32} color={iconColor} fill={iconColor} />
-                                )}
-                            </motion.div>
-                            <SkipForward size={24} color={iconColor} fill={iconColor} style={{ cursor: 'pointer', opacity: 0.8 }} onClick={(e) => {
-                                e.stopPropagation();
-                                playClick();
-                                if (audioRef.current && duration > 0) { audioRef.current.currentTime = duration - 0.1; }
-                            }} />
-                        </div>
+                            {/* Controls */}
+                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '32px', padding: '0 12px' }}>
+                                <SkipBack size={24} color={iconColor} fill={iconColor} style={{ cursor: 'pointer', opacity: 0.8 }} onClick={(e) => {
+                                    e.stopPropagation();
+                                    playClick();
+                                    if (audioRef.current) { audioRef.current.currentTime = 0; }
+                                    setProgress(0);
+                                }} />
+                                <motion.div
+                                    whileTap={{ scale: 0.9 }}
+                                    onClick={togglePlay}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    {isPlaying ? (
+                                        <Pause size={32} color={iconColor} fill={iconColor} />
+                                    ) : (
+                                        <Play size={32} color={iconColor} fill={iconColor} />
+                                    )}
+                                </motion.div>
+                                <SkipForward size={24} color={iconColor} fill={iconColor} style={{ cursor: 'pointer', opacity: 0.8 }} onClick={(e) => {
+                                    e.stopPropagation();
+                                    playClick();
+                                    if (audioRef.current && duration > 0) { audioRef.current.currentTime = duration - 0.1; }
+                                }} />
+                            </div>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
+
+            </motion.div>
+
+            {/* Hover tooltip for Music Widget*/}
+            <AnimatePresence>
+                {isWidgetHovered && !isExpanded && (
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.8, y: -4 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.8, y: -4 }}
+                        transition={{ duration: 0.2, ease: "backOut" }}
+                        style={{
+                            position: 'absolute',
+                            top: 'calc(100% + 8px)',
+                            left: '50%',
+                            transform: 'translateX(-50%)',
+                            backgroundColor: isDark ? '#1f2937' : 'white',
+                            color: isDark ? 'white' : '#1f2937',
+                            padding: '4px 10px',
+                            borderRadius: '8px',
+                            fontSize: '0.75rem',
+                            fontWeight: '600',
+                            boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                            zIndex: 1100,
+                            pointerEvents: 'none',
+                            whiteSpace: 'nowrap',
+                            border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`
+                        }}
+                    >
+                        click to expand
+                        <div style={{
+                            position: 'absolute',
+                            top: '-5px',
+                            left: '50%',
+                            transform: 'translateX(-50%) rotate(45deg)',
+                            width: '10px',
+                            height: '10px',
+                            backgroundColor: isDark ? '#1f2937' : 'white',
+                            borderTop: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`,
+                            borderLeft: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`,
+                        }} />
                     </motion.div>
                 )}
             </AnimatePresence>
-
-        </motion.div>
+        </div>
     );
 };
 
