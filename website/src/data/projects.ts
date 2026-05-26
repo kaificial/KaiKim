@@ -23,6 +23,7 @@ export const projects: Project[] = [
         status: 'Live',
         url: 'localhost:3000',
         solidColor: '#000000',
+        video: '/assets/Quorum.mp4',
         github: 'https://github.com/kaificial/quorum',
         longDescription: ``,
     },

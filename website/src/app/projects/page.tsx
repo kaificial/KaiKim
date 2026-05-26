@@ -253,11 +253,12 @@ export default function ProjectsPage() {
                                                 overflow: 'hidden',
                                                 borderBottom: `1px solid ${isDark ? '#374151' : '#e5e7eb'}`,
                                                 backgroundColor: project.solidColor || (isDark ? '#171717' : '#f8f9fa'),
-                                                aspectRatio: project.id === 'rooke' ? '2220/1080' :
-                                                    project.id === 'texify' ? '2292/1080' :
-                                                        project.id === 'portfolio' ? '2188/1080' :
+                                                aspectRatio: project.id === 'rooke' ? '1512/738' :
+                                                    project.id === 'texify' ? '1996/1080' :
+                                                        project.id === 'portfolio' ? '1500/742' :
                                                             project.id === 'scribl' ? '2220/1080' :
-                                                                project.id === 'clairo' ? '2220/1080' : '16/10',
+                                                                project.id === 'clairo' ? '1498/744' :
+                                                                    project.id === 'quorum' ? '2450/1324' : '16/10',
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
