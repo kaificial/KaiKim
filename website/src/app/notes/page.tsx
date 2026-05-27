@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTheme } from "../../components/ThemeContext";
+import { useAudio, Track } from "../../components/AudioContext";
 import FloatingDock from "../../components/FloatingDock";
 
 const mediaData = {
@@ -290,31 +291,20 @@ const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack }:
 
 export default function NotesPage() {
     const { isDark } = useTheme();
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [activeArtist, setActiveArtist] = useState<string | null>(null);
-    const audioRef = useRef<HTMLAudioElement | null>(null);
+    const { currentTrack, isPlaying, playTrack } = useAudio();
 
     const togglePlayback = (trackId: string, audioPath: string) => {
-        const isSameTrack = activeArtist === trackId;
-        if (isSameTrack && audioRef.current) {
-            if (isPlaying) {
-                audioRef.current.pause();
-                setIsPlaying(false);
-            } else {
-                audioRef.current.play().catch(() => { });
-                setIsPlaying(true);
-            }
-        } else {
-            setActiveArtist(trackId);
-            setIsPlaying(true);
-            if (audioRef.current) {
-                audioRef.current.src = audioPath;
-            } else {
-                audioRef.current = new Audio(audioPath);
-                audioRef.current.onended = () => setIsPlaying(false);
-            }
-            audioRef.current.play().catch(() => { });
-        }
+        // Find the media item to get its title for the widget display
+        const allItems = [...mediaData.movies, ...mediaData.tv];
+        const item = allItems.find((m) => `media-${m.id}` === trackId);
+        const track: Track = {
+            id: trackId,
+            title: item ? item.soundtrack.title.split(' – ')[0] : trackId,
+            artist: item ? item.soundtrack.title.split(' – ')[1] || item.title : '',
+            src: audioPath,
+            cover: item ? item.poster : '/assets/music.jpg',
+        };
+        playTrack(track);
     };
 
     return (
@@ -345,7 +335,7 @@ export default function NotesPage() {
                 </div>
                 <MediaCollection
                     isDark={isDark}
-                    activeTrack={activeArtist}
+                    activeTrack={currentTrack.id}
                     isTrackPlaying={isPlaying}
                     onToggleTrack={togglePlayback}
                 />

@@ -1,12 +1,13 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { Flame, Play, Pause, SkipBack, SkipForward } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useTheme } from "./ThemeContext";
 import { useUISound } from "@/hooks/use-ui-sound";
+import { useAudio } from "./AudioContext";
 
 // nav links for the header
 const navLinks = [
@@ -18,12 +19,9 @@ const navLinks = [
 const MusicWidget = () => {
     const { isDark } = useTheme();
     const { playClick } = useUISound();
+    const { currentTrack, isPlaying, progress, duration, togglePlay: globalTogglePlay, seek } = useAudio();
     const [isExpanded, setIsExpanded] = useState(false);
-    const [isPlaying, setIsPlaying] = useState(false);
-    const [progress, setProgress] = useState(0);
-    const [duration, setDuration] = useState(0);
     const [isWidgetHovered, setIsWidgetHovered] = useState(false);
-    const audioRef = useRef<HTMLAudioElement | null>(null);
     const widgetRef = useRef<HTMLDivElement | null>(null);
 
     // Close music widget when clicking outside
@@ -76,64 +74,22 @@ const MusicWidget = () => {
             if (timeoutId) clearTimeout(timeoutId);
         };
     }, [isExpanded]);
-    // Sync duration if already loaded or on metadata load
-    useEffect(() => {
-        if (audioRef.current) {
-            const audio = audioRef.current;
-            const updateDuration = () => {
-                if (audio.duration > 0 && isFinite(audio.duration)) {
-                    setDuration(audio.duration);
-                }
-            };
-
-            // Check immediately
-            updateDuration();
-
-            audio.addEventListener('loadedmetadata', updateDuration);
-            return () => audio.removeEventListener('loadedmetadata', updateDuration);
-        }
-    }, []);
 
     const togglePlay = (e: React.MouseEvent) => {
         e.stopPropagation();
         playClick();
-        if (audioRef.current) {
-            if (isPlaying) {
-                audioRef.current.pause();
-                setIsPlaying(false);
-            } else {
-                audioRef.current.play().catch(e => console.error("Audio error", e));
-                setIsPlaying(true);
-            }
-        }
+        globalTogglePlay();
     };
 
-    const handleTimeUpdate = () => {
-        if (audioRef.current) {
-            setProgress(audioRef.current.currentTime);
-            // Backup: if duration is still 0 but metadata is loaded, sync it
-            if (duration === 0 && audioRef.current.duration > 0 && isFinite(audioRef.current.duration)) {
-                setDuration(audioRef.current.duration);
-            }
-        }
-    };
-
-    const handleLoadedMetadata = () => {
-        if (audioRef.current && isFinite(audioRef.current.duration)) {
-            setDuration(audioRef.current.duration);
-        }
-    };
-
-    const handleScrub = (e: React.MouseEvent<HTMLDivElement> | PointerEvent, container: HTMLDivElement) => {
-        if (audioRef.current && duration > 0) {
+    const handleScrub = useCallback((e: React.MouseEvent<HTMLDivElement> | PointerEvent, container: HTMLDivElement) => {
+        if (duration > 0) {
             const rect = container.getBoundingClientRect();
             const x = ('clientX' in e ? e.clientX : (e as PointerEvent).clientX) - rect.left;
             const percentage = Math.max(0, Math.min(1, x / rect.width));
             const newTime = percentage * duration;
-            audioRef.current.currentTime = newTime;
-            setProgress(newTime);
+            seek(newTime);
         }
-    };
+    }, [duration, seek]);
 
     const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
         e.stopPropagation();
@@ -202,13 +158,7 @@ const MusicWidget = () => {
                     backdropFilter: isExpanded ? 'blur(20px)' : 'none',
                 }}
             >
-                <audio
-                    ref={audioRef}
-                    src="/music/newjean.mp3"
-                    onTimeUpdate={handleTimeUpdate}
-                    onLoadedMetadata={handleLoadedMetadata}
-                    onEnded={() => setIsPlaying(false)}
-                />
+
                 {/* Music Widget */}
                 {/* Top row */}
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
@@ -250,7 +200,8 @@ const MusicWidget = () => {
                                         style={{
                                             width: '100%',
                                             height: '100%',
-                                            backgroundImage: 'url(/assets/music.jpg)',
+                                            backgroundImage: `url(${currentTrack.cover})`,
+                                            transition: 'background-image 0.3s ease',
                                             backgroundSize: 'cover',
                                             backgroundPosition: 'center',
                                         }}
@@ -270,8 +221,8 @@ const MusicWidget = () => {
                                     transition={{ duration: 0.2 }}
                                     style={{ display: 'flex', flexDirection: 'column', whiteSpace: 'nowrap' }}
                                 >
-                                    <span style={{ color: textColor, fontWeight: 700, fontSize: '1.25rem', lineHeight: 1.2, letterSpacing: '-0.02em' }}>ETA</span>
-                                    <span style={{ color: subTextColor, fontSize: '0.95rem', fontWeight: 500 }}>NewJeans</span>
+                                    <span style={{ color: textColor, fontWeight: 700, fontSize: '1.25rem', lineHeight: 1.2, letterSpacing: '-0.02em' }}>{currentTrack.title}</span>
+                                    <span style={{ color: subTextColor, fontSize: '0.95rem', fontWeight: 500 }}>{currentTrack.artist}</span>
                                 </motion.div>
                             )}
                         </AnimatePresence>
@@ -307,7 +258,7 @@ const MusicWidget = () => {
                                             paddingRight: '1.5em',
                                         }}
                                     >
-                                        ETA &bull; NewJeans
+                                        {currentTrack.title} &bull; {currentTrack.artist}
                                     </span>
                                 ))}
                             </div>
@@ -416,8 +367,7 @@ const MusicWidget = () => {
                                 <SkipBack size={24} color={iconColor} fill={iconColor} style={{ cursor: 'pointer', opacity: 0.8 }} onClick={(e) => {
                                     e.stopPropagation();
                                     playClick();
-                                    if (audioRef.current) { audioRef.current.currentTime = 0; }
-                                    setProgress(0);
+                                    seek(0);
                                 }} />
                                 <motion.div
                                     whileTap={{ scale: 0.9 }}
@@ -433,7 +383,7 @@ const MusicWidget = () => {
                                 <SkipForward size={24} color={iconColor} fill={iconColor} style={{ cursor: 'pointer', opacity: 0.8 }} onClick={(e) => {
                                     e.stopPropagation();
                                     playClick();
-                                    if (audioRef.current && duration > 0) { audioRef.current.currentTime = duration - 0.1; }
+                                    if (duration > 0) { seek(duration - 0.1); }
                                 }} />
                             </div>
                         </motion.div>
@@ -620,7 +570,6 @@ export default function Header() {
     return (
         <header className="header">
             <motion.div
-                key={pathname}
                 className="header-container"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}

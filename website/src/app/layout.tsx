@@ -5,6 +5,7 @@ import "../styles/globals.scss";
 import "katex/dist/katex.min.css";
 import Header from "../components/Header";
 import { ThemeProvider } from "../components/ThemeContext";
+import { AudioProvider } from "../components/AudioContext";
 import ScrollToTop from "../components/ScrollToTop";
 
 const inter = Inter({
@@ -175,11 +176,13 @@ export default function RootLayout({
             </head>
             <body className={`${inter.variable} ${jetbrainsMono.variable} ${sourceSerif.variable}`}>
                 <ThemeProvider>
-                    <ScrollToTop />
-                    <Header />
-                    <main>
-                        {children}
-                    </main>
+                    <AudioProvider>
+                        <ScrollToTop />
+                        <Header />
+                        <main>
+                            {children}
+                        </main>
+                    </AudioProvider>
                 </ThemeProvider>
             </body>
         </html>
