@@ -7,6 +7,8 @@ import Header from "../components/Header";
 import { ThemeProvider } from "../components/ThemeContext";
 import { AudioProvider } from "../components/AudioContext";
 import ScrollToTop from "../components/ScrollToTop";
+import InteractiveGrid from "../components/InteractiveGrid";
+import CommandPalette from "../components/CommandPalette";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -177,11 +179,13 @@ export default function RootLayout({
             <body className={`${inter.variable} ${jetbrainsMono.variable} ${sourceSerif.variable}`}>
                 <ThemeProvider>
                     <AudioProvider>
+                        <InteractiveGrid />
                         <ScrollToTop />
                         <Header />
                         <main>
                             {children}
                         </main>
+                        <CommandPalette />
                     </AudioProvider>
                 </ThemeProvider>
             </body>
