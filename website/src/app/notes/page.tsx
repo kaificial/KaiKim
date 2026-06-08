@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTheme } from "../../components/ThemeContext";
@@ -85,14 +85,21 @@ const RatingDots = ({ rating, accent, isDark }: { rating: number; accent: string
     </div>
 );
 
-const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack }: {
+const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack, startDelay = 0 }: {
     isDark: boolean;
     activeTrack: string | null;
     isTrackPlaying: boolean;
     onToggleTrack: (trackId: string, audioPath: string) => void;
+    startDelay?: number;
 }) => {
     const [activeCategory, setActiveCategory] = useState<MediaCategory>('movies');
     const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
+    const [isInitialLoad, setIsInitialLoad] = useState(true);
+
+    useEffect(() => {
+        const t = window.setTimeout(() => setIsInitialLoad(false), 4000);
+        return () => window.clearTimeout(t);
+    }, []);
 
     const categories: { key: MediaCategory; label: string }[] = [
         { key: 'movies', label: 'Movies' },
@@ -153,9 +160,13 @@ const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack }:
                     return (
                         <motion.div
                             key={item.id}
-                            initial={{ opacity: 0, y: 4 }}
+                            initial={{ opacity: 0, y: 10 }}
                             animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.04, duration: 0.25 }}
+                            transition={{
+                                delay: isInitialLoad ? startDelay + index * 0.07 : index * 0.04,
+                                duration: 0.35,
+                                ease: [0.22, 1, 0.36, 1],
+                            }}
                             style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}
                         >
                             {/* Header row*/}
@@ -329,7 +340,11 @@ export default function NotesPage() {
                 </motion.p>
             </header>
 
-            <section>
+            <motion.section
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 1.8, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+            >
                 <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '20px' }}>
                     <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: isDark ? 'white' : '#1c1917', margin: 0 }}>Media</h2>
                 </div>
@@ -338,9 +353,11 @@ export default function NotesPage() {
                     activeTrack={currentTrack.id}
                     isTrackPlaying={isPlaying}
                     onToggleTrack={togglePlayback}
+                    startDelay={1.9}
                 />
-            </section>
+            </motion.section>
 
+            <div className="footer-spacer" />
             <FloatingDock />
         </div>
     );
