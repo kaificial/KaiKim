@@ -123,6 +123,52 @@ export default function FloatingDock() {
             }}
             className="floating-dock"
         >
+            {/* Command palette trigger (ctrl K) */}
+            <motion.div
+                variants={{
+                    hidden: { opacity: 0, scale: 0.8, y: 10 },
+                    visible: { opacity: 1, scale: 1, y: 0 }
+                }}
+                onMouseEnter={() => { setHoveredIcon('command'); playHover(); }}
+                onMouseLeave={() => setHoveredIcon(null)}
+                whileHover={{ scale: 1.1, y: -2 }}
+                whileTap={{ scale: 0.95 }}
+                style={{ position: 'relative' }}
+            >
+                <button
+                    onClick={() => { window.dispatchEvent(new Event('open-command-palette')); playClick(); }}
+                    aria-label="Open command palette"
+                    style={{
+                        backgroundColor: hoveredIcon === 'command' ? (isDark ? '#374151' : '#f3f4f6') : 'transparent',
+                        width: '40px',
+                        height: '40px',
+                        borderRadius: '8px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        color: hoveredIcon === 'command' ? (isDark ? 'white' : 'black') : (isDark ? '#9ca3af' : '#6b7280'),
+                        transition: 'all 0.2s ease',
+                        border: 'none',
+                        cursor: 'pointer',
+                        padding: 0
+                    }}>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M18 3a3 3 0 0 0-3 3v12a3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3H6a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3V6a3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3h12a3 3 0 0 0 3-3 3 3 0 0 0-3-3z"></path>
+                    </svg>
+                </button>
+                <AnimatePresence>
+                    {hoveredIcon === 'command' && <Tooltip text="Command  ⌘K" />}
+                </AnimatePresence>
+            </motion.div>
+
+            <motion.div
+                variants={{
+                    hidden: { opacity: 0, scale: 0.8 },
+                    visible: { opacity: 1, scale: 1 }
+                }}
+                style={{ width: '1px', height: '20px', backgroundColor: isDark ? '#4b5563' : '#d1d5db', margin: '0 4px' }}
+            />
+
             {/* Home */}
             <motion.div
                 variants={{
