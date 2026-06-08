@@ -12,6 +12,7 @@ import { ProjectDescription } from '../components/ProjectDescription';
 import Webring from '../components/Webring';
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion';
 import { ProjectVideo } from '../components/ProjectVideo';
+import HeroPhotoStack from '../components/HeroPhotoStack';
 
 // Helper to get logo URL
 const getSkillLogo = (skill: string, isDark: boolean) => {
@@ -43,64 +44,16 @@ const getSkillLogo = (skill: string, isDark: boolean) => {
     return `https://cdn.simpleicons.org/${slug}/${color}`;
 };
 
-const ProjectTitle = ({ project, isDark }: { project: any, isDark: boolean }) => {
-    const [isHovered, setIsHovered] = useState(false);
-
-    if (project.id !== 'portfolio') {
-        return (
-            <h3 style={{
-                fontSize: '1.375rem',
-                fontWeight: 'bold',
-                color: isDark ? 'white' : '#1c1917',
-                margin: 0
-            }}>
-                <TextReveal delay={0.22}>{project.title}</TextReveal>
-            </h3>
-        );
-    }
-
-    return (
-        <motion.div
-            onHoverStart={() => setIsHovered(true)}
-            onHoverEnd={() => setIsHovered(false)}
-            style={{
-                fontSize: '1.375rem',
-                fontWeight: 'bold',
-                color: isDark ? 'white' : '#1c1917',
-                margin: 0,
-                cursor: 'default',
-                height: '1.6em', // consistent height to prevent jumps
-                display: 'flex',
-                alignItems: 'center'
-            }}
-        >
-            <AnimatePresence mode="wait">
-                {isHovered ? (
-                    <motion.span
-                        key="dejavu"
-                        initial={{ opacity: 0, y: 5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -5 }}
-                        transition={{ duration: 0.2 }}
-                        style={{ color: '#3b82f6' }} // blue highlight for the effect
-                    >
-                        <TextReveal delay={0.2}>DeJa Vu?</TextReveal>
-                    </motion.span>
-                ) : (
-                    <motion.span
-                        key="title"
-                        initial={{ opacity: 0, y: 5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -5 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        <TextReveal delay={0.2}>{project.title}</TextReveal>
-                    </motion.span>
-                )}
-            </AnimatePresence>
-        </motion.div>
-    );
-};
+const ProjectTitle = ({ project, isDark }: { project: any, isDark: boolean }) => (
+    <h3 style={{
+        fontSize: '1.375rem',
+        fontWeight: 'bold',
+        color: isDark ? 'white' : '#1c1917',
+        margin: 0
+    }}>
+        <TextReveal delay={0.22}>{project.title}</TextReveal>
+    </h3>
+);
 
 type TextRevealProps = {
     children: ReactNode;
@@ -162,7 +115,6 @@ export default function Home() {
     const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
     const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
     const [isTorontoHovered, setIsTorontoHovered] = useState(false);
-    const [isHeroImageHovered, setIsHeroImageHovered] = useState(false);
 
     const toggleExpand = (id: string) => {
         setExpandedItems(prev => ({
@@ -289,78 +241,7 @@ export default function Home() {
                             animate={{ opacity: 1 }}
                             transition={{ delay: 0.8, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                         >
-                            <div
-                                style={{
-                                    position: 'relative',
-                                    width: '112px',
-                                    height: '112px',
-                                    borderRadius: '20px',
-                                    padding: '3px',
-                                    boxShadow: isDark ? '0 0 0 2px #374151' : '0 0 0 2px #D1D5DB',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    backgroundColor: 'transparent'
-                                }}
-                                onMouseEnter={() => setIsHeroImageHovered(true)}
-                                onMouseLeave={() => setIsHeroImageHovered(false)}
-                            >
-                                <AnimatePresence>
-                                    {isHeroImageHovered && (
-                                        <motion.div
-                                            initial={{ opacity: 0, scale: 0.8, rotate: -25 }}
-                                            animate={{ opacity: 1, scale: 1, rotate: -15 }}
-                                            exit={{ opacity: 0, scale: 0.8, rotate: -25 }}
-                                            transition={{ duration: 0.2, ease: "backOut" }}
-                                            style={{
-                                                position: 'absolute',
-                                                top: '-20px',
-                                                left: '-25px',
-                                                backgroundColor: isDark ? '#1f2937' : 'white',
-                                                color: isDark ? 'white' : '#1f2937',
-                                                padding: '4px 10px',
-                                                borderRadius: '8px',
-                                                fontSize: '0.75rem',
-                                                fontWeight: '600',
-                                                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                                                zIndex: 20,
-                                                pointerEvents: 'none',
-                                                whiteSpace: 'nowrap',
-                                                border: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`
-                                            }}
-                                        >
-                                            Hello!
-                                            <div style={{
-                                                position: 'absolute',
-                                                bottom: '-5px',
-                                                right: '12px',
-                                                width: '10px',
-                                                height: '10px',
-                                                backgroundColor: isDark ? '#1f2937' : 'white',
-                                                transform: 'rotate(45deg)',
-                                                borderBottom: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`,
-                                                borderRight: `1px solid ${isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.05)'}`,
-                                            }} />
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-
-                                <Image
-                                    src="/assets/pfp.jpg"
-                                    alt="Kai Kim"
-                                    width={112}
-                                    height={112}
-                                    style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        objectFit: 'cover',
-                                        objectPosition: '25% 50%',
-                                        borderRadius: '17px',
-                                        filter: 'brightness(1.15)'
-                                    }}
-                                    priority
-                                />
-                            </div>
+                            <HeroPhotoStack isDark={isDark} />
                         </motion.div>
                     </div>
 
@@ -474,7 +355,7 @@ export default function Home() {
                                         {rt('CIBC', 5.8)}
                                     </h3>
                                     <p style={{ fontSize: '0.875rem', color: isDark ? '#9ca3af' : '#6b7280' }}>
-                                        {rt('Incoming S26', 5.85)}
+                                        {rt('Web Developer Co-Op', 5.85)}
                                     </p>
                                 </div>
                             </div>
@@ -1203,8 +1084,7 @@ export default function Home() {
                                         project.id === 'texify' ? '1996/1080' :
                                             project.id === 'portfolio' ? '1500/742' :
                                                 project.id === 'scribl' ? '2220/1080' :
-                                                    project.id === 'clairo' ? '1498/744' :
-                                                        project.id === 'quorum' ? '2450/1324' : '16/10',
+                                                    project.id === 'clairo' ? '1498/744' : '16/10',
                                     alignSelf: 'start',
                                     display: 'flex',
                                     alignItems: 'center',
