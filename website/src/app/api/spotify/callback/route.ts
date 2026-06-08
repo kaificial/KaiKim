@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
         body: new URLSearchParams({
             grant_type: 'authorization_code',
             code,
-            redirect_uri: 'https://kaikim.ca/api/spotify/callback',
+            redirect_uri: 'https://www.kaikim.ca/api/spotify/callback',
         }),
     });
 
