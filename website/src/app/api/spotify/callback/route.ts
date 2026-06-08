@@ -32,9 +32,5 @@ export async function GET(req: NextRequest) {
 
     const data = await res.json();
 
-    return NextResponse.json({
-        refresh_token: data.refresh_token,
-        access_token: data.access_token,
-        instructions: 'Copy the refresh_token and add it to .env.local as SPOTIFY_REFRESH_TOKEN',
-    });
+    return NextResponse.json(data);
 }
