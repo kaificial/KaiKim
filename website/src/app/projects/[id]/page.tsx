@@ -200,8 +200,7 @@ export default function ProjectPage() {
                             project.id === 'texify' ? '1996/1080' :
                                 project.id === 'portfolio' ? '1500/742' :
                                     project.id === 'scribl' ? '2220/1080' :
-                                        project.id === 'clairo' ? '1498/744' :
-                                            project.id === 'quorum' ? '2450/1324' : '16/9',
+                                        project.id === 'clairo' ? '1498/744' : '16/9',
                         backgroundColor: project.solidColor || (isDark ? '#171717' : '#f3f4f6'),
                         display: 'flex',
                         flexDirection: 'column',

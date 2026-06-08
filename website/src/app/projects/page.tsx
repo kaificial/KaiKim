@@ -12,64 +12,16 @@ import { ProjectDescription } from '../../components/ProjectDescription';
 import Webring from '../../components/Webring';
 import { ProjectVideo } from '../../components/ProjectVideo';
 
-const ProjectTitle = ({ project, isDark }: { project: any, isDark: boolean }) => {
-    const [isHovered, setIsHovered] = useState(false);
-
-    if (project.id !== 'portfolio') {
-        return (
-            <h3 style={{
-                fontSize: '1.25rem',
-                fontWeight: '700',
-                color: isDark ? 'white' : '#1c1917',
-                marginBottom: '6px'
-            }}>
-                {project.title}
-            </h3>
-        );
-    }
-
-    return (
-        <motion.div
-            onHoverStart={() => setIsHovered(true)}
-            onHoverEnd={() => setIsHovered(false)}
-            style={{
-                fontSize: '1.25rem',
-                fontWeight: '700',
-                color: isDark ? 'white' : '#1c1917',
-                marginBottom: '6px',
-                cursor: 'default',
-                height: '1.6em', // consistent height to prevent jumps
-                display: 'flex',
-                alignItems: 'center'
-            }}
-        >
-            <AnimatePresence mode="wait">
-                {isHovered ? (
-                    <motion.span
-                        key="dejavu"
-                        initial={{ opacity: 0, y: 5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -5 }}
-                        transition={{ duration: 0.2 }}
-                        style={{ color: '#3b82f6' }} // blue highlight for the effect
-                    >
-                        DeJa Vu?
-                    </motion.span>
-                ) : (
-                    <motion.span
-                        key="title"
-                        initial={{ opacity: 0, y: 5 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -5 }}
-                        transition={{ duration: 0.2 }}
-                    >
-                        {project.title}
-                    </motion.span>
-                )}
-            </AnimatePresence>
-        </motion.div>
-    );
-};
+const ProjectTitle = ({ project, isDark }: { project: any, isDark: boolean }) => (
+    <h3 style={{
+        fontSize: '1.25rem',
+        fontWeight: '700',
+        color: isDark ? 'white' : '#1c1917',
+        marginBottom: '6px'
+    }}>
+        {project.title}
+    </h3>
+);
 
 export default function ProjectsPage() {
     const { isDark } = useTheme();
@@ -257,8 +209,7 @@ export default function ProjectsPage() {
                                                     project.id === 'texify' ? '1996/1080' :
                                                         project.id === 'portfolio' ? '1500/742' :
                                                             project.id === 'scribl' ? '2220/1080' :
-                                                                project.id === 'clairo' ? '1498/744' :
-                                                                    project.id === 'quorum' ? '2450/1324' : '16/10',
+                                                                project.id === 'clairo' ? '1498/744' : '16/10',
                                                 display: 'flex',
                                                 alignItems: 'center',
                                                 justifyContent: 'center',
@@ -394,8 +345,14 @@ export default function ProjectsPage() {
                                                             href={project.demo || '#'}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            whileHover={{ scale: 1.02 }}
+                                                            whileHover={{
+                                                                scale: 1.05,
+                                                                boxShadow: isDark
+                                                                    ? '0 0 25px rgba(59, 130, 246, 0.8), 0 0 50px rgba(59, 130, 246, 0.4), 0 0 75px rgba(59, 130, 246, 0.2)'
+                                                                    : '0 0 25px rgba(37, 99, 235, 0.6), 0 0 50px rgba(37, 99, 235, 0.3), 0 0 75px rgba(37, 99, 235, 0.15)'
+                                                            }}
                                                             whileTap={{ scale: 0.98 }}
+                                                            transition={{ duration: 0.2 }}
                                                             style={{
                                                                 padding: '6px 12px',
                                                                 backgroundColor: isDark ? 'rgba(255, 255, 255, 0.05)' : '#ffffff',
@@ -420,8 +377,14 @@ export default function ProjectsPage() {
                                                             href={project.github || '#'}
                                                             target="_blank"
                                                             rel="noopener noreferrer"
-                                                            whileHover={{ scale: 1.02 }}
+                                                            whileHover={{
+                                                                scale: 1.05,
+                                                                boxShadow: isDark
+                                                                    ? '0 0 25px rgba(59, 130, 246, 0.8), 0 0 50px rgba(59, 130, 246, 0.4), 0 0 75px rgba(59, 130, 246, 0.2)'
+                                                                    : '0 0 25px rgba(37, 99, 235, 0.6), 0 0 50px rgba(37, 99, 235, 0.3), 0 0 75px rgba(37, 99, 235, 0.15)'
+                                                            }}
                                                             whileTap={{ scale: 0.98 }}
+                                                            transition={{ duration: 0.2 }}
                                                             style={{
                                                                 padding: '6px 12px',
                                                                 backgroundColor: isDark ? '#374151' : '#f3f4f6',
