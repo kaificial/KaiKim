@@ -29,8 +29,6 @@
     --accent-blue: #3b82f6;
     --accent-hover: #2563eb;
 
-    // interactive cursor grid (light)
-    --cursor-grid-line: rgba(37, 99, 235, 0.20);
     --cursor-bloom-color: rgba(37, 99, 235, 0.07);
 }
 
@@ -40,8 +38,6 @@
     --text-color: #fafafa;
     --grid-color: rgba(255, 255, 255, 0.015);
 
-    // interactive cursor grid (dark)
-    --cursor-grid-line: rgba(96, 165, 250, 0.26);
     --cursor-bloom-color: rgba(59, 130, 246, 0.11);
 }
 
@@ -60,25 +56,6 @@ body {
     display: flex;
     flex-direction: column;
 
-    background-image:
-        // vertical lines
-        repeating-linear-gradient(90deg,
-            var(--grid-color) 0px,
-            var(--grid-color) 1px,
-            transparent 1px,
-            transparent var(--grid-size)),
-        // horizontal lines  
-        repeating-linear-gradient(0deg,
-            var(--grid-color) 0px,
-            var(--grid-color) 1px,
-            transparent 1px,
-            transparent var(--grid-size));
-
-    // makes the pattern repeat properly
-    background-size: var(--grid-size) var(--grid-size);
-
-    // keeps the grid fixed when scrolling
-    background-position: center top; // aligns grid start
 }
 
 main {
@@ -837,8 +814,8 @@ body.widget-expanded.scrolled {
     }
 }
 
-/* Cursor Grid*/
-.cursor-grid,
+/* Background grid — the actual page grid, gets 3D tilt on cursor move */
+.bg-grid,
 .cursor-bloom,
 .cursor-ripple-layer {
     position: fixed;
@@ -848,43 +825,33 @@ body.widget-expanded.scrolled {
     contain: strict;
 }
 
-.cursor-grid,
-.cursor-bloom {
-    opacity: 0;
-    transition: opacity 0.45s ease;
-    will-change: opacity;
-}
-
-body.cursor-grid-active .cursor-grid,
-body.cursor-grid-active .cursor-bloom {
-    opacity: 1;
-}
-
-.cursor-grid {
-    --cursor-x: 50vw;
-    --cursor-y: 50vh;
+.bg-grid {
+    transform-origin: center center;
+    will-change: transform;
     background-image:
         repeating-linear-gradient(90deg,
-            var(--cursor-grid-line) 0px,
-            var(--cursor-grid-line) 1px,
+            var(--grid-color) 0px,
+            var(--grid-color) 1px,
             transparent 1px,
             transparent var(--grid-size)),
         repeating-linear-gradient(0deg,
-            var(--cursor-grid-line) 0px,
-            var(--cursor-grid-line) 1px,
+            var(--grid-color) 0px,
+            var(--grid-color) 1px,
             transparent 1px,
             transparent var(--grid-size));
     background-size: var(--grid-size) var(--grid-size);
     background-position: center top;
-    -webkit-mask-image: radial-gradient(circle 165px at var(--cursor-x) var(--cursor-y),
-            #000 0%, rgba(0, 0, 0, 0.45) 42%, transparent 72%);
-    mask-image: radial-gradient(circle 165px at var(--cursor-x) var(--cursor-y),
-            #000 0%, rgba(0, 0, 0, 0.45) 42%, transparent 72%);
 }
 
 .cursor-bloom {
-    background: radial-gradient(circle 260px at var(--cursor-x) var(--cursor-y),
+    opacity: 0;
+    transition: opacity 0.45s ease;
+    background: radial-gradient(circle 340px at var(--cursor-x) var(--cursor-y),
             var(--cursor-bloom-color) 0%, transparent 62%);
+}
+
+body.cursor-grid-active .cursor-bloom {
+    opacity: 1;
 }
 
 .cursor-ripple {
@@ -893,7 +860,7 @@ body.cursor-grid-active .cursor-bloom {
     height: 14px;
     margin: -7px 0 0 -7px;
     border-radius: 9999px;
-    border: 1.5px solid var(--cursor-grid-line);
+    border: 1.5px solid var(--grid-color);
     transform: scale(0);
     opacity: 0.8;
     animation: cursorRipple 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
@@ -911,47 +878,9 @@ body.cursor-grid-active .cursor-bloom {
     }
 }
 
-body.grid-surge .cursor-grid {
-    -webkit-mask-image: none;
-    mask-image: none;
-    animation: gridSurge 1.3s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-body.grid-surge .cursor-bloom {
-    animation: bloomSurge 1.3s ease-out forwards;
-}
-
-@keyframes gridSurge {
-    0% {
-        opacity: 0;
-    }
-
-    22% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-    }
-}
-
-@keyframes bloomSurge {
-    0% {
-        opacity: 0;
-    }
-
-    22% {
-        opacity: 1;
-    }
-
-    100% {
-        opacity: 0;
-    }
-}
-
 @media (pointer: coarse) {
 
-    .cursor-grid,
+    .bg-grid,
     .cursor-bloom,
     .cursor-ripple-layer {
         display: none;
@@ -964,10 +893,6 @@ body.grid-surge .cursor-bloom {
         display: none;
     }
 
-    body.grid-surge .cursor-grid,
-    body.grid-surge .cursor-bloom {
-        animation: none;
-    }
 }
 
 
