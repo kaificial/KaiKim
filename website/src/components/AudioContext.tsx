@@ -129,14 +129,14 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
             return;
         }
 
-    \        setCurrentTrack(track);
-    setProgress(0);
-    setDuration(0);
-    audio.src = track.src;
-    audio.load();
-    audio.play().catch((e) => console.error("Audio play error", e));
-    setIsPlaying(true);
-}, [currentTrack.id, isPlaying]);
+        setCurrentTrack(track);
+        setProgress(0);
+        setDuration(0);
+        audio.src = track.src;
+        audio.load();
+        audio.play().catch((e) => console.error("Audio play error", e));
+        setIsPlaying(true);
+    }, [currentTrack.id, isPlaying]);
 
 const togglePlay = useCallback(() => {
     const audio = audioRef.current;
