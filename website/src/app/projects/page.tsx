@@ -5,7 +5,6 @@ import { useTheme } from '../../components/ThemeContext';
 import Image from 'next/image';
 import { projects } from '../../data/projects';
 import { SpotlightCard } from '../../components/SpotlightCard';
-import FloatingDock from '../../components/FloatingDock';
 import Link from 'next/link';
 import { useState } from 'react';
 import { ProjectDescription } from '../../components/ProjectDescription';
@@ -493,7 +492,6 @@ export default function ProjectsPage() {
 
                 <Webring />
                 <div className="footer-spacer compact" />
-                <FloatingDock />
             </div>
         </div>
     );

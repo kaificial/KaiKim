@@ -7,7 +7,6 @@ import { CSSProperties, ReactNode, useState, useEffect } from 'react';
 import { useTheme } from '../components/ThemeContext';
 import { SpotlightCard } from '../components/SpotlightCard';
 import { projects } from '../data/projects';
-import FloatingDock from '../components/FloatingDock';
 import { ProjectDescription } from '../components/ProjectDescription';
 import Webring from '../components/Webring';
 import { motion, AnimatePresence, useScroll, useSpring, useMotionValue, useMotionTemplate } from 'framer-motion';
@@ -218,6 +217,7 @@ export default function Home() {
                                                         src="/assets/toto.png"
                                                         alt="Toronto Skyline"
                                                         fill
+                                                        sizes="180px"
                                                         style={{ objectFit: 'cover' }}
                                                     />
                                                 </div>
@@ -1105,6 +1105,7 @@ export default function Home() {
                                             src={project.image}
                                             alt={project.title}
                                             fill
+                                            sizes="(max-width: 640px) 90vw, 420px"
                                             style={{ objectFit: 'cover' }}
                                         />
                                     ) : (
@@ -1313,8 +1314,6 @@ export default function Home() {
             <div style={{ height: '12px' }} />
             <Webring />
             <div className="footer-spacer" />
-
-            <FloatingDock />
         </div>
     );
 }

@@ -9,6 +9,7 @@ import { AudioProvider } from "../components/AudioContext";
 import ScrollToTop from "../components/ScrollToTop";
 import InteractiveGrid from "../components/InteractiveGrid";
 import CommandPalette from "../components/CommandPalette";
+import FloatingDock from "../components/FloatingDock";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -186,6 +187,7 @@ export default function RootLayout({
                             {children}
                         </main>
                         <CommandPalette />
+                        <FloatingDock />
                     </AudioProvider>
                 </ThemeProvider>
             </body>

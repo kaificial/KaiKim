@@ -4,70 +4,26 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTheme } from "../../components/ThemeContext";
-import { useAudio, Track } from "../../components/AudioContext";
-import FloatingDock from "../../components/FloatingDock";
 
 const mediaData = {
     movies: [
-        { id: 'drive', title: 'Drive', year: '2011', poster: '/music/Drive.jpg', rating: 3.5, imdbUrl: 'https://www.imdb.com/title/tt0780504/', description: '', soundtrack: { title: 'Nightcall – Kavinsky', audioPath: '/music/drive.mp3' } },
-        { id: 'interstellar', title: 'Interstellar', year: '2014', poster: '/music/Interstellar.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt0816692/', description: '', soundtrack: { title: 'Cornfield Chase – Hans Zimmer', audioPath: '/music/Interstellar.mp3' } },
-        { id: 'her', title: 'Her', year: '2013', poster: '/music/Her.jpg', rating: 4, imdbUrl: 'https://www.imdb.com/title/tt1798709/', description: '', soundtrack: { title: 'The Moon Song – Scarlett Johansson', audioPath: '/music/media/her.mp3' } },
-        { id: 'arrival', title: 'Arrival', year: '2016', poster: '/music/Arrival.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt2543164/', description: '', soundtrack: { title: 'On the Nature of Daylight – Max Richter', audioPath: '/music/media/arrival.mp3' } },
-        { id: 'lalaland', title: 'La La Land', year: '2016', poster: '/music/lalaland.jpg', rating: 4.5, imdbUrl: 'https://www.imdb.com/title/tt3783958/', description: '', soundtrack: { title: 'City of Stars – Ryan Gosling', audioPath: '/music/media/lalaland.mp3' } },
+        { id: 'drive', title: 'Drive', year: '2011', poster: '/music/Drive.jpg', rating: 3.5, imdbUrl: 'https://www.imdb.com/title/tt0780504/', description: '' },
+        { id: 'interstellar', title: 'Interstellar', year: '2014', poster: '/music/Interstellar.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt0816692/', description: '' },
+        { id: 'her', title: 'Her', year: '2013', poster: '/music/Her.jpg', rating: 4, imdbUrl: 'https://www.imdb.com/title/tt1798709/', description: '' },
+        { id: 'arrival', title: 'Arrival', year: '2016', poster: '/music/Arrival.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt2543164/', description: '' },
+        { id: 'lalaland', title: 'La La Land', year: '2016', poster: '/music/lalaland.jpg', rating: 4.5, imdbUrl: 'https://www.imdb.com/title/tt3783958/', description: '' },
     ],
     tv: [
-        { id: 'severance', title: 'Severance', year: '2022', poster: '/music/Severance.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt11280740/', description: '', soundtrack: { title: 'Severance Main Title – Theodore Shapiro', audioPath: '/music/media/severance.mp3' } },
-        { id: 'barry', title: 'Barry', year: '2018', poster: '/music/Barry.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt5348176/', description: '', soundtrack: { title: 'Barry Theme – David Wingo', audioPath: '/music/media/barry.mp3' } },
-        { id: 'breaking-bad', title: 'Breaking Bad', year: '2008', poster: '/music/Breaking Bad.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt0903747/', description: '', soundtrack: { title: 'Baby Blue – Badfinger', audioPath: '/music/media/breaking-bad.mp3' } },
-        { id: 'jjk', title: 'Jujutsu Kaisen', year: '2020', poster: 'https://image.tmdb.org/t/p/w500/fHpKelh5MzNnpZTpE9tbZQCPXcs.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt12343534/', description: '', soundtrack: { title: 'Kaikai Kitan – Eve', audioPath: '/music/media/jjk.mp3' } },
-        { id: 'aot', title: 'Attack on Titan', year: '2013', poster: 'https://image.tmdb.org/t/p/w500/hTP1DtLGFamjfu8WqjnuQdP1n4i.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt2560140/', description: '', soundtrack: { title: 'Red Swan – YOSHIKI feat. HYDE', audioPath: '/music/AttackOnTitan.mp3' } },
-        { id: 'mob-psycho', title: 'Mob Psycho 100', year: '2016', poster: 'https://image.tmdb.org/t/p/w500/vJpXg3UuLwufrLvrNJxuuMBOft0.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt5897304/', description: '', soundtrack: { title: '99 – MOB CHOIR', audioPath: '/music/media/mob-psycho.mp3' } },
+        { id: 'severance', title: 'Severance', year: '2022', poster: '/music/Severance.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt11280740/', description: '' },
+        { id: 'barry', title: 'Barry', year: '2018', poster: '/music/Barry.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt5348176/', description: '' },
+        { id: 'breaking-bad', title: 'Breaking Bad', year: '2008', poster: '/music/Breaking Bad.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt0903747/', description: '' },
+        { id: 'jjk', title: 'Jujutsu Kaisen', year: '2020', poster: 'https://image.tmdb.org/t/p/w185/fHpKelh5MzNnpZTpE9tbZQCPXcs.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt12343534/', description: '' },
+        { id: 'aot', title: 'Attack on Titan', year: '2013', poster: 'https://image.tmdb.org/t/p/w185/hTP1DtLGFamjfu8WqjnuQdP1n4i.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt2560140/', description: '' },
+        { id: 'mob-psycho', title: 'Mob Psycho 100', year: '2016', poster: 'https://image.tmdb.org/t/p/w185/vJpXg3UuLwufrLvrNJxuuMBOft0.jpg', rating: 5, imdbUrl: 'https://www.imdb.com/title/tt5897304/', description: '' },
     ],
 };
 
 type MediaCategory = 'movies' | 'tv';
-
-const SpeakerButton = ({ isActive, onToggle, isDark }: { isActive: boolean; onToggle: () => void; isDark: boolean }) => (
-    <motion.button
-        onClick={(e) => { e.preventDefault(); e.stopPropagation(); onToggle(); }}
-        whileHover={{ scale: 1.1 }}
-        whileTap={{ scale: 0.9 }}
-        style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '5px',
-            padding: '3px 8px',
-            borderRadius: '20px',
-            backgroundColor: isActive
-                ? (isDark ? '#60a5fa' : '#3b82f6')
-                : (isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.05)'),
-            border: `1px solid ${isActive ? (isDark ? '#3b82f6' : '#2563eb') : (isDark ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)')}`,
-            cursor: 'pointer',
-            transition: 'all 0.2s',
-            height: '24px',
-            minWidth: '28px',
-        }}
-    >
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none"
-            stroke={isActive ? (isDark ? '#000' : '#fff') : (isDark ? '#a1a1aa' : '#52525b')}
-            strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.08" />
-        </svg>
-        {isActive && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '2px', height: '10px' }}>
-                {[0, 1, 2].map((i) => (
-                    <motion.div
-                        key={i}
-                        animate={{ height: [3, 10, 3] }}
-                        transition={{ duration: 0.6, repeat: Infinity, delay: i * 0.15 }}
-                        style={{ width: '2px', backgroundColor: isDark ? '#000' : '#fff', borderRadius: '1px' }}
-                    />
-                ))}
-            </div>
-        )}
-    </motion.button>
-);
 
 const RatingDots = ({ rating, accent, isDark }: { rating: number; accent: string; isDark: boolean }) => (
     <div style={{ display: 'flex', gap: '3px', alignItems: 'center' }}>
@@ -85,13 +41,7 @@ const RatingDots = ({ rating, accent, isDark }: { rating: number; accent: string
     </div>
 );
 
-const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack, startDelay = 0 }: {
-    isDark: boolean;
-    activeTrack: string | null;
-    isTrackPlaying: boolean;
-    onToggleTrack: (trackId: string, audioPath: string) => void;
-    startDelay?: number;
-}) => {
+const MediaCollection = ({ isDark, startDelay = 0 }: { isDark: boolean; startDelay?: number }) => {
     const [activeCategory, setActiveCategory] = useState<MediaCategory>('movies');
     const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
     const [isInitialLoad, setIsInitialLoad] = useState(true);
@@ -119,7 +69,6 @@ const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack, s
 
     return (
         <div>
-            {/* Category tabs */}
             <div style={{ display: 'flex', gap: '20px', marginBottom: '20px', borderBottom: `1px solid ${borderColor}`, paddingBottom: '0' }}>
                 {categories.map((cat) => (
                     <motion.button
@@ -145,7 +94,6 @@ const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack, s
                 ))}
             </div>
 
-            {/* Items */}
             <motion.div
                 key={activeCategory}
                 initial={{ opacity: 0 }}
@@ -155,7 +103,6 @@ const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack, s
             >
                 {items.map((item, index) => {
                     const isExpanded = !!expandedItems[item.id];
-                    const isThisTrackPlaying = activeTrack === `media-${item.id}` && isTrackPlaying;
 
                     return (
                         <motion.div
@@ -169,7 +116,6 @@ const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack, s
                             }}
                             style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}
                         >
-                            {/* Header row*/}
                             <div style={{
                                 display: 'flex',
                                 justifyContent: 'space-between',
@@ -177,7 +123,6 @@ const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack, s
                                 gap: '16px',
                                 flexWrap: 'wrap',
                             }}>
-                                {/* Left: poster + title/year */}
                                 <div style={{ display: 'flex', gap: '12px', alignItems: 'flex-start' }}>
                                     <div style={{
                                         width: '36px',
@@ -188,7 +133,7 @@ const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack, s
                                         flexShrink: 0,
                                         boxShadow: isDark ? '0 2px 8px rgba(0,0,0,0.5)' : '0 2px 6px rgba(0,0,0,0.12)',
                                     }}>
-                                        <Image src={item.poster} alt={item.title} fill style={{ objectFit: 'cover' }} />
+                                        <Image src={item.poster} alt={item.title} fill sizes="36px" style={{ objectFit: 'cover' }} />
                                     </div>
                                     <div>
                                         <h3 style={{
@@ -205,16 +150,8 @@ const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack, s
                                     </div>
                                 </div>
 
-                                {/* Right: rating + speaker + toggle button */}
                                 <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '6px', flexShrink: 0 }}>
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                        <RatingDots rating={item.rating} accent={accent} isDark={isDark} />
-                                        <SpeakerButton
-                                            isActive={isThisTrackPlaying}
-                                            onToggle={() => onToggleTrack(`media-${item.id}`, item.soundtrack.audioPath)}
-                                            isDark={isDark}
-                                        />
-                                    </div>
+                                    <RatingDots rating={item.rating} accent={accent} isDark={isDark} />
                                     <motion.button
                                         onClick={() => toggle(item.id)}
                                         animate={{
@@ -255,7 +192,6 @@ const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack, s
                                 </div>
                             </div>
 
-                            {/* Read mre toggle */}
                             <AnimatePresence>
                                 {isExpanded && (
                                     <motion.div
@@ -274,21 +210,11 @@ const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack, s
                                             }}>
                                                 {item.description}
                                             </p>
-                                            <p style={{
-                                                fontSize: '0.75rem',
-                                                color: isDark ? '#4b5563' : '#9ca3af',
-                                                marginTop: '8px',
-                                                marginBottom: 0,
-                                                fontStyle: 'italic',
-                                            }}>
-                                                {item.soundtrack.title}
-                                            </p>
                                         </div>
                                     </motion.div>
                                 )}
                             </AnimatePresence>
 
-                            {/* Separator */}
                             {index < items.length - 1 && (
                                 <div style={{ height: '1px', backgroundColor: borderColor, marginTop: '14px' }} />
                             )}
@@ -302,21 +228,6 @@ const MediaCollection = ({ isDark, activeTrack, isTrackPlaying, onToggleTrack, s
 
 export default function NotesPage() {
     const { isDark } = useTheme();
-    const { currentTrack, isPlaying, playTrack } = useAudio();
-
-    const togglePlayback = (trackId: string, audioPath: string) => {
-        // Find the media item to get its title for the widget display
-        const allItems = [...mediaData.movies, ...mediaData.tv];
-        const item = allItems.find((m) => `media-${m.id}` === trackId);
-        const track: Track = {
-            id: trackId,
-            title: item ? item.soundtrack.title.split(' – ')[0] : trackId,
-            artist: item ? item.soundtrack.title.split(' – ')[1] || item.title : '',
-            src: audioPath,
-            cover: item ? item.poster : '/assets/music.jpg',
-        };
-        playTrack(track);
-    };
 
     return (
         <div className="container mx-auto px-4 py-24 max-w-2xl">
@@ -348,17 +259,10 @@ export default function NotesPage() {
                 <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: '20px' }}>
                     <h2 style={{ fontSize: '2rem', fontWeight: 'bold', color: isDark ? 'white' : '#1c1917', margin: 0 }}>Media</h2>
                 </div>
-                <MediaCollection
-                    isDark={isDark}
-                    activeTrack={currentTrack.id}
-                    isTrackPlaying={isPlaying}
-                    onToggleTrack={togglePlayback}
-                    startDelay={1.9}
-                />
+                <MediaCollection isDark={isDark} startDelay={1.9} />
             </motion.section>
 
             <div className="footer-spacer" />
-            <FloatingDock />
         </div>
     );
 }

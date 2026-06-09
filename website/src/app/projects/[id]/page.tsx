@@ -8,7 +8,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useTheme } from '../../../components/ThemeContext';
 import { motion } from 'framer-motion';
-import FloatingDock from '../../../components/FloatingDock';
 import ReadingProgressPill from '../../../components/ReadingProgressPill';
 
 // Map path name to a friendly page name
@@ -309,8 +308,6 @@ export default function ProjectPage() {
 
                 <div style={{ height: '120px' }} />
             </article>
-
-            <FloatingDock />
         </div>
     );
 }
