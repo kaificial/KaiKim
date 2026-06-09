@@ -540,15 +540,6 @@ pre {
     }
 }
 
-// Music widget wrapper - positioned to float over layout (Dynamic Island from apple)
-.music-widget-wrapper {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
-    top: 0;
-    z-index: 1000;
-}
-
 // mobile hero pic container
 .hero-image-container {
     @media (max-width: 559px) {
@@ -671,26 +662,43 @@ pre {
     }
 }
 
-// floating dock mobile 
+// floating dock mobile
 .floating-dock {
     @media (max-width: 559px) {
         padding: 4px !important;
         gap: 2px !important;
         bottom: 16px !important;
         border-radius: 10px !important;
-        max-width: 95vw;
+        max-width: calc(100vw - 16px);
 
         // smaller icon container sizes on mobile
         button,
         a {
-            width: 36px !important;
-            height: 36px !important;
+            width: 34px !important;
+            height: 34px !important;
         }
 
         // scale down SVG icons
         svg {
-            width: 18px !important;
-            height: 18px !important;
+            width: 17px !important;
+            height: 17px !important;
+        }
+    }
+
+    // extra small phones: shrink so nothing spills off the bar
+    @media (max-width: 360px) {
+        gap: 1px !important;
+        padding: 3px !important;
+
+        button,
+        a {
+            width: 30px !important;
+            height: 30px !important;
+        }
+
+        svg {
+            width: 16px !important;
+            height: 16px !important;
         }
     }
 }
@@ -700,6 +708,33 @@ pre {
     @media (max-width: 559px) {
         display: none !important;
     }
+}
+
+// Marquee scroll for music widget 
+@keyframes marquee-scroll {
+    0% {
+        transform: translateX(0%);
+    }
+
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+
+.music-widget-wrapper {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.nav-pill-container,
+.header-nav,
+.vertical-divider,
+.theme-buttons-container,
+.mobile-menu-wrapper {
+    transition: all 0.3s ease;
 }
 
 // Custom grid for projects page to guarantee 2 columns
@@ -742,55 +777,11 @@ pre {
     }
 }
 
-body.widget-expanded .header {
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-body.widget-collapsing .header {
-    transform: translateY(-100%);
-}
-
-body.widget-expanded.scrolled {
-    .nav-pill-container {
-        background-color: transparent !important;
-        border-color: transparent !important;
-        box-shadow: none !important;
-        backdrop-filter: none !important;
-
-        .header-nav,
-        .vertical-divider {
-            opacity: 0;
-            pointer-events: none;
-        }
-    }
-
-    .theme-buttons-container,
-    .mobile-menu-wrapper {
-        opacity: 0;
-        pointer-events: none;
-    }
-}
-
 .nav-pill-container,
 .header-nav,
-.vertical-divider,
 .theme-buttons-container,
 .mobile-menu-wrapper {
     transition: all 0.3s ease;
-}
-
-// Marquee scroll for music widget song title
-@keyframes marquee-scroll {
-    0% {
-        transform: translateX(0%);
-    }
-
-    100% {
-        transform: translateX(-50%);
-    }
 }
 
 // Project detail page sticky header

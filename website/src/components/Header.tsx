@@ -1,78 +1,68 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { createPortal } from "react-dom";
 import { Flame, Play, Pause, SkipBack, SkipForward } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useTheme } from "./ThemeContext";
 import { useUISound } from "@/hooks/use-ui-sound";
 import { useAudio } from "./AudioContext";
 
-// nav links for the header
 const navLinks = [
     { href: "/", label: "Home" },
     { href: "/projects", label: "Projects" },
     { href: "/writing", label: "Writing" },
 ];
 
+const ISLAND_SPRING = { type: "spring", stiffness: 280, damping: 30 } as const;
+
+const MARQUEE_PERIOD_S = 10;
+const Marquee = ({ label }: { label: string }) => {
+    const delay = useMemo(() => -((Date.now() / 1000) % MARQUEE_PERIOD_S), []);
+    return (
+        <div style={{ flex: 1, overflow: 'hidden', marginLeft: 6, marginRight: 6, minWidth: 0, maskImage: 'linear-gradient(to right, transparent 0%, black 6px, black calc(100% - 6px), transparent 100%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 6px, black calc(100% - 6px), transparent 100%)' }}>
+            <div style={{ display: 'flex', whiteSpace: 'nowrap', animation: `marquee-scroll ${MARQUEE_PERIOD_S}s linear infinite`, animationDelay: `${delay}s`, width: 'fit-content' }}>
+                {[0, 1].map((i) => (
+                    <span key={i} style={{ color: '#d1d5db', fontSize: '0.7rem', fontWeight: 600, letterSpacing: '-0.01em', paddingRight: '1.5em' }}>
+                        {label}
+                    </span>
+                ))}
+            </div>
+        </div>
+    );
+};
+
 const MusicWidget = () => {
     const { isDark } = useTheme();
     const { playClick } = useUISound();
-    const { currentTrack, isPlaying, progress, duration, togglePlay: globalTogglePlay, seek } = useAudio();
+    const { currentTrack, isPlaying, progress, duration, togglePlay: globalTogglePlay, seek, shuffleTrack } = useAudio();
     const [isExpanded, setIsExpanded] = useState(false);
     const [isWidgetHovered, setIsWidgetHovered] = useState(false);
     const widgetRef = useRef<HTMLDivElement | null>(null);
+    const slotRef = useRef<HTMLDivElement | null>(null);
+    const [islandPresent, setIslandPresent] = useState(false);
+    const [slotRect, setSlotRect] = useState<{ top: number; left: number } | null>(null);
+    const [winW, setWinW] = useState(0);
 
-    // Close music widget when clicking outside
+    useEffect(() => {
+        const update = () => setWinW(window.innerWidth);
+        update();
+        window.addEventListener('resize', update);
+        return () => window.removeEventListener('resize', update);
+    }, []);
+
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
             if (isExpanded && widgetRef.current && !widgetRef.current.contains(e.target as Node)) {
-                setIsExpanded(false);
+                const r = slotRef.current?.getBoundingClientRect();
+                if (r) setSlotRect({ top: r.top, left: r.left });
+                requestAnimationFrame(() => setIsExpanded(false));
             }
         };
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
-    }, [isExpanded]);
-
-    // Manage global state classes for sticky and fade effects for the widget
-    useEffect(() => {
-        let timeoutId: NodeJS.Timeout;
-
-        if (isExpanded) {
-            document.body.classList.remove('widget-collapsing');
-            document.body.classList.add('widget-expanded');
-        } else {
-            if (document.body.classList.contains('widget-expanded') && window.scrollY > 40) {
-                document.body.classList.add('widget-collapsing');
-                // The widget is expanded and stickied on the screen even on movile
-                // wait for the animation to finish before snapping it back to normal
-                timeoutId = setTimeout(() => {
-                    document.body.classList.remove('widget-expanded');
-                    document.body.classList.remove('widget-collapsing');
-                }, 600);
-            } else {
-                document.body.classList.remove('widget-expanded');
-                document.body.classList.remove('widget-collapsing');
-            }
-        }
-
-        const handleScroll = () => {
-            if (window.scrollY > 40) {
-                document.body.classList.add('scrolled');
-            } else {
-                document.body.classList.remove('scrolled');
-            }
-        };
-
-        // Check initially
-        handleScroll();
-
-        window.addEventListener('scroll', handleScroll);
-        return () => {
-            window.removeEventListener('scroll', handleScroll);
-            if (timeoutId) clearTimeout(timeoutId);
-        };
     }, [isExpanded]);
 
     const togglePlay = (e: React.MouseEvent) => {
@@ -85,9 +75,7 @@ const MusicWidget = () => {
         if (duration > 0) {
             const rect = container.getBoundingClientRect();
             const x = ('clientX' in e ? e.clientX : (e as PointerEvent).clientX) - rect.left;
-            const percentage = Math.max(0, Math.min(1, x / rect.width));
-            const newTime = percentage * duration;
-            seek(newTime);
+            seek(Math.max(0, Math.min(1, x / rect.width)) * duration);
         }
     }, [duration, seek]);
 
@@ -95,304 +83,251 @@ const MusicWidget = () => {
         e.stopPropagation();
         const container = e.currentTarget;
         handleScrub(e as any, container);
-
-        const onPointerMove = (moveEvent: PointerEvent) => {
-            handleScrub(moveEvent, container);
+        const onMove = (ev: PointerEvent) => handleScrub(ev, container);
+        const onUp = () => {
+            window.removeEventListener('pointermove', onMove);
+            window.removeEventListener('pointerup', onUp);
         };
-
-        const onPointerUp = () => {
-            window.removeEventListener('pointermove', onPointerMove);
-            window.removeEventListener('pointerup', onPointerUp);
-        };
-
-        window.addEventListener('pointermove', onPointerMove);
-        window.addEventListener('pointerup', onPointerUp);
+        window.addEventListener('pointermove', onMove);
+        window.addEventListener('pointerup', onUp);
     };
 
-    const formatTime = (timeInSeconds: number) => {
-        if (isNaN(timeInSeconds) || !isFinite(timeInSeconds)) return "0:00";
-        const m = Math.floor(timeInSeconds / 60);
-        const s = Math.floor(timeInSeconds % 60);
-        return `${m}:${s.toString().padStart(2, '0')}`;
+    const formatTime = (t: number) => {
+        if (isNaN(t) || !isFinite(t)) return "0:00";
+        return `${Math.floor(t / 60)}:${Math.floor(t % 60).toString().padStart(2, '0')}`;
     };
 
-    const widgetBg = isDark ? (isExpanded ? '#171717' : 'rgba(38, 38, 38, 0.8)') : '#E5E7EB';
-    const widgetBorderColor = isDark ? '#374151' : '#D1D5DB';
-    const textColor = isDark ? '#E5E7EB' : '#111827';
-    const subTextColor = isDark ? '#9ca3af' : '#4b5563';
-    const iconColor = isDark ? '#ffffff' : '#111827';
-    const waveInactiveColor = isDark ? '#6b7280' : '#9ca3af';
-    const progressBgColor = isDark ? '#4b5563' : '#d1d5db';
-    const progressFillColor = isDark ? '#ffffff' : '#111827';
+    const bg = '#171717';
+    const borderColor = '#2a2a2a';
+    const textColor = '#f5f5f5';
+    const subTextColor = '#9ca3af';
+    const iconColor = '#ffffff';
+    const waveInactiveColor = '#8b8b8b';
+    const progressBgColor = '#4b5563';
+    const expandedShadow = '0 25px 60px rgba(0,0,0,0.55), 0 10px 20px rgba(0,0,0,0.35)';
+
+    const collapsedGeom = {
+        top: slotRect?.top ?? 0,
+        left: slotRect?.left ?? 0,
+        width: 150,
+        height: 36,
+        borderRadius: 10,
+        backgroundColor: bg,
+        borderColor,
+        boxShadow: '0 0px 0px rgba(0,0,0,0), 0 0px 0px rgba(0,0,0,0)',
+    };
+    const expandedGeom = {
+        top: 12,
+        left: Math.max(8, (winW - 340) / 2),
+        width: 340,
+        height: 200,
+        borderRadius: 36,
+        backgroundColor: bg,
+        borderColor,
+        boxShadow: expandedShadow,
+    };
+
+    const slotAligned = (slotRect?.top ?? 0) >= 0;
+    const scrolledExit = {
+        duration: 0.55,
+        ease: [0.16, 1, 0.3, 1],
+        opacity: { duration: 0.55, ease: [0.4, 0, 1, 1] },
+    } as const;
+    const boxExit = slotAligned
+        ? collapsedGeom
+        : {
+            top: expandedGeom.top - 96,
+            left: expandedGeom.left + (expandedGeom.width - collapsedGeom.width) / 2,
+            width: collapsedGeom.width,
+            height: collapsedGeom.height,
+            borderRadius: collapsedGeom.borderRadius,
+            backgroundColor: collapsedGeom.backgroundColor,
+            borderColor: collapsedGeom.borderColor,
+            boxShadow: collapsedGeom.boxShadow,
+            opacity: 0,
+            transition: scrolledExit,
+        };
+    const compactExit = slotAligned ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1, transition: scrolledExit };
+    const fullExit = { opacity: 0, scale: 0.45, ...(!slotAligned && { transition: scrolledExit }) };
+
+    const measureSlot = () => {
+        const r = slotRef.current?.getBoundingClientRect();
+        if (r) setSlotRect({ top: r.top, left: r.left });
+    };
+    const expand = () => { measureSlot(); setIslandPresent(true); setIsExpanded(true); playClick(); };
+    const collapse = () => {
+        measureSlot();
+        playClick();
+        requestAnimationFrame(() => setIsExpanded(false));
+    };
+
+    const waveBars = (small: boolean) => (
+        [
+            { peak: small ? '8px' : '8px', delay: 0.0, duration: 1.0 },
+            { peak: small ? '12px' : '14px', delay: 0.2, duration: 0.8 },
+            { peak: small ? '13px' : '16px', delay: 0.4, duration: 1.2 },
+            { peak: small ? '11px' : '12px', delay: 0.6, duration: 0.9 },
+            { peak: small ? '8px' : '8px', delay: 0.8, duration: 1.1 },
+        ].map((w, i) => (
+            <motion.div
+                key={i}
+                initial={false}
+                animate={{ height: isPlaying ? ['4px', w.peak, '4px'] : '4px' }}
+                transition={{ duration: w.duration, repeat: isPlaying ? Infinity : 0, delay: w.delay, ease: "easeInOut" }}
+                style={{ width: '3px', backgroundColor: isPlaying ? '#3b82f6' : waveInactiveColor, borderRadius: '4px' }}
+            />
+        ))
+    );
+
+    const collapsedContent = (
+        <div style={{ display: 'flex', alignItems: 'center', width: '100%', height: '100%' }}>
+            <div style={{ width: 28, height: 28, borderRadius: 8, flexShrink: 0, padding: 2, boxSizing: 'border-box', backgroundColor: 'rgba(255,255,255,0.12)' }}>
+                <div style={{ width: '100%', height: '100%', borderRadius: 6, backgroundImage: `url(${currentTrack.cover})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+            </div>
+            <Marquee label={`${currentTrack.title} • ${currentTrack.artist}`} />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 5, paddingRight: 4, flexShrink: 0 }}>
+                {isPlaying ? (
+                    <div onClick={togglePlay} style={{ display: 'flex', alignItems: 'center', gap: '2.5px', cursor: 'pointer' }}>
+                        {waveBars(true)}
+                    </div>
+                ) : (
+                    <div onClick={togglePlay} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                        <Play size={14} color={waveInactiveColor} fill={waveInactiveColor} />
+                    </div>
+                )}
+                <div onClick={(e) => { e.stopPropagation(); playClick(); shuffleTrack(); }} aria-label="Skip to next song" style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                    <SkipForward size={14} color={waveInactiveColor} fill={waveInactiveColor} />
+                </div>
+            </div>
+        </div>
+    );
+
+    const expandedContent = (
+        <div style={{ display: 'flex', flexDirection: 'column', width: '100%', height: '100%' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 12, minWidth: 0 }}>
+                    <div style={{ width: 64, height: 64, borderRadius: 12, flexShrink: 0, overflow: 'hidden', backgroundImage: `url(${currentTrack.cover})`, backgroundSize: 'cover', backgroundPosition: 'center' }} />
+                    <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, maxWidth: '180px' }}>
+                        <span style={{ color: textColor, fontWeight: 700, fontSize: '1.25rem', lineHeight: 1.2, letterSpacing: '-0.02em', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', overflowWrap: 'break-word' }}>{currentTrack.title}</span>
+                        <span style={{ color: subTextColor, fontSize: '0.95rem', fontWeight: 500, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{currentTrack.artist}</span>
+                    </div>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '2.5px', paddingRight: '4px', flexShrink: 0 }}>
+                    {waveBars(false)}
+                </div>
+            </div>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '100%', marginTop: '16px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.75rem', color: subTextColor, fontWeight: 500, fontFamily: 'monospace' }}>
+                    <span style={{ minWidth: '32px' }}>{formatTime(progress)}</span>
+                    <div onPointerDown={handlePointerDown} onClick={(e) => e.stopPropagation()} style={{ flex: 1, height: '24px', display: 'flex', alignItems: 'center', cursor: 'pointer', position: 'relative' }}>
+                        <div style={{ width: '100%', height: '6px', backgroundColor: progressBgColor, borderRadius: '3px', position: 'relative', overflow: 'hidden' }}>
+                            <motion.div initial={false} animate={{ width: `${duration > 0 ? (progress / duration) * 100 : 0}%` }} transition={{ ease: "linear", duration: 0.1 }} style={{ height: '100%', backgroundColor: '#ffffff', borderRadius: '3px' }} />
+                        </div>
+                    </div>
+                    <span style={{ minWidth: '32px', textAlign: 'right' }}>-{formatTime(Math.max(0, duration - progress))}</span>
+                </div>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '32px', padding: '0 12px' }}>
+                    <SkipBack size={24} color={iconColor} fill={iconColor} style={{ cursor: 'pointer', opacity: 0.8 }} onClick={(e) => { e.stopPropagation(); playClick(); seek(0); }} />
+                    <motion.div whileTap={{ scale: 0.9 }} onClick={togglePlay} style={{ cursor: 'pointer' }}>
+                        {isPlaying ? <Pause size={32} color={iconColor} fill={iconColor} /> : <Play size={32} color={iconColor} fill={iconColor} />}
+                    </motion.div>
+                    <SkipForward size={24} color={iconColor} fill={iconColor} style={{ cursor: 'pointer', opacity: 0.8 }} onClick={(e) => { e.stopPropagation(); playClick(); shuffleTrack(); }} />
+                </div>
+            </div>
+        </div>
+    );
 
     return (
         <div
-            style={{ position: 'relative' }}
+            ref={slotRef}
+            style={{ position: 'relative', width: 150, height: 36 }}
             onMouseEnter={() => setIsWidgetHovered(true)}
             onMouseLeave={() => setIsWidgetHovered(false)}
         >
-            <motion.div
-                ref={widgetRef}
-                onClick={() => { setIsExpanded(!isExpanded); playClick(); }}
-                initial={false}
-                animate={{
-                    width: isExpanded ? 340 : 130,
-                    height: isExpanded ? 200 : 36,
-                    padding: isExpanded ? '16px 20px' : '3px 12px 3px 3px',
-                    borderRadius: isExpanded ? 36 : 10,
-                    backgroundColor: widgetBg,
-                    borderColor: widgetBorderColor
-                }}
-                transition={{ type: "spring", stiffness: 450, damping: 40 }}
-                style={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'flex-start',
-                    borderStyle: 'solid',
-                    borderWidth: '1px',
-                    boxShadow: isExpanded ? (isDark ? '0 25px 60px rgba(0,0,0,0.7), 0 10px 20px rgba(0,0,0,0.4)' : '0 25px 60px rgba(0,0,0,0.25), 0 10px 20px rgba(0,0,0,0.1)') : 'none',
-                    zIndex: 1000,
-                    overflow: 'hidden',
-                    cursor: 'pointer',
-                    transformOrigin: 'top center',
-                    backdropFilter: isExpanded ? 'blur(20px)' : 'none',
-                }}
-            >
-
-                {/* Music Widget */}
-                {/* Top row */}
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-
-                    {/* Left side: Album Art + Titles */}
-                    <div style={{ display: 'flex', alignItems: 'center', gap: isExpanded ? '12px' : '0px', transition: 'gap 0.3s ease' }}>
-                        {/* Album Art Container */}
-                        <div style={{ position: 'relative', flexShrink: 0 }}>
-                            <motion.div
-                                initial={false}
-                                animate={{
-                                    width: isExpanded ? 64 : 28,
-                                    height: isExpanded ? 64 : 28,
-                                    borderRadius: isExpanded ? 14 : 8,
-                                    backgroundColor: isExpanded ? 'transparent' : 'rgba(255,255,255,0.2)',
-                                }}
-                                transition={{ type: "spring", stiffness: 450, damping: 40 }}
-                                style={{
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    overflow: 'hidden'
-                                }}
-                            >
-                                <motion.div
-                                    initial={false}
-                                    animate={{ padding: isExpanded ? '0px' : '2px' }}
-                                    style={{
-                                        width: '100%',
-                                        height: '100%',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center'
-                                    }}
-                                >
-                                    <motion.div
-                                        initial={false}
-                                        animate={{ borderRadius: isExpanded ? '12px' : '6px' }}
-                                        style={{
-                                            width: '100%',
-                                            height: '100%',
-                                            backgroundImage: `url(${currentTrack.cover})`,
-                                            transition: 'background-image 0.3s ease',
-                                            backgroundSize: 'cover',
-                                            backgroundPosition: 'center',
-                                        }}
-                                    />
-                                </motion.div>
-                            </motion.div>
-
-                        </div>
-
-                        {/* Titles */}
-                        <AnimatePresence>
-                            {isExpanded && (
-                                <motion.div
-                                    initial={{ opacity: 0, x: -10 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -10 }}
-                                    transition={{ duration: 0.2 }}
-                                    style={{ display: 'flex', flexDirection: 'column', whiteSpace: 'nowrap' }}
-                                >
-                                    <span style={{ color: textColor, fontWeight: 700, fontSize: '1.25rem', lineHeight: 1.2, letterSpacing: '-0.02em' }}>{currentTrack.title}</span>
-                                    <span style={{ color: subTextColor, fontSize: '0.95rem', fontWeight: 500 }}>{currentTrack.artist}</span>
-                                </motion.div>
-                            )}
-                        </AnimatePresence>
-                    </div>
-
-                    {/* Collapsed: Scrolling song title + artist (looped) */}
-                    {!isExpanded && (
-                        <div style={{
-                            flex: 1,
-                            overflow: 'hidden',
-                            marginLeft: '6px',
-                            marginRight: '6px',
-                            minWidth: 0,
-                            maskImage: 'linear-gradient(to right, transparent 0%, black 6px, black calc(100% - 6px), transparent 100%)',
-                            WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 6px, black calc(100% - 6px), transparent 100%)',
-                        }}>
-                            <div
-                                style={{
-                                    display: 'flex',
-                                    whiteSpace: 'nowrap',
-                                    animation: 'marquee-scroll 10s linear infinite',
-                                    width: 'fit-content',
-                                }}
-                            >
-                                {[0, 1].map((i) => (
-                                    <span
-                                        key={i}
-                                        style={{
-                                            color: isDark ? '#d1d5db' : '#374151',
-                                            fontSize: '0.7rem',
-                                            fontWeight: 600,
-                                            letterSpacing: '-0.01em',
-                                            paddingRight: '1.5em',
-                                        }}
-                                    >
-                                        {currentTrack.title} &bull; {currentTrack.artist}
-                                    </span>
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                    {/* Right side: Audio visualizaion */}
-                    <div style={{ display: 'flex', alignItems: 'center', height: '14px', flexShrink: 0 }}>
-                        {isExpanded ? (
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ delay: 0.2 }}
-                                style={{ display: 'flex', alignItems: 'center', gap: '2.5px', paddingRight: '8px' }}
-                            >
-                                {[
-                                    { height: isPlaying ? ['4px', '8px', '4px'] : ['4px', '4px', '4px'], delay: 0.0, duration: 1.0 },
-                                    { height: isPlaying ? ['6px', '14px', '6px'] : ['4px', '4px', '4px'], delay: 0.2, duration: 0.8 },
-                                    { height: isPlaying ? ['8px', '16px', '8px'] : ['4px', '4px', '4px'], delay: 0.4, duration: 1.2 },
-                                    { height: isPlaying ? ['5px', '12px', '5px'] : ['4px', '4px', '4px'], delay: 0.6, duration: 0.9 },
-                                    { height: isPlaying ? ['4px', '8px', '4px'] : ['4px', '4px', '4px'], delay: 0.8, duration: 1.1 }
-                                ].map((wave, i) => (
-                                    <motion.div
-                                        key={i}
-                                        initial={false}
-                                        animate={{ height: wave.height }}
-                                        transition={{ duration: wave.duration, repeat: isPlaying ? Infinity : 0, delay: wave.delay, ease: "easeInOut" }}
-                                        style={{ width: '3px', backgroundColor: isPlaying ? '#3b82f6' : waveInactiveColor, borderRadius: '4px' }}
-                                    />
-                                ))}
-                            </motion.div>
-                        ) : (
-                            isPlaying ? (
-                                <div
-                                    onClick={togglePlay}
-                                    style={{ display: 'flex', alignItems: 'center', gap: '2.5px', cursor: 'pointer', paddingRight: '4px' }}
-                                >
-                                    {[
-                                        { height: isPlaying ? ['4px', '8px', '4px'] : ['4px', '4px', '4px'], delay: 0.0, duration: 1.0 },
-                                        { height: isPlaying ? ['6px', '14px', '6px'] : ['4px', '4px', '4px'], delay: 0.2, duration: 0.8 },
-                                        { height: isPlaying ? ['8px', '16px', '8px'] : ['4px', '4px', '4px'], delay: 0.4, duration: 1.2 },
-                                        { height: isPlaying ? ['5px', '12px', '5px'] : ['4px', '4px', '4px'], delay: 0.6, duration: 0.9 },
-                                        { height: isPlaying ? ['4px', '8px', '4px'] : ['4px', '4px', '4px'], delay: 0.8, duration: 1.1 }
-                                    ].map((wave, i) => (
-                                        <motion.div
-                                            key={i}
-                                            initial={false}
-                                            animate={{ height: wave.height }}
-                                            transition={{ duration: wave.duration, repeat: isPlaying ? Infinity : 0, delay: wave.delay, ease: "easeInOut" }}
-                                            style={{ width: '3px', backgroundColor: '#3b82f6', borderRadius: '4px' }}
-                                        />
-                                    ))}
-                                </div>
-                            ) : (
-                                <div
-                                    onClick={togglePlay}
-                                    style={{ paddingRight: '4px', display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-                                >
-                                    <Play size={14} color={waveInactiveColor} fill={waveInactiveColor} />
-                                </div>
-                            )
-                        )}
-                    </div>
-
+            {!islandPresent && (
+                <div
+                    onClick={expand}
+                    style={{
+                        position: 'absolute',
+                        inset: 0,
+                        boxSizing: 'border-box',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'flex-start',
+                        padding: '3px 12px 3px 3px',
+                        borderRadius: 10,
+                        backgroundColor: bg,
+                        border: `1px solid ${borderColor}`,
+                        overflow: 'hidden',
+                        cursor: 'pointer',
+                    }}
+                >
+                    {collapsedContent}
                 </div>
+            )}
 
-                {/* Bottom Section (Expanded Only) */}
-                <AnimatePresence>
+            {islandPresent && createPortal(
+                <AnimatePresence onExitComplete={() => setIslandPresent(false)}>
                     {isExpanded && (
                         <motion.div
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: 10 }}
-                            transition={{ delay: 0.05, duration: 0.2 }}
-                            style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '100%', marginTop: '12px', paddingBottom: '20px' }}
+                            ref={widgetRef}
+                            onClick={collapse}
+                            initial={collapsedGeom}
+                            animate={expandedGeom}
+                            exit={boxExit}
+                            transition={ISLAND_SPRING}
+                            style={{
+                                position: 'fixed',
+                                boxSizing: 'border-box',
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'flex-start',
+                                borderStyle: 'solid',
+                                borderWidth: '1px',
+                                overflow: 'hidden',
+                                cursor: 'pointer',
+                                transformOrigin: 'top center',
+                                backdropFilter: 'blur(20px)',
+                                WebkitBackdropFilter: 'blur(20px)',
+                                zIndex: 1100,
+                            }}
                         >
-                            {/* Progress Bar */}
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.75rem', color: subTextColor, fontWeight: 500, fontFamily: 'monospace' }}>
-                                <span style={{ minWidth: '32px' }}>{formatTime(progress)}</span>
-                                <div
-                                    onPointerDown={handlePointerDown}
-                                    onClick={(e) => e.stopPropagation()}
-                                    style={{
-                                        flex: 1,
-                                        height: '24px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        cursor: 'pointer',
-                                        position: 'relative'
-                                    }}
-                                >
-                                    <div style={{ width: '100%', height: '6px', backgroundColor: progressBgColor, borderRadius: '3px', position: 'relative', overflow: 'hidden' }}>
-                                        <motion.div
-                                            initial={false}
-                                            animate={{ width: `${duration > 0 ? (progress / duration) * 100 : 0}%` }}
-                                            transition={{ ease: "linear", duration: 0.1 }}
-                                            style={{ height: '100%', backgroundColor: progressFillColor, borderRadius: '3px' }}
-                                        />
-                                    </div>
-                                </div>
-                                <span style={{ minWidth: '32px', textAlign: 'right' }}>-{formatTime(Math.max(0, duration - progress))}</span>
-                            </div>
-
-                            {/* Controls */}
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '32px', padding: '0 12px' }}>
-                                <SkipBack size={24} color={iconColor} fill={iconColor} style={{ cursor: 'pointer', opacity: 0.8 }} onClick={(e) => {
-                                    e.stopPropagation();
-                                    playClick();
-                                    seek(0);
-                                }} />
-                                <motion.div
-                                    whileTap={{ scale: 0.9 }}
-                                    onClick={togglePlay}
-                                    style={{ cursor: 'pointer' }}
-                                >
-                                    {isPlaying ? (
-                                        <Pause size={32} color={iconColor} fill={iconColor} />
-                                    ) : (
-                                        <Play size={32} color={iconColor} fill={iconColor} />
-                                    )}
-                                </motion.div>
-                                <SkipForward size={24} color={iconColor} fill={iconColor} style={{ cursor: 'pointer', opacity: 0.8 }} onClick={(e) => {
-                                    e.stopPropagation();
-                                    playClick();
-                                    if (duration > 0) { seek(duration - 0.1); }
-                                }} />
-                            </div>
+                            <motion.div
+                                initial={{ opacity: 1, scale: 1 }}
+                                animate={{ opacity: isExpanded ? 0 : 1, scale: isExpanded ? 2.2 : 1 }}
+                                exit={compactExit}
+                                transition={ISLAND_SPRING}
+                                style={{
+                                    position: 'absolute', top: 0, left: 0,
+                                    width: 150, height: 36, padding: '3px 12px 3px 3px',
+                                    boxSizing: 'border-box', display: 'flex', alignItems: 'center',
+                                    transformOrigin: 'top left',
+                                    pointerEvents: isExpanded ? 'none' : 'auto',
+                                }}
+                            >
+                                {collapsedContent}
+                            </motion.div>
+                            <motion.div
+                                initial={{ opacity: 0, scale: 0.45 }}
+                                animate={{ opacity: isExpanded ? 1 : 0, scale: isExpanded ? 1 : 0.45 }}
+                                exit={fullExit}
+                                transition={ISLAND_SPRING}
+                                style={{
+                                    position: 'absolute', top: 0, left: 0,
+                                    width: 340, height: 200, padding: '16px 20px',
+                                    boxSizing: 'border-box', display: 'flex', flexDirection: 'column',
+                                    transformOrigin: 'top left',
+                                    pointerEvents: isExpanded ? 'auto' : 'none',
+                                }}
+                            >
+                                {expandedContent}
+                            </motion.div>
                         </motion.div>
                     )}
-                </AnimatePresence>
+                </AnimatePresence>,
+                document.body
+            )}
 
-            </motion.div>
-
-            {/* Hover tooltip for Music Widget*/}
             <AnimatePresence>
                 {isWidgetHovered && !isExpanded && (
                     <motion.div
@@ -439,59 +374,34 @@ const MusicWidget = () => {
 
 export default function Header() {
     const pathname = usePathname();
-    const { isDark, toggleTheme } = useTheme();
-    const { playClick, playHover, playOn, playOff } = useUISound();
-
-
-    // State for local display and hover
+    const { isDark } = useTheme();
+    const { playClick, playHover } = useUISound();
     const [count, setCount] = useState(0);
     const [displayCount, setDisplayCount] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
-
-    // State for mobile menu
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-    // State for global count and user's specific like status
     const [hasLiked, setHasLiked] = useState(false);
 
-    // Initial count state from API
     useEffect(() => {
-        const savedLikeStatus = localStorage.getItem("has-liked-site");
-        if (savedLikeStatus === "true") {
-            setHasLiked(true);
-        }
+        if (localStorage.getItem("has-liked-site") === "true") setHasLiked(true);
 
         const fetchGlobalCount = async () => {
             try {
-                const response = await fetch('/api/likes');
-                const data = await response.json();
+                const res = await fetch('/api/likes');
+                const data = await res.json();
                 const globalCount = data.count || 0;
-
                 setCount(globalCount);
                 setDisplayCount(0);
 
-                // Animate from 0 to globalCount
                 const duration = 2400;
                 const startTime = performance.now() + 500;
-
-                const animate = (currentTime: number) => {
-                    if (currentTime < startTime) {
-                        requestAnimationFrame(animate);
-                        return;
-                    }
-
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
-                    const currentDisplay = Math.floor(easeOutQuart(progress) * globalCount);
-
-                    setDisplayCount(currentDisplay);
-
-                    if (progress < 1) {
-                        requestAnimationFrame(animate);
-                    }
+                const easeOutQuart = (t: number) => 1 - Math.pow(1 - t, 4);
+                const animate = (now: number) => {
+                    if (now < startTime) { requestAnimationFrame(animate); return; }
+                    const progress = Math.min((now - startTime) / duration, 1);
+                    setDisplayCount(Math.floor(easeOutQuart(progress) * globalCount));
+                    if (progress < 1) requestAnimationFrame(animate);
                 };
-
                 requestAnimationFrame(animate);
             } catch (error) {
                 console.error("Failed to sync global likes:", error);
@@ -502,14 +412,8 @@ export default function Header() {
     }, []);
 
     const handleLikeClick = async () => {
-        // prevent clicking if already liked
-        if (hasLiked) {
-            console.log("✨ You've already liked this site!");
-            return;
-        }
+        if (hasLiked) return;
 
-        // optimistic update - show immediate feedback
-        // use functional updater to read the latest state, not a stale closure value
         let previousCount = 0;
         setCount(prev => { previousCount = prev; return prev + 1; });
         setDisplayCount(prev => prev + 1);
@@ -517,53 +421,31 @@ export default function Header() {
         localStorage.setItem("has-liked-site", "true");
 
         try {
-            const response = await fetch('/api/likes', { method: 'POST' });
-            const data = await response.json();
+            const res = await fetch('/api/likes', { method: 'POST' });
+            const data = await res.json();
 
-            if (!response.ok) {
-                // handle specific error types
-                if (response.status === 429) {
-                    // rate limit exceeded - rollback optimistic update
-                    setCount(previousCount);
-                    setDisplayCount(previousCount);
-                    setHasLiked(false);
-                    localStorage.removeItem("has-liked-site");
-
-                } else if (response.status === 400 && data.error === "already_liked") {
-                    // server says already liked - trust server state
-                    // keep the liked state since server confirmed
-
-                } else if (response.status === 403) {
-                    // forbidden - rollback optimistic update
-                    setCount(previousCount);
-                    setDisplayCount(previousCount);
-                    setHasLiked(false);
-                    localStorage.removeItem("has-liked-site");
-
-                } else {
-                    // other error
-                    throw new Error(data.message || "Failed to like");
-                }
+            if (!res.ok) {
+                if (res.status === 400 && data.error === "already_liked") return;
+                setCount(previousCount);
+                setDisplayCount(previousCount);
+                setHasLiked(false);
+                localStorage.removeItem("has-liked-site");
+                if (res.status !== 429 && res.status !== 403) throw new Error(data.message || "Failed to like");
                 return;
             }
 
-            // success - sync to confirmed server count if provided
-            if (data.count !== undefined && data.count !== null) {
+            if (data.count != null) {
                 setCount(data.count);
                 setDisplayCount(data.count);
             }
-
         } catch (error) {
             console.error("Try Again", error);
-
-            // rollback on network or unexpected error
             setCount(previousCount);
             setDisplayCount(previousCount);
             setHasLiked(false);
             localStorage.removeItem("has-liked-site");
         }
     };
-
 
     if (pathname?.startsWith('/projects/') && pathname !== '/projects') return null;
 
@@ -576,7 +458,6 @@ export default function Header() {
                 transition={{ delay: 1.1, duration: 1.4, ease: [0.22, 1, 0.36, 1] }}
                 style={{ position: 'relative' }}
             >
-                {/* Mobile menu button - positioned left on mobile */}
                 <div className="mobile-menu-wrapper">
                     <button
                         className="mobile-menu-btn"
@@ -613,11 +494,10 @@ export default function Header() {
                         ))}
                     </div>
 
-                    {/* Vertical Divider */}
                     <div className="vertical-divider" style={{ width: '1px', height: '16px', backgroundColor: isDark ? 'rgba(255,255,255,0.15)' : 'rgba(0,0,0,0.1)' }} />
 
-                    <div style={{ position: 'relative', width: 130, height: 36 }}>
-                        <div className="music-widget-wrapper" style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)' }}>
+                    <div style={{ position: 'relative', width: 150, height: 36 }}>
+                        <div className="music-widget-wrapper">
                             <MusicWidget />
                         </div>
                     </div>
