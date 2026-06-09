@@ -18,12 +18,14 @@ interface HeroPhoto {
 const PHOTOS: HeroPhoto[] = [
     { src: "/assets/pfp.jpg", alt: "Kai Kim", caption: "Hello", objectPosition: "25% 50%", brighten: true },
     { src: "/assets/latte (2).jpg", alt: "Latte", caption: "My dawg", objectPosition: "center" },
+    { src: "/assets/van_latte.png", alt: "Van and Latte", caption: "Hi", objectPosition: "center" },
 ];
 
 // per depth resting transform (depth 0 = the active top card)
 const STACK = [
     { x: 0, y: 0, rotate: 0, scale: 1 },
     { x: 8, y: 5, rotate: 6, scale: 0.95 },
+    { x: -6, y: 8, rotate: -5, scale: 0.9 },
 ];
 
 export default function HeroPhotoStack({ isDark }: { isDark: boolean }) {
