@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
                 hostname: 'image.tmdb.org',
                 pathname: '/t/**',
             },
+            {
+                protocol: 'https',
+                hostname: '**.mzstatic.com',
+                pathname: '/image/**',
+            },
         ],
     },
     async headers() {
