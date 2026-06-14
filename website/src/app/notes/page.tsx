@@ -238,7 +238,7 @@ export default function NotesPage() {
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2, duration: 1.6, ease: [0.22, 1, 0.36, 1] }}
                 >
-                    Writing
+                    Notes
                 </motion.h1>
                 <motion.p
                     className="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-xl text-left"

@@ -75,8 +75,8 @@ export default function HeroPhotoStack({ isDark }: { isDark: boolean }) {
                         transition={{ duration: 0.2, ease: "backOut" }}
                         style={{
                             position: "absolute",
-                            top: "-22px",
-                            left: "-28px",
+                            top: "-34px",
+                            left: "-8px",
                             backgroundColor: isDark ? "#1f2937" : "white",
                             color: isDark ? "white" : "#1f2937",
                             padding: "4px 10px",
@@ -95,7 +95,7 @@ export default function HeroPhotoStack({ isDark }: { isDark: boolean }) {
                             style={{
                                 position: "absolute",
                                 bottom: "-5px",
-                                right: "12px",
+                                left: "16px",
                                 width: "10px",
                                 height: "10px",
                                 backgroundColor: isDark ? "#1f2937" : "white",

@@ -13,7 +13,7 @@ import { useAudio } from "./AudioContext";
 const navLinks = [
     { href: "/", label: "Home" },
     { href: "/projects", label: "Projects" },
-    { href: "/writing", label: "Writing" },
+    { href: "/writing", label: "Notes" },
 ];
 
 const ISLAND_SPRING = { type: "spring", stiffness: 280, damping: 30 } as const;

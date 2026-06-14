@@ -109,7 +109,7 @@ export default function CommandPalette() {
                 keywords: "work build apps", perform: () => go("/projects"),
             },
             {
-                id: "writing", label: "Writing", group: "Navigation", icon: <PenLine size={16} />,
+                id: "writing", label: "Notes", group: "Navigation", icon: <PenLine size={16} />,
                 keywords: "notes blog reviews media music", perform: () => go("/writing"),
             },
             ...projectCmds,

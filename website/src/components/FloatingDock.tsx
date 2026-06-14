@@ -284,7 +284,7 @@ export default function FloatingDock() {
                     </svg>
                 </button>
                 <AnimatePresence>
-                    {hoveredIcon === 'writing' && <Tooltip text="Writing" />}
+                    {hoveredIcon === 'writing' && <Tooltip text="Notes" />}
                 </AnimatePresence>
             </motion.div>
 

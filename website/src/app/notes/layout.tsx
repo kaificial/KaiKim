@@ -1,11 +1,11 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-    title: 'Writing',
+    title: 'Notes',
     description: "kai kim · notes and interests — media reviews, music, technical writing. CS @ Queen's University.",
     alternates: { canonical: 'https://kaikim.ca/writing' },
     openGraph: {
-        title: 'Writing | Kai Kim',
+        title: 'Notes | Kai Kim',
         description: "kai kim · notes and interests — media reviews, music, technical writing.",
         url: 'https://kaikim.ca/writing',
         type: 'website',
@@ -13,11 +13,11 @@ export const metadata: Metadata = {
     },
     twitter: {
         card: 'summary_large_image',
-        title: 'Writing | Kai Kim',
+        title: 'Notes | Kai Kim',
         description: "kai kim · notes and interests — media reviews, music, technical writing.",
     },
 }
 
-export default function WritingLayout({ children }: { children: React.ReactNode }) {
+export default function NotesLayout({ children }: { children: React.ReactNode }) {
     return <>{children}</>
 }

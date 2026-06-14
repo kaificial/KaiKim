@@ -171,7 +171,7 @@ export default function RootLayout({
                         __html: JSON.stringify({
                             "@context": "https://schema.org",
                             "@type": "SiteNavigationElement",
-                            "name": ["Projects", "Writing"],
+                            "name": ["Projects", "Notes"],
                             "url": ["https://kaikim.ca/projects", "https://kaikim.ca/writing"]
                         })
                     }}
