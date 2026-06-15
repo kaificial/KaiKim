@@ -20,7 +20,7 @@ export const projects: Project[] = [
         title: 'Clairo',
         description: 'AI-powered assistant to help you understand medical terminology, records, and reports with clarity.',
         tags: ['Next.js', 'TypeScript', 'WebLLM', 'Gemini', 'Transformers.js', 'IndexedDB', 'Framer Motion'],
-        status: 'Building',
+        status: 'Live',
         url: '',
         video: '/assets/ClairoMedicalDemo.mp4',
         github: 'https://github.com/kaificial/clairo',

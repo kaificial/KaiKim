@@ -187,17 +187,33 @@ const MusicWidget = () => {
             <Marquee label={`${currentTrack.title} • ${currentTrack.artist}`} />
             <div style={{ display: 'flex', alignItems: 'center', gap: 5, paddingRight: 4, flexShrink: 0 }}>
                 {isPlaying ? (
-                    <div onClick={togglePlay} style={{ display: 'flex', alignItems: 'center', gap: '2.5px', cursor: 'pointer' }}>
+                    <motion.div
+                        onClick={togglePlay}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        style={{ display: 'flex', alignItems: 'center', gap: '2.5px', cursor: 'pointer', position: 'relative' }}
+                    >
                         {waveBars(true)}
-                    </div>
+                    </motion.div>
                 ) : (
-                    <div onClick={togglePlay} style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                    <motion.div
+                        onClick={togglePlay}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                    >
                         <Play size={14} color={waveInactiveColor} fill={waveInactiveColor} />
-                    </div>
+                    </motion.div>
                 )}
-                <div onClick={(e) => { e.stopPropagation(); playClick(); shuffleTrack(); }} aria-label="Skip to next song" style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}>
+                <motion.div
+                    onClick={(e) => { e.stopPropagation(); playClick(); shuffleTrack(); }}
+                    aria-label="Skip to next song"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    style={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+                >
                     <SkipForward size={14} color={waveInactiveColor} fill={waveInactiveColor} />
-                </div>
+                </motion.div>
             </div>
         </div>
     );
@@ -216,7 +232,7 @@ const MusicWidget = () => {
                     {waveBars(false)}
                 </div>
             </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: '100%', marginTop: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', width: '100%', marginTop: '16px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '12px', fontSize: '0.75rem', color: subTextColor, fontWeight: 500, fontFamily: 'monospace' }}>
                     <span style={{ minWidth: '32px' }}>{formatTime(progress)}</span>
                     <div onPointerDown={handlePointerDown} onClick={(e) => e.stopPropagation()} style={{ flex: 1, height: '24px', display: 'flex', alignItems: 'center', cursor: 'pointer', position: 'relative' }}>
@@ -226,12 +242,48 @@ const MusicWidget = () => {
                     </div>
                     <span style={{ minWidth: '32px', textAlign: 'right' }}>-{formatTime(Math.max(0, duration - progress))}</span>
                 </div>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '32px', padding: '0 12px' }}>
-                    <SkipBack size={24} color={iconColor} fill={iconColor} style={{ cursor: 'pointer', opacity: 0.8 }} onClick={(e) => { e.stopPropagation(); playClick(); seek(0); }} />
-                    <motion.div whileTap={{ scale: 0.9 }} onClick={togglePlay} style={{ cursor: 'pointer' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '16px', padding: '0 12px' }}>
+                    <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={(e) => { e.stopPropagation(); playClick(); seek(0); }}
+                        style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', width: 40, height: 40, borderRadius: '50%' }}
+                    >
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            whileHover={{ opacity: 1 }}
+                            style={{ position: 'absolute', inset: 0, borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.08)' }}
+                        />
+                        <SkipBack size={24} color={iconColor} fill={iconColor} style={{ opacity: 0.8 }} />
+                    </motion.div>
+
+                    <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={togglePlay}
+                        style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', width: 52, height: 52, borderRadius: '50%' }}
+                    >
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            whileHover={{ opacity: 1 }}
+                            style={{ position: 'absolute', inset: 0, borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.1)' }}
+                        />
                         {isPlaying ? <Pause size={32} color={iconColor} fill={iconColor} /> : <Play size={32} color={iconColor} fill={iconColor} />}
                     </motion.div>
-                    <SkipForward size={24} color={iconColor} fill={iconColor} style={{ cursor: 'pointer', opacity: 0.8 }} onClick={(e) => { e.stopPropagation(); playClick(); shuffleTrack(); }} />
+
+                    <motion.div
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        onClick={(e) => { e.stopPropagation(); playClick(); shuffleTrack(); }}
+                        style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', width: 40, height: 40, borderRadius: '50%' }}
+                    >
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            whileHover={{ opacity: 1 }}
+                            style={{ position: 'absolute', inset: 0, borderRadius: '50%', backgroundColor: 'rgba(255,255,255,0.08)' }}
+                        />
+                        <SkipForward size={24} color={iconColor} fill={iconColor} style={{ opacity: 0.8 }} />
+                    </motion.div>
                 </div>
             </div>
         </div>
