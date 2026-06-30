@@ -523,7 +523,7 @@ export default function Home() {
                                                         backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
                                                         color: isDark ? '#E5E7EB' : '#111827',
                                                         border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
-                                                        borderRadius: '9999px',
+                                                        borderRadius: '6px',
                                                         fontSize: '0.75rem',
                                                         fontWeight: '500'
                                                     }}
@@ -651,7 +651,7 @@ export default function Home() {
                                                         backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
                                                         color: isDark ? '#E5E7EB' : '#111827',
                                                         border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`,
-                                                        borderRadius: '9999px',
+                                                        borderRadius: '6px',
                                                         fontSize: '0.75rem',
                                                         fontWeight: '500'
                                                     }}
@@ -742,7 +742,7 @@ export default function Home() {
                                         </p>
                                         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', padding: '4px', margin: '-4px' }}>
                                             {['React', 'TypeScript', 'Node.js', 'GraphQL', 'PostgreSQL', 'Redis', 'WebSockets', 'AWS S3', 'Docker', 'REST APIs'].map((skill, index) => (
-                                                <motion.span key={index} whileHover={{ scale: 1.1, y: -2 }} transition={{ type: "spring", stiffness: 400, damping: 10 }} whileTap={{ scale: 0.95 }} style={{ display: 'inline-block', cursor: 'default', padding: '4px 12px', backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB', color: isDark ? '#E5E7EB' : '#111827', border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`, borderRadius: '9999px', fontSize: '0.75rem', fontWeight: '500' }}>
+                                                <motion.span key={index} whileHover={{ scale: 1.1, y: -2 }} transition={{ type: "spring", stiffness: 400, damping: 10 }} whileTap={{ scale: 0.95 }} style={{ display: 'inline-block', cursor: 'default', padding: '4px 12px', backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB', color: isDark ? '#E5E7EB' : '#111827', border: `1px solid ${isDark ? '#374151' : '#D1D5DB'}`, borderRadius: '6px', fontSize: '0.75rem', fontWeight: '500' }}>
                                                     {skill}
                                                 </motion.span>
                                             ))}
@@ -1174,7 +1174,7 @@ export default function Home() {
                                                 style={{
                                                     display: 'inline-block',
                                                     padding: '4px 12px',
-                                                    borderRadius: '9999px',
+                                                    borderRadius: '6px',
                                                     backgroundColor: isDark ? 'rgba(55, 65, 81, 0.5)' : '#f3f4f6',
                                                     color: isDark ? '#d1d5db' : '#374151',
                                                     fontSize: '0.7rem',

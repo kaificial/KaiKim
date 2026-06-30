@@ -279,7 +279,7 @@ export default function ProjectPage() {
                                 style={{
                                     display: 'inline-block',
                                     padding: '4px 12px',
-                                    borderRadius: '9999px',
+                                    borderRadius: '6px',
                                     backgroundColor: isDark ? 'rgba(38, 38, 38, 0.8)' : '#E5E7EB',
                                     color: isDark ? '#E5E7EB' : '#111827',
                                     fontSize: '0.75rem',
