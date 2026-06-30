@@ -23,8 +23,8 @@ import {
 } from "lucide-react";
 import { useTheme } from "./ThemeContext";
 import { useAudio } from "./AudioContext";
-import { useUISound } from "@/hooks/use-ui-sound";
 import { projects } from "../data/projects";
+import { useUISound } from "../hooks/use-ui-sound";
 
 interface Command {
     id: string;
@@ -48,8 +48,8 @@ export default function CommandPalette() {
     const router = useRouter();
     const { isDark, toggleTheme } = useTheme();
     const { isPlaying, togglePlay } = useAudio();
-    const { playClick, playHover } = useUISound();
-
+    const { playClick } = useUISound();
+    
     const [isOpen, setIsOpen] = useState(false);
     const [query, setQuery] = useState("");
     const [selected, setSelected] = useState(0);
@@ -181,17 +181,17 @@ export default function CommandPalette() {
 
     const runCommand = useCallback((cmd: Command | undefined) => {
         if (!cmd) return;
-        try { playClick(); } catch { /* noop */ }
+        playClick();
         close();
         window.setTimeout(() => { cmd.perform(); }, 10);
-    }, [playClick, close]);
+    }, [close, playClick]);
 
     useEffect(() => {
         const onKeyDown = (e: KeyboardEvent) => {
             if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
                 e.preventDefault();
                 setIsOpen((prev) => {
-                    if (!prev) { try { playClick(); } catch { /* noop */ } }
+                    if (!prev) { try { } catch { /* noop */ } }
                     return !prev;
                 });
             }
@@ -199,7 +199,7 @@ export default function CommandPalette() {
 
         const onOpenEvent = () => {
             setIsOpen(true);
-            try { playClick(); } catch { /* noop */ }
+            try { } catch { /* noop */ }
         };
 
         window.addEventListener("keydown", onKeyDown);
@@ -208,7 +208,7 @@ export default function CommandPalette() {
             window.removeEventListener("keydown", onKeyDown);
             window.removeEventListener("open-command-palette", onOpenEvent);
         };
-    }, [isOpen, playClick]);
+    }, [isOpen]);
 
     useEffect(() => {
         if (isOpen) {
@@ -235,14 +235,14 @@ export default function CommandPalette() {
             e.preventDefault();
             setSelected((s) => {
                 const next = (s + 1) % Math.max(grouped.flat.length, 1);
-                try { playHover(); } catch { /* noop */ }
+                try { } catch { /* noop */ }
                 return next;
             });
         } else if (e.key === "ArrowUp") {
             e.preventDefault();
             setSelected((s) => {
                 const next = (s - 1 + grouped.flat.length) % Math.max(grouped.flat.length, 1);
-                try { playHover(); } catch { /* noop */ }
+                try { } catch { /* noop */ }
                 return next;
             });
         } else if (e.key === "Enter") {
