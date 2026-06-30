@@ -1,5 +1,6 @@
 
 import type { Metadata } from "next";
+
 import { Inter, JetBrains_Mono, Source_Serif_4 } from "next/font/google";
 import "../styles/globals.scss";
 import "katex/dist/katex.min.css";
@@ -107,28 +108,6 @@ export default function RootLayout({
                 <link rel="preconnect" href="https://i.scdn.co" crossOrigin="anonymous" />
                 <link rel="preconnect" href="https://image.tmdb.org" crossOrigin="anonymous" />
                 <script
-                    dangerouslySetInnerHTML={{
-                        __html: `
-                            (function() {
-                                // Check localStorage for saved theme preference
-                                var savedTheme = localStorage.getItem('theme');
-
-                                if (savedTheme) {
-                                    // Use saved preference
-                                    if (savedTheme === 'dark') {
-                                        document.documentElement.classList.add('dark');
-                                    }
-                                } else {
-                                    // First visit - check system preference
-                                    if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                                        document.documentElement.classList.add('dark');
-                                    }
-                                }
-                            })();
-                        `,
-                    }}
-                />
-                <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{
                         __html: JSON.stringify({
@@ -176,6 +155,7 @@ export default function RootLayout({
                         })
                     }}
                 />
+                <script src="/scripts/theme-init.js" />
             </head>
             <body className={`${inter.variable} ${jetbrainsMono.variable} ${sourceSerif.variable}`}>
                 <ThemeProvider>

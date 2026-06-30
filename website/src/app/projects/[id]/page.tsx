@@ -7,6 +7,7 @@ import { ProjectDescription } from '../../../components/ProjectDescription';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTheme } from '../../../components/ThemeContext';
+import { useUISound } from '../../../hooks/use-ui-sound';
 import { motion } from 'framer-motion';
 import ReadingProgressPill from '../../../components/ReadingProgressPill';
 
@@ -23,6 +24,7 @@ function getPageLabel(pathname: string): string {
 export default function ProjectPage() {
     const { id } = useParams();
     const { isDark } = useTheme();
+    const { playClick } = useUISound();
     const router = useRouter();
     const [referrerLabel, setReferrerLabel] = useState('back');
 
@@ -67,6 +69,7 @@ export default function ProjectPage() {
             }}>
                 <button
                     onClick={() => {
+                        playClick();
                         const prevPath = sessionStorage.getItem('prevPath');
                         if (prevPath && window.history.length > 1) {
                             router.back();

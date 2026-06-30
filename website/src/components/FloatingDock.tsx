@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { usePathname, useRouter } from 'next/navigation';
 import { useTheme } from './ThemeContext';
-import { useUISound } from '@/hooks/use-ui-sound';
+import { useUISound } from '../hooks/use-ui-sound';
 
 interface TooltipProps {
     text: string;
@@ -48,7 +48,7 @@ export default function FloatingDock() {
     const router = useRouter();
     const { isDark, toggleTheme } = useTheme();
     const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
-    const { playClick, playHover } = useUISound();
+    const { playClick } = useUISound();
 
     const handleHomeClick = () => {
         if (pathname === '/') {
@@ -129,14 +129,14 @@ export default function FloatingDock() {
                     hidden: { opacity: 0, scale: 0.8, y: 10 },
                     visible: { opacity: 1, scale: 1, y: 0 }
                 }}
-                onMouseEnter={() => { setHoveredIcon('command'); playHover(); }}
+                onMouseEnter={() => { setHoveredIcon('command'); }}
                 onMouseLeave={() => setHoveredIcon(null)}
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 style={{ position: 'relative' }}
             >
                 <button
-                    onClick={() => { window.dispatchEvent(new Event('open-command-palette')); playClick(); }}
+                    onClick={() => { playClick(); window.dispatchEvent(new Event('open-command-palette')); }}
                     aria-label="Open command palette"
                     style={{
                         backgroundColor: hoveredIcon === 'command' ? (isDark ? '#374151' : '#f3f4f6') : 'transparent',
@@ -176,14 +176,14 @@ export default function FloatingDock() {
                     hidden: { opacity: 0, scale: 0.8, y: 10 },
                     visible: { opacity: 1, scale: 1, y: 0 }
                 }}
-                onMouseEnter={() => { setHoveredIcon('home'); playHover(); }}
+                onMouseEnter={() => { setHoveredIcon('home'); }}
                 onMouseLeave={() => setHoveredIcon(null)}
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 style={{ position: 'relative' }}
             >
                 <button
-                    onClick={() => { handleHomeClick(); playClick(); }}
+                    onClick={() => { playClick(); handleHomeClick(); }}
                     style={{
                         backgroundColor: (pathname === "/" || hoveredIcon === "home") ? (isDark ? '#374151' : '#f3f4f6') : 'transparent',
                         width: '40px',
@@ -215,14 +215,14 @@ export default function FloatingDock() {
                     hidden: { opacity: 0, scale: 0.8, y: 10 },
                     visible: { opacity: 1, scale: 1, y: 0 }
                 }}
-                onMouseEnter={() => { setHoveredIcon('projects'); playHover(); }}
+                onMouseEnter={() => { setHoveredIcon('projects'); }}
                 onMouseLeave={() => setHoveredIcon(null)}
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 style={{ position: 'relative' }}
             >
                 <button
-                    onClick={() => { handleProjectsClick(); playClick(); }}
+                    onClick={() => { playClick(); handleProjectsClick(); }}
                     style={{
                         backgroundColor: (pathname === "/projects" || hoveredIcon === "projects") ? (isDark ? '#374151' : '#f3f4f6') : 'transparent',
                         width: '40px',
@@ -255,14 +255,14 @@ export default function FloatingDock() {
                     hidden: { opacity: 0, scale: 0.8, y: 10 },
                     visible: { opacity: 1, scale: 1, y: 0 }
                 }}
-                onMouseEnter={() => { setHoveredIcon('writing'); playHover(); }}
+                onMouseEnter={() => { setHoveredIcon('writing'); }}
                 onMouseLeave={() => setHoveredIcon(null)}
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
                 style={{ position: 'relative' }}
             >
                 <button
-                    onClick={() => { handleWritingClick(); playClick(); }}
+                    onClick={() => { playClick(); handleWritingClick(); }}
                     style={{
                         backgroundColor: (pathname === "/writing" || hoveredIcon === "writing") ? (isDark ? '#374151' : '#f3f4f6') : 'transparent',
                         width: '40px',
@@ -311,7 +311,7 @@ export default function FloatingDock() {
                             hidden: { opacity: 0, scale: 0.8, y: 10 },
                             visible: { opacity: 1, scale: 1, y: 0 }
                         }}
-                        onMouseEnter={() => { setHoveredIcon(social.id); playHover(); }}
+                        onMouseEnter={() => { setHoveredIcon(social.id); }}
                         onMouseLeave={() => setHoveredIcon(null)}
                         whileHover={{ scale: 1.1, y: -2 }}
                         whileTap={{ scale: 0.95 }}
@@ -336,11 +336,11 @@ export default function FloatingDock() {
                     hidden: { opacity: 0, scale: 0.8, y: 10 },
                     visible: { opacity: 1, scale: 1, y: 0 }
                 }}
-                onMouseEnter={() => { setHoveredIcon('theme'); playHover(); }}
+                onMouseEnter={() => { setHoveredIcon('theme'); }}
                 onMouseLeave={() => setHoveredIcon(null)}
                 whileHover={{ scale: 1.1, y: -2 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => { toggleTheme(); playClick(); }}
+                onClick={() => { playClick(); toggleTheme(); }}
                 style={{
                     position: 'relative',
                     width: '40px',

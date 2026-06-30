@@ -2,6 +2,7 @@
 
 import { useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useUISound } from '../hooks/use-ui-sound';
 
 interface ProjectVideoProps {
     src: string;
@@ -15,10 +16,12 @@ export const ProjectVideo = ({ src, style, className, resetTime = 0, iconColor =
     const videoRef = useRef<HTMLVideoElement>(null);
     const [iconState, setIconState] = useState<'play' | 'pause' | null>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+    const { playClick } = useUISound();
 
     const handleClick = (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
+        playClick();
 
         if (!videoRef.current) return;
 

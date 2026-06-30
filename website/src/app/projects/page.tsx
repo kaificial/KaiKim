@@ -2,6 +2,7 @@
 
 import { motion, useScroll, useSpring, AnimatePresence } from 'framer-motion';
 import { useTheme } from '../../components/ThemeContext';
+import { useUISound } from '../../hooks/use-ui-sound';
 import Image from 'next/image';
 import { projects } from '../../data/projects';
 import { SpotlightCard } from '../../components/SpotlightCard';
@@ -24,10 +25,12 @@ const ProjectTitle = ({ project, isDark }: { project: any, isDark: boolean }) =>
 
 export default function ProjectsPage() {
     const { isDark } = useTheme();
+    const { playClick } = useUISound();
     const [searchQuery, setSearchQuery] = useState('');
     const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
 
     const toggleExpand = (id: string) => {
+        playClick();
         setExpandedItems(prev => ({
             ...prev,
             [id]: !prev[id]
@@ -150,7 +153,7 @@ export default function ProjectsPage() {
                             />
                             {searchQuery && (
                                 <button
-                                    onClick={() => setSearchQuery('')}
+                                    onClick={() => { playClick(); setSearchQuery(''); }}
                                     style={{
                                         position: 'absolute',
                                         right: '16px',
@@ -429,7 +432,7 @@ export default function ProjectsPage() {
                                 </svg>
                                 <p style={{ fontSize: '1.125rem' }}>No projects found matching "{searchQuery}"</p>
                                 <button
-                                    onClick={() => setSearchQuery('')}
+                                    onClick={() => { playClick(); setSearchQuery(''); }}
                                     style={{
                                         marginTop: '16px',
                                         background: 'none',

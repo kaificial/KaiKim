@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { useTheme } from "../../components/ThemeContext";
+import { useUISound } from "../../hooks/use-ui-sound";
 
 const mediaData = {
     movies: [
@@ -45,6 +46,7 @@ const MediaCollection = ({ isDark, startDelay = 0 }: { isDark: boolean; startDel
     const [activeCategory, setActiveCategory] = useState<MediaCategory>('movies');
     const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
     const [isInitialLoad, setIsInitialLoad] = useState(true);
+    const { playClick } = useUISound();
 
     useEffect(() => {
         const t = window.setTimeout(() => setIsInitialLoad(false), 4000);
@@ -64,6 +66,7 @@ const MediaCollection = ({ isDark, startDelay = 0 }: { isDark: boolean; startDel
     const items = mediaData[activeCategory];
 
     const toggle = (id: string) => {
+        playClick();
         setExpandedItems(prev => ({ ...prev, [id]: !prev[id] }));
     };
 
@@ -73,7 +76,7 @@ const MediaCollection = ({ isDark, startDelay = 0 }: { isDark: boolean; startDel
                 {categories.map((cat) => (
                     <motion.button
                         key={cat.key}
-                        onClick={() => { setActiveCategory(cat.key); setExpandedItems({}); }}
+                        onClick={() => { playClick(); setActiveCategory(cat.key); setExpandedItems({}); }}
                         whileTap={{ scale: 0.97 }}
                         style={{
                             background: 'transparent',

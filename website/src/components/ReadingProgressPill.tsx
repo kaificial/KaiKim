@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTheme } from "./ThemeContext";
+import { useUISound } from "../hooks/use-ui-sound";
 
 interface HeadingInfo {
     id: string;
@@ -16,6 +17,7 @@ interface ReadingProgressPillProps {
 
 export default function ReadingProgressPill({ contentSelector = "article", projectTitle = "Index" }: ReadingProgressPillProps) {
     const { isDark } = useTheme();
+    const { playClick } = useUISound();
     const [isExpanded, setIsExpanded] = useState(false);
     const [headings, setHeadings] = useState<HeadingInfo[]>([]);
     const [activeIndex, setActiveIndex] = useState(-1);
@@ -132,7 +134,7 @@ export default function ReadingProgressPill({ contentSelector = "article", proje
     return (
         <motion.div
             ref={widgetRef}
-            onClick={() => hasHeadings && setIsExpanded(!isExpanded)}
+            onClick={() => { if (hasHeadings) { playClick(); setIsExpanded(!isExpanded); } }}
             initial={false}
             animate={{
                 width: isExpanded ? 320 : (isMobile ? 120 : 180),
@@ -298,6 +300,7 @@ export default function ReadingProgressPill({ contentSelector = "article", proje
                                     key={h.id}
                                     onClick={(e) => {
                                         e.stopPropagation();
+                                        playClick();
                                         scrollToHeading(i);
                                     }}
                                     style={{

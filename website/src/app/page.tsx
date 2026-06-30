@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { CSSProperties, ReactNode, useState, useEffect } from 'react';
 import { useTheme } from '../components/ThemeContext';
+import { useUISound } from '../hooks/use-ui-sound';
 import { SpotlightCard } from '../components/SpotlightCard';
 import { projects } from '../data/projects';
 import { ProjectDescription } from '../components/ProjectDescription';
@@ -111,11 +112,13 @@ const LiveAge = () => {
 
 export default function Home() {
     const { isDark, toggleTheme } = useTheme();
+    const { playClick } = useUISound();
     const [hoveredIcon, setHoveredIcon] = useState<string | null>(null);
     const [expandedItems, setExpandedItems] = useState<Record<string, boolean>>({});
     const [isTorontoHovered, setIsTorontoHovered] = useState(false);
 
     const toggleExpand = (id: string) => {
+        playClick();
         setExpandedItems(prev => ({
             ...prev,
             [id]: !prev[id]

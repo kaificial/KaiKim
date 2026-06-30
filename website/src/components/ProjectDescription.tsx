@@ -8,6 +8,7 @@ import remarkGfm from "remark-gfm";
 import rehypeKatex from "rehype-katex";
 import rehypeRaw from "rehype-raw";
 import { useTheme } from "./ThemeContext";
+import { useUISound } from "../hooks/use-ui-sound";
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/prism-async';
 import { vscDarkPlus, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
@@ -17,6 +18,7 @@ interface ProjectDescriptionProps {
 
 const ZoomableImage = ({ src, alt, isDark, ...props }: any) => {
     const [isZoomed, setIsZoomed] = useState(false);
+    const { playClick } = useUISound();
 
     return (
         <>
@@ -30,7 +32,7 @@ const ZoomableImage = ({ src, alt, isDark, ...props }: any) => {
                     position: 'relative',
                     backgroundColor: isDark ? '#111110' : '#ffffff'
                 }}
-                onClick={() => setIsZoomed(true)}
+                onClick={() => { playClick(); setIsZoomed(true); }}
             >
                 <img
                     src={src}
@@ -55,7 +57,7 @@ const ZoomableImage = ({ src, alt, isDark, ...props }: any) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.3 }}
-                        onClick={() => setIsZoomed(false)}
+                        onClick={() => { playClick(); setIsZoomed(false); }}
                         style={{
                             position: 'fixed',
                             top: 0,

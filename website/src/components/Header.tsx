@@ -7,8 +7,8 @@ import { createPortal } from "react-dom";
 import { Flame, Play, Pause, SkipBack, SkipForward } from "lucide-react";
 import { usePathname } from "next/navigation";
 import { useTheme } from "./ThemeContext";
-import { useUISound } from "@/hooks/use-ui-sound";
 import { useAudio } from "./AudioContext";
+import { useUISound } from "../hooks/use-ui-sound";
 
 const navLinks = [
     { href: "/", label: "Home" },
@@ -36,8 +36,8 @@ const Marquee = ({ label }: { label: string }) => {
 
 const MusicWidget = () => {
     const { isDark } = useTheme();
-    const { playClick } = useUISound();
     const { currentTrack, isPlaying, progress, duration, togglePlay: globalTogglePlay, seek, shuffleTrack } = useAudio();
+    const { playClick } = useUISound();
     const [isExpanded, setIsExpanded] = useState(false);
     const [isWidgetHovered, setIsWidgetHovered] = useState(false);
     const [mousePos, setMousePos] = useState({ x: 0, y: 0, widgetLeft: 0, widgetWidth: 150 });
@@ -156,10 +156,10 @@ const MusicWidget = () => {
         const r = slotRef.current?.getBoundingClientRect();
         if (r) setSlotRect({ top: r.top, left: r.left });
     };
-    const expand = () => { measureSlot(); setIslandPresent(true); setIsExpanded(true); playClick(); };
+    const expand = () => { playClick(); measureSlot(); setIslandPresent(true); setIsExpanded(true); };
     const collapse = () => {
-        measureSlot();
         playClick();
+        measureSlot();
         requestAnimationFrame(() => setIsExpanded(false));
     };
 
@@ -463,7 +463,7 @@ const MusicWidget = () => {
 export default function Header() {
     const pathname = usePathname();
     const { isDark } = useTheme();
-    const { playClick, playHover } = useUISound();
+    const { playClick } = useUISound();
     const [count, setCount] = useState(0);
     const [displayCount, setDisplayCount] = useState(0);
     const [isHovered, setIsHovered] = useState(false);
@@ -549,7 +549,7 @@ export default function Header() {
                 <div className="mobile-menu-wrapper">
                     <button
                         className="mobile-menu-btn"
-                        onClick={() => { setIsMobileMenuOpen(!isMobileMenuOpen); playClick(); }}
+                        onClick={() => { playClick(); setIsMobileMenuOpen(!isMobileMenuOpen); }}
                         aria-label="Toggle mobile menu"
                     >
                         {isMobileMenuOpen ? (
@@ -574,9 +574,8 @@ export default function Header() {
                                 key={link.href}
                                 href={link.href}
                                 className={`nav-link ${pathname === link.href ? "active" : ""}`}
-                                onClick={() => { setIsMobileMenuOpen(false); playClick(); }}
-                                onMouseEnter={() => playHover()}
-                            >
+                                onClick={() => { playClick(); setIsMobileMenuOpen(false); }}
+                                >
                                 {link.label}
                             </Link>
                         ))}
@@ -593,7 +592,7 @@ export default function Header() {
 
                 <div className="theme-buttons-container" style={{ display: 'flex', gap: '12px', alignItems: 'center', position: 'relative' }}>
                     <motion.div
-                        onMouseEnter={() => { setIsHovered(true); playHover(); }}
+                        onMouseEnter={() => { setIsHovered(true); }}
                         onMouseLeave={() => setIsHovered(false)}
                         style={{ position: 'relative' }}
                     >
@@ -635,7 +634,7 @@ export default function Header() {
                         </AnimatePresence>
 
                         <motion.button
-                            onClick={() => { handleLikeClick(); playClick(); }}
+                            onClick={() => { playClick(); handleLikeClick(); }}
                             whileHover={{ scale: 1.05 }}
                             whileTap={{ scale: 0.95 }}
                             transition={{ type: "spring", stiffness: 400, damping: 17 }}
