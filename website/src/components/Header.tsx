@@ -165,18 +165,25 @@ const MusicWidget = () => {
 
     const waveBars = (small: boolean) => (
         [
-            { peak: small ? '8px' : '8px', delay: 0.0, duration: 1.0 },
-            { peak: small ? '12px' : '14px', delay: 0.2, duration: 0.8 },
-            { peak: small ? '13px' : '16px', delay: 0.4, duration: 1.2 },
-            { peak: small ? '11px' : '12px', delay: 0.6, duration: 0.9 },
-            { peak: small ? '8px' : '8px', delay: 0.8, duration: 1.1 },
+            { peakSm: '8px',  peakLg: '8px',  offset: 0.0, duration: 1.0 },
+            { peakSm: '12px', peakLg: '14px', offset: 0.2, duration: 0.8 },
+            { peakSm: '13px', peakLg: '16px', offset: 0.4, duration: 1.2 },
+            { peakSm: '11px', peakLg: '12px', offset: 0.6, duration: 0.9 },
+            { peakSm: '8px',  peakLg: '8px',  offset: 0.8, duration: 1.1 },
         ].map((w, i) => (
-            <motion.div
+            <div
                 key={i}
-                initial={false}
-                animate={{ height: isPlaying ? ['4px', w.peak, '4px'] : '4px' }}
-                transition={{ duration: w.duration, repeat: isPlaying ? Infinity : 0, delay: w.delay, ease: "easeInOut" }}
-                style={{ width: '3px', backgroundColor: isPlaying ? '#3b82f6' : waveInactiveColor, borderRadius: '4px' }}
+                style={{
+                    '--bar-peak': small ? w.peakSm : w.peakLg,
+                    width: '3px',
+                    height: '4px',
+                    backgroundColor: isPlaying ? '#3b82f6' : waveInactiveColor,
+                    borderRadius: '4px',
+                    animation: isPlaying
+                        ? `wave-bar ${w.duration}s ease-in-out -${w.offset}s infinite`
+                        : 'none',
+                    transition: 'background-color 0.2s ease, height 0.15s ease',
+                } as React.CSSProperties}
             />
         ))
     );
