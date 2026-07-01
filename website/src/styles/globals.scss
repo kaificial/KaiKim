@@ -1088,3 +1088,8 @@ body.cursor-grid-active .cursor-bloom {
         display: none;
     }
 }
+
+@keyframes wave-bar {
+    0%, 100% { height: 4px; }
+    50% { height: var(--bar-peak, 12px); }
+}
