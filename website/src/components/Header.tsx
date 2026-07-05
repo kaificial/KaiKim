@@ -57,11 +57,19 @@ const MusicWidget = () => {
 
     useEffect(() => {
         const handleClickOutside = (e: MouseEvent) => {
-            if (isExpanded && widgetRef.current && !widgetRef.current.contains(e.target as Node)) {
+            const target = e.target as Node;
+            const insideSlot = slotRef.current?.contains(target);
+            const insideExpanded = isExpanded && widgetRef.current?.contains(target);
+            if (insideSlot || insideExpanded) return;
+
+            if (isExpanded) {
                 const r = slotRef.current?.getBoundingClientRect();
                 if (r) setSlotRect({ top: r.top, left: r.left });
                 requestAnimationFrame(() => setIsExpanded(false));
             }
+            // Clear for mobile device touch 
+            setIsWidgetHovered(false);
+            setHoverText(null);
         };
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
@@ -165,11 +173,11 @@ const MusicWidget = () => {
 
     const waveBars = (small: boolean) => (
         [
-            { peakSm: '8px',  peakLg: '8px',  offset: 0.0, duration: 1.0 },
+            { peakSm: '8px', peakLg: '8px', offset: 0.0, duration: 1.0 },
             { peakSm: '12px', peakLg: '14px', offset: 0.2, duration: 0.8 },
             { peakSm: '13px', peakLg: '16px', offset: 0.4, duration: 1.2 },
             { peakSm: '11px', peakLg: '12px', offset: 0.6, duration: 0.9 },
-            { peakSm: '8px',  peakLg: '8px',  offset: 0.8, duration: 1.1 },
+            { peakSm: '8px', peakLg: '8px', offset: 0.8, duration: 1.1 },
         ].map((w, i) => (
             <div
                 key={i}
@@ -311,11 +319,11 @@ const MusicWidget = () => {
         <div
             ref={slotRef}
             style={{ position: 'relative', width: 150, height: 36 }}
-            onMouseEnter={(e) => { 
+            onMouseEnter={(e) => {
                 const rect = slotRef.current?.getBoundingClientRect();
-                setIsWidgetHovered(true); 
-                setHoverText("Click to Expand"); 
-                setMousePos({ x: e.clientX, y: e.clientY, widgetLeft: rect?.left || 0, widgetWidth: rect?.width || 150 }); 
+                setIsWidgetHovered(true);
+                setHoverText("Click to Expand");
+                setMousePos({ x: e.clientX, y: e.clientY, widgetLeft: rect?.left || 0, widgetWidth: rect?.width || 150 });
             }}
             onMouseMove={(e) => {
                 const rect = slotRef.current?.getBoundingClientRect();
@@ -415,7 +423,7 @@ const MusicWidget = () => {
                         const maxLeft = mousePos.widgetLeft + mousePos.widgetWidth - T;
                         let tooltipLeft = mousePos.x - T / 2;
                         tooltipLeft = Math.max(minLeft, Math.min(maxLeft, tooltipLeft));
-                        
+
                         const arrowLeft = mousePos.x - tooltipLeft;
                         const clampedArrowLeft = Math.max(12, Math.min(T - 12, arrowLeft));
 
@@ -582,7 +590,7 @@ export default function Header() {
                                 href={link.href}
                                 className={`nav-link ${pathname === link.href ? "active" : ""}`}
                                 onClick={() => { playClick(); setIsMobileMenuOpen(false); }}
-                                >
+                            >
                                 {link.label}
                             </Link>
                         ))}
