@@ -16,6 +16,19 @@ export interface Project {
 
 export const projects: Project[] = [
     {
+        id: 'macrodata-refinement',
+        title: 'Macrodata Refinement',
+        description: 'A Severance-inspired text analytics game where users sort disguised text data into AI-generated semantic clusters.',
+        tags: ['Python', 'UMAP', 'scikit-learn (KMeans)', 'NumPy', 'Docker'],
+        status: 'Building',
+        url: '',
+        video: '/assets/Severance.mp4',
+        longDescription: `Macrodata Refinement is a real text analytics tool disguised as the terminal data-sorting UI from one of my favourite shows of all time, Severance. Users can feed in real text data (reviews, tickets, survey responses, etc.) and "refine" it by dragging the numbers (disguised text data) into bins. Each bin is actually a semantic cluster with an AI-generated label, summary, and sentiment profile. Essentially making a text-analytics task feel like a game. Just a fun demo of NLP clustering. - Kier
+
+<div style="text-align: center; margin-top: 40px; opacity: 0.6;">Last Edited: July 7, 2026</div>`,
+    },
+
+    {
         id: 'clairo',
         title: 'Clairo',
         description: 'AI-powered assistant to help you understand medical terminology, records, and reports with clarity.',

@@ -1087,7 +1087,8 @@ export default function Home() {
                                         project.id === 'texify' ? '1996/1080' :
                                             project.id === 'portfolio' ? '1500/742' :
                                                 project.id === 'scribl' ? '2220/1080' :
-                                                    project.id === 'clairo' ? '1498/744' : '16/10',
+                                                    project.id === 'clairo' ? '1498/744' :
+                                                        project.id === 'macrodata-refinement' ? 'auto' : '16/10',
                                     alignSelf: 'start',
                                     display: 'flex',
                                     alignItems: 'center',
@@ -1098,7 +1099,8 @@ export default function Home() {
                                         <ProjectVideo
                                             src={project.video}
                                             resetTime={project.id === 'portfolio' ? 2 : 0}
-                                            iconColor={project.id === 'rooke' ? 'white' : 'black'}
+                                            endTime={project.id === 'macrodata-refinement' ? 33 : undefined}
+                                            iconColor={project.id === 'rooke' || project.id === 'macrodata-refinement' ? 'white' : 'black'}
                                             style={{
                                                 transform: project.id === 'portfolio' ? 'scale(1.15)' : 'none'
                                             }}

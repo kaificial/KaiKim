@@ -9,10 +9,11 @@ interface ProjectVideoProps {
     style?: React.CSSProperties;
     className?: string;
     resetTime?: number;
+    endTime?: number;
     iconColor?: 'white' | 'black';
 }
 
-export const ProjectVideo = ({ src, style, className, resetTime = 0, iconColor = 'black' }: ProjectVideoProps) => {
+export const ProjectVideo = ({ src, style, className, resetTime = 0, endTime, iconColor = 'black' }: ProjectVideoProps) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [iconState, setIconState] = useState<'play' | 'pause' | null>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -66,10 +67,17 @@ export const ProjectVideo = ({ src, style, className, resetTime = 0, iconColor =
                 ref={videoRef}
                 src={src}
                 autoPlay
-                loop
+                loop={!endTime}
                 muted
                 playsInline
-                className="w-full h-full object-cover pointer-events-none" // 
+                className="w-full h-full object-cover pointer-events-none"
+                onTimeUpdate={endTime ? (e) => {
+                    const video = e.currentTarget;
+                    if (video.currentTime >= endTime) {
+                        video.currentTime = 0;
+                        video.play().catch(() => {});
+                    }
+                } : undefined}
             />
 
             <AnimatePresence>
