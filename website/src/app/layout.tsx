@@ -11,6 +11,7 @@ import ScrollToTop from "../components/ScrollToTop";
 import InteractiveGrid from "../components/InteractiveGrid";
 import CommandPalette from "../components/CommandPalette";
 import FloatingDock from "../components/FloatingDock";
+import CustomCursor from "../components/CustomCursor";
 
 const inter = Inter({
     subsets: ["latin"],
@@ -168,6 +169,7 @@ export default function RootLayout({
                         </main>
                         <CommandPalette />
                         <FloatingDock />
+                        <CustomCursor />
                     </AudioProvider>
                 </ThemeProvider>
             </body>

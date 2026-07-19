@@ -886,6 +886,70 @@ body.cursor-grid-active .cursor-bloom {
 
 }
 
+/* Custom paper-airplane cursor */
+body.custom-cursor-active,
+body.custom-cursor-active * {
+    cursor: none !important;
+}
+
+body.custom-cursor-active.custom-cursor-text,
+body.custom-cursor-active.custom-cursor-text * {
+    cursor: text !important;
+}
+
+.paper-cursor-root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0;
+    height: 0;
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.18s ease;
+}
+
+body.custom-cursor-text .paper-cursor-root {
+    opacity: 0 !important;
+}
+
+.paper-cursor-plane {
+    // centered on the root's position (the real mouse coordinates), so it
+    // just spins in place using the default center transform-origin
+    position: absolute;
+    top: -15px;
+    left: -19px;
+    width: 38px;
+    height: 30px;
+    will-change: transform;
+    filter: drop-shadow(0 2px 4px rgba(15, 23, 42, 0.25));
+}
+
+.paper-cursor-plane svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+.paper-cursor-body {
+    fill: #000000;
+    stroke: #ffffff;
+    stroke-width: 1.5;
+    stroke-linejoin: round;
+    paint-order: stroke fill;
+    transition: fill 0.2s ease;
+}
+
+.paper-cursor-root.paper-cursor-hover .paper-cursor-body {
+    fill: var(--accent-blue);
+}
+
+@media (pointer: coarse) {
+    .paper-cursor-root {
+        display: none;
+    }
+}
 
 .cmdk-backdrop {
     position: fixed;
