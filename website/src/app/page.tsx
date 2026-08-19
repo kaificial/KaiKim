@@ -358,7 +358,7 @@ export default function Home() {
                                         {rt('CIBC', 5.8)}
                                     </h3>
                                     <p style={{ fontSize: '0.875rem', color: isDark ? '#9ca3af' : '#6b7280' }}>
-                                        {rt('Intern'', 5.85)}
+                                        {rt('Intern', 5.85)}
                                     </p>
                                 </div>
                             </div>
