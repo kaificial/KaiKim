@@ -9,11 +9,12 @@ interface ProjectVideoProps {
     style?: React.CSSProperties;
     className?: string;
     resetTime?: number;
+    startTime?: number;
     endTime?: number;
     iconColor?: 'white' | 'black';
 }
 
-export const ProjectVideo = ({ src, style, className, resetTime = 0, endTime, iconColor = 'black' }: ProjectVideoProps) => {
+export const ProjectVideo = ({ src, style, className, resetTime = 0, startTime = 0, endTime, iconColor = 'black' }: ProjectVideoProps) => {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [iconState, setIconState] = useState<'play' | 'pause' | null>(null);
     const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -65,16 +66,20 @@ export const ProjectVideo = ({ src, style, className, resetTime = 0, endTime, ic
         >
             <video
                 ref={videoRef}
-                src={src}
+                src={src + (startTime ? `#t=${startTime}` : '')}
                 autoPlay
-                loop={!endTime}
+                loop={!endTime && !startTime}
                 muted
                 playsInline
                 className="w-full h-full object-cover pointer-events-none"
-                onTimeUpdate={endTime ? (e) => {
+                onTimeUpdate={(endTime || startTime) ? (e) => {
                     const video = e.currentTarget;
-                    if (video.currentTime >= endTime) {
-                        video.currentTime = 0;
+                    if (endTime && video.currentTime >= endTime) {
+                        video.currentTime = startTime;
+                        video.play().catch(() => {});
+                    }
+                    if (!endTime && startTime && video.duration && video.currentTime >= video.duration - 0.3) {
+                        video.currentTime = startTime;
                         video.play().catch(() => {});
                     }
                 } : undefined}

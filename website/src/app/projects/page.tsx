@@ -222,6 +222,7 @@ export default function ProjectsPage() {
                                                     <ProjectVideo
                                                         src={project.video}
                                                         resetTime={project.id === 'portfolio' ? 2 : 0}
+                                                        startTime={project.id === 'macrodata-refinement' ? 6 : 0}
                                                         endTime={project.id === 'macrodata-refinement' ? 33 : undefined}
                                                         iconColor={project.id === 'rooke' || project.id === 'macrodata-refinement' ? 'white' : 'black'}
                                                         style={{
